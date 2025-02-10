@@ -1,0 +1,8 @@
+1. Tokenizar con un split especial divide por espacios pero estos espacios no los guarda si no que los ignora
+tambien divide por los simbolos por ejemplo | < > << >> $(no sabemos si dividirlo o no) - (maybe dividirlo aqui)
+
+2. Leemos cada token le damos unos valores por ejemplo le decimos si es un paramet
+
+3. Aqui buscamos errores, no podemos poner un "<>", no podemos mezclar símbolos que dividan,
+todos los símbolos tienen que tener una palabra antes y otra después
+	?No hace nada especial?		comando < archivo ==> comando > archivo
