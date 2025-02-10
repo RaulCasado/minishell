@@ -27,7 +27,7 @@ $(LIBFT):
 
 # Compilar Minishell
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) $(OBJS) -L$(LIBFT_DIR) -lft -o $(NAME)
+	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -lncurses -o $(NAME)
 
 # Regla para compilar archivos .o
 %.o: %.c
