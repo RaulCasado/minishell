@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:33:10 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/11 16:50:09 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:59:17 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef enum e_token_type
 	TOKEN_REDIR_APPEND, // >>
 	TOKEN_HEREDOC, // <<
 	// we could add TOKEN_ENV_VAR OR TOKEN_FLAG but right now its in TOKEN_WORD
-	TOKEN_COMMAND, // maybe join it with TOKEN_WORD because its difficult to differentiate
+	//TOKEN_COMMAND, // maybe join it with TOKEN_WORD because its difficult to differentiate
 }	t_token_type;
 
 typedef struct s_token
