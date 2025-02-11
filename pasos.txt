@@ -13,3 +13,24 @@ todos los símbolos tienen que tener una palabra antes y otra después
 5. expander
 
 6. ejecutar
+
+
+Deberá implementar los built-ins:
+◦ echo con la opción -n.
+◦ cd solo con una ruta relativa o absoluta.
+◦ pwd sin opciones.
+◦ export sin opciones.
+6Minishell
+Tan bonito como shell
+◦ unset sin opciones.
+◦ env sin opciones o argumentos.
+◦ exit sin opciones.
+hay que hacer estas funciones
+
+
+✅ cd → Cambia el directorio de trabajo. No se puede ejecutar con execve().
+✅ exit → Cierra el shell. Debe manejarse antes de llegar al executor.
+✅ export → Modifica variables de entorno. No se ejecuta como un proceso hijo.
+✅ unset → Elimina variables de entorno.
+✅ echo → Maneja -n de forma especial.
+✅ pwd → No usa execve(), sino getcwd().
