@@ -1,59 +1,61 @@
 
 #include "minishell.h"
 
-static size_t	is_symbol(char *ptr)
+static ssize_t	ft_symbol_len(char *ptr)
 {
 	if (*ptr == '|')
 		return (1);
 	if (*ptr == '>')
 	{
-		if (*(ptr++) == '>')
+		if (*(ptr + 1) == '>')
 			return (2);
 		return (1);
 	}
 	else if (*ptr == '<')
 	{
-		if (*(ptr++) == '<')
+		if (*(ptr + 1) == '<')
 			return (2);
 		return (1);
 	}
 	return (0);
 }
 
-static size_t	count_tokens(char *ptr)
+static void	split_input(ssize_t	i, char *ptr, t_token **tokens)
 {
-	size_t	total_words;
-	size_t	i;
-	size_t	symbol;
+	ssize_t	j;
+	ssize_t	symbol_len;
+	char	*new_word;
+	t_token	*new_token;
 
-	i = 0;
-	total_words = 0;
-	while (ptr[i])
+	i = -1;
+	while (ptr[++i])
 	{
-		symbol = is_symbol(&ptr[i]);
-		if (ptr[i] == ' ')
+		symbol_len = ft_symbol_len(&ptr[i]);
+		if (symbol_len > 0)
 		{
-			total_words++;
-			while (ptr[i] && ptr[i] != ' ')
-				i++;
+			new_word = ft_substr(ptr, i, symbol_len);
+			add_token(tokens, new_word);
+			i += symbol_len - 1;
 		}
-		else if (symbol)
+		else if (ptr[i] != ' ')
 		{
-			total_words++;
-			if (symbol == 2)
+			j = i;
+			while (ptr[i + 1] != ' ' && ptr[i + 1] != '\0'
+				&& !ft_symbol_len(&ptr[i + 1]))
 				i++;
+			new_word = ft_substr(ptr, j, i - j + 1);
+			add_token(tokens, new_word);
 		}
-		else
-			i++;
 	}
-	return (total_words);
 }
 
 t_token	*tokenize_input(char *input)
 {
 	t_token	*tokens;
+	size_t	count;
 
-	(void) input;
-	(void) tokens;
-	return (NULL);
+	tokens = NULL;
+	split_input(0, input, &tokens);
+	print_tokens(tokens);
+	return (tokens);
 }

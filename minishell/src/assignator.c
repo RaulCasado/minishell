@@ -45,3 +45,21 @@ void add_token(t_token **tokens, char *value)
 		last = last->next;
 	last->next = new_token;
 }
+
+void	print_tokens(t_token *tokens)
+{
+	t_token	*token_ptr;
+	size_t	i;
+
+	if (!tokens)
+		return ;
+	i = 0;
+	token_ptr = tokens;
+	printf("Printing tokens:\n");
+	while (token_ptr)
+	{
+		printf("%zd: %s\n", i, token_ptr->value);
+		token_ptr = token_ptr->next;
+		i++;
+	}
+}

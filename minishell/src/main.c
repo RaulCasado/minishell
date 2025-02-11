@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/11 16:45:45 by droura-s         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 // main principal del minichell
 
@@ -34,9 +23,7 @@ void minishell_loop() {
 		
 		// Tenemos que ver cómo hacer la cadena de sentencias IF
 		tokens = tokenize_input(input);
-		tokens = assign_value(tokens); // Darle valores a los tokens
 		// Mirar si hay errores
-
 		
 		printf("Comando ingresado: %s\n", input);
 

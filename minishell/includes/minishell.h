@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 17:33:10 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/11 17:31:14 by racasado         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -42,7 +31,10 @@ typedef struct s_token
 #include "libft/libft.h"
 
 t_token	*tokenize_input(char *input);
-t_token	*assign_value(t_token *tokens);
 void	free_tokens(t_token *tokens);
+t_token	*create_token(char *value);
+void	add_token(t_token **tokens, char *value);
+
+void	print_tokens(t_token *tokens);
 
 #endif
