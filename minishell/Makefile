@@ -12,7 +12,7 @@ INCLUDE_DIR = includes
 LIBFT_DIR = includes/libft
 
 # Archivos fuente
-SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/tokenize.c $(SRC_DIR)/assignator.c
+SRCS = $(SRC_DIR)/main.c $(SRC_DIR)/tokenize.c $(SRC_DIR)/assignator.c $(SRC_DIR)/signals.c
 OBJS = $(SRCS:.c=.o)
 
 # Librería Libft

@@ -36,5 +36,11 @@ t_token	*create_token(char *value);
 void	add_token(t_token **tokens, char *value);
 
 void	print_tokens(t_token *tokens);
+int get_signal();
+void set_signal(int signal);
+void setup_signals(void);
+void handle_sigquit();
+void handle_sigint(int sig);
+void handle_eof();
 
 #endif
