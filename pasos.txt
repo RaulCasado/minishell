@@ -6,3 +6,10 @@ tambien divide por los simbolos por ejemplo | < > << >> $(no sabemos si dividirl
 3. Aqui buscamos errores, no podemos poner un "<>", no podemos mezclar símbolos que dividan,
 todos los símbolos tienen que tener una palabra antes y otra después
 	?No hace nada especial?		comando < archivo ==> comando > archivo
+
+
+4. Parsear los tokens para comprobar que estan bien.
+
+5. expander
+
+6. ejecutar
