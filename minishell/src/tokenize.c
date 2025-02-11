@@ -60,6 +60,10 @@ static void	split_input(ssize_t	i, char *ptr, t_token **tokens)
 	ls | >infile
 	ls | 		::: Error
 	ls | <		::: Error
+	echo hola || echo mundo should fail
+
+	tested sytnax from minishell tester
+	echo hi | "|" its ok but should fail doesnt make sense lol
 */
 static char	tokenize_check(t_token *tokens)
 {

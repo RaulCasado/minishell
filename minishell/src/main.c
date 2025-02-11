@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/11 19:14:20 by racasado         ###   ########.fr       */
+/*   Updated: 2025/02/11 19:30:19 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,46 +15,47 @@
 #include "minishell.h"
 
 void minishell_loop() {
-    char	*input;
-    t_token	*tokens;
+	char	*input;
+	t_token	*tokens;
 
-    setup_signals();
+	setup_signals();
+	rl_catch_signals = 0;
 
-    while (get_signal()) {
-        input = readline("Minishell> ");
-        tokens = NULL;
+	while (get_signal()) {
+		input = readline("Minishell> ");
+		tokens = NULL;
 
-        if (!input) {
-            handle_eof();
-            break;
-        }
-        if (*input == '\0') {
-            free(input);
-            continue;
-        }
+		if (!input) {
+			handle_eof();
+			break;
+		}
+		if (*input == '\0') {
+			free(input);
+			continue;
+		}
 
-        add_history(input);
+		add_history(input);
 
-        if (ft_strncmp(input, "exit", ft_strlen(input)) == 0)
-        {
-            free(input);
-            printf("Saliendo de Minishell...\n");
-            set_signal(0);
-            break;
-        }
+		if (ft_strncmp(input, "exit", ft_strlen(input)) == 0)
+		{
+			free(input);
+			printf("Saliendo de Minishell...\n");
+			set_signal(0);
+			break;
+		}
 
-        tokens = tokenize_input(input);
-		if (tokens)
+		tokens = tokenize_input(input);
+		if (!tokens)
 		{
 			(void) 0; // Execute command
 			free_tokens(tokens);
 			tokens = NULL;
 		}
 
-        printf("Comando ingresado: %s\n", input);
+		printf("Comando ingresado: %s\n", input);
 
-        free(input);
-    }
+		free(input);
+	}
 }
 
 
