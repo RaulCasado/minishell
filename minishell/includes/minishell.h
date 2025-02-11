@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:33:10 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/10 19:50:56 by racasado         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:50:09 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,8 @@ typedef struct s_token
 #include<readline/readline.h>
 #include<readline/history.h>
 #include "libft/libft.h"
+
+t_token	*tokenize_input(char *input);
+t_token	*assign_value(t_token *tokens);
 
 #endif
