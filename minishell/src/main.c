@@ -6,7 +6,7 @@
 /*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/11 18:42:19 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/02/11 19:05:51 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,12 @@ void minishell_loop() {
         }
 
         tokens = tokenize_input(input);
-		if (!tokens)
-			continue;
-		else
+		if (tokens)
+		{
 			(void) 0; // Execute command
-		// print_tokens(tokens);
+			free_tokens(tokens);
+			tokens = NULL;
+		}
 
         printf("Comando ingresado: %s\n", input);
 
