@@ -49,6 +49,41 @@ static void	split_input(ssize_t	i, char *ptr, t_token **tokens)
 	}
 }
 
+/*
+	CHECK combinations
+
+	<infile ls -l | wc -l > outfile
+	ls -l > outfile
+	ls -l >			::: Error
+	ls -l <
+
+	ls | >infile
+	ls | 		::: Error
+	ls | <		::: Error
+*/
+static char	tokenize_check(t_token *tokens)
+{
+	t_token	*before;
+	t_token	*current;
+
+	before = NULL;
+	current = tokens;
+	while (current)
+	{
+		if (current->type == TOKEN_REDIR_IN || current->type == TOKEN_REDIR_OUT
+		|| current->type == TOKEN_REDIR_APPEND || current->type == TOKEN_HEREDOC)
+		{	if (!(current->next && current->next->type == TOKEN_WORD))
+				return (0);
+		}
+		else if (current->type == TOKEN_PIPE)
+			if (!before || !current->next)
+				return (0);
+		before = current;
+		current = current->next;
+	}
+	return (1);
+}
+
 t_token	*tokenize_input(char *input)
 {
 	t_token	*tokens;
@@ -56,6 +91,36 @@ t_token	*tokenize_input(char *input)
 
 	tokens = NULL;
 	split_input(0, input, &tokens);
-	print_tokens(tokens);
+	if (!tokenize_check(tokens))
+	{
+		ft_putendl_fd("ERROR in input commands", 2);
+		free_tokens(tokens);
+		return (NULL);
+	}
 	return (tokens);
 }
+
+/*
+static char	tokenize_check(t_token *tokens)
+{
+	t_token	*before;
+	t_token	*current;
+	t_token	*next;
+
+	before = NULL;
+	current = tokens;
+	while (current)
+	{
+		next = current->next;
+		if (current->type != TOKEN_WORD)
+		{
+			if (!before || before->type != TOKEN_WORD
+				|| !next || next->type != TOKEN_WORD)
+				return (0);
+		}
+		before = current;
+		current = current->next;
+	}
+	return (1);
+}
+*/

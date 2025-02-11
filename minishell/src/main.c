@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/11 18:28:55 by racasado         ###   ########.fr       */
+/*   Updated: 2025/02/11 18:42:19 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ void minishell_loop() {
         }
 
         tokens = tokenize_input(input);
+		if (!tokens)
+			continue;
+		else
+			(void) 0; // Execute command
+		// print_tokens(tokens);
 
         printf("Comando ingresado: %s\n", input);
 
