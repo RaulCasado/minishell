@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/11 19:30:19 by racasado         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:29:11 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,14 @@ void minishell_loop() {
 }
 
 
-int	main(void)
+int	main(int argc, char **argv)
 {
+	(void)argv; // i dont know if we will need this in the future
+	if (argc > 1)
+	{
+		ft_putendl_fd("Error: Minishell no acepta argumentos", 2);
+		return (1);
+	}
 	minishell_loop();
 	return (0);
 }

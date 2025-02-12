@@ -60,12 +60,36 @@ static void	split_input(ssize_t	i, char *ptr, t_token **tokens)
 	ls | >infile
 	ls | 		::: Error
 	ls | <		::: Error
-	echo hola || echo mundo should fail
-
+	echo hola || echo mundo 
+	// this i a strange case xd i tried echo hola || echo mundo this and should work but echo hola | | echo mundo should not
+	// i tried it in other minishell and both should fail
 	tested sytnax from minishell tester
 	echo hi | "|" its ok but should fail doesnt make sense lol
+	check if its correct pipe at the start or end of command
 */
-static char	tokenize_check(t_token *tokens)
+
+static int has_open_quotes(char *str)
+{
+	int i;
+	int quotes;
+
+	//possible issue echo "'hola"'
+	i = 0;
+	quotes = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			if (quotes == 0)
+				quotes = str[i];
+			else if (quotes == str[i])
+				quotes = 0;
+		}
+		i++;
+	}
+	return (quotes);
+}
+static int	tokenize_check(t_token *tokens)
 {
 	t_token	*before;
 	t_token	*current;
@@ -76,12 +100,20 @@ static char	tokenize_check(t_token *tokens)
 	{
 		if (current->type == TOKEN_REDIR_IN || current->type == TOKEN_REDIR_OUT
 		|| current->type == TOKEN_REDIR_APPEND || current->type == TOKEN_HEREDOC)
-		{	if (!(current->next && current->next->type == TOKEN_WORD))
-				return (0);
+		{	
+			if (!(current->next && current->next->type == TOKEN_WORD))
+				return (printf("Syntax error: unexpected token after '%s'\n", current->value), 0);
 		}
 		else if (current->type == TOKEN_PIPE)
-			if (!before || !current->next)
-				return (0);
+		{
+			if (!before || !current->next || current->next->type == TOKEN_PIPE)
+				return (printf("Syntax error: unexpected token after '%s'\n", current->value), 0);
+		}
+		else if (current->type == TOKEN_WORD)
+		{
+			if (has_open_quotes(current->value))
+				return (printf("Syntax error: open quotes in '%s'\n", current->value), 0);
+		}
 		before = current;
 		current = current->next;
 	}

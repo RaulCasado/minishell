@@ -34,3 +34,5 @@ hay que hacer estas funciones
 ✅ unset → Elimina variables de entorno.
 ✅ echo → Maneja -n de forma especial.
 ✅ pwd → No usa execve(), sino getcwd().
+
+Hacer las funciones built in
