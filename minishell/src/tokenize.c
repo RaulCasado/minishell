@@ -71,24 +71,22 @@ static void	split_input(ssize_t	i, char *ptr, t_token **tokens)
 static int has_open_quotes(char *str)
 {
 	int i;
-	int quotes;
+	int	j;
 
 	//possible issue echo "'hola"'
 	i = 0;
-	quotes = 0;
-	while (str[i])
+	j = ft_strlen(str) - 1;
+	while (i < j && (str[i] == '\'' || str[j] == '\''
+		|| str[i] == '\"' || str[j] == '\"'))
 	{
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			if (quotes == 0)
-				quotes = str[i];
-			else if (quotes == str[i])
-				quotes = 0;
-		}
+		if (str[i] != str[j])
+			return (1);
 		i++;
+		j--;
 	}
-	return (quotes);
+	return (0);
 }
+
 static int	tokenize_check(t_token *tokens)
 {
 	t_token	*before;
@@ -120,6 +118,11 @@ static int	tokenize_check(t_token *tokens)
 	return (1);
 }
 
+static void	join_tokens(t_token *tokens)
+{
+	(void) tokens;
+}
+
 t_token	*tokenize_input(char *input)
 {
 	t_token	*tokens;
@@ -127,6 +130,7 @@ t_token	*tokenize_input(char *input)
 
 	tokens = NULL;
 	split_input(0, input, &tokens);
+	join_tokens(tokens);
 	if (!tokenize_check(tokens))
 	{
 		ft_putendl_fd("ERROR in input commands", 2);
@@ -135,28 +139,3 @@ t_token	*tokenize_input(char *input)
 	}
 	return (tokens);
 }
-
-/*
-static char	tokenize_check(t_token *tokens)
-{
-	t_token	*before;
-	t_token	*current;
-	t_token	*next;
-
-	before = NULL;
-	current = tokens;
-	while (current)
-	{
-		next = current->next;
-		if (current->type != TOKEN_WORD)
-		{
-			if (!before || before->type != TOKEN_WORD
-				|| !next || next->type != TOKEN_WORD)
-				return (0);
-		}
-		before = current;
-		current = current->next;
-	}
-	return (1);
-}
-*/
