@@ -30,17 +30,34 @@ typedef struct s_token
 #include <signal.h>
 #include "libft/libft.h"
 
+/*	Tokenize	*/
 t_token	*tokenize_input(char *input);
+void	join_tokens(t_token **tokens);
+
+/*	Parse	*/
+int	tokenize_check(t_token *tokens);
+
+/* */
 void	free_tokens(t_token *tokens);
 t_token	*create_token(char *value);
 void	add_token(t_token **tokens, char *value);
 
-void	print_tokens(t_token *tokens);
+/*	Signals	*/
 int get_signal();
 void set_signal(int signal);
 void setup_signals(void);
 void handle_sigquit();
 void handle_sigint(int sig);
 void handle_eof();
+
+/*	Token utils */
+t_token *ft_get_last(t_token *token);
+t_token *ft_get_token(t_token *token, size_t i);
+size_t	ft_token_len(t_token *token);
+char	ft_add_token(t_token **token, t_token *new_token, size_t i);
+char	ft_remove_token(t_token **token, size_t i);
+
+/*	Extras	*/
+void	print_tokens(t_token *tokens);
 
 #endif
