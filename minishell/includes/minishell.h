@@ -2,6 +2,10 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define SIMPLE_MARK '\''
+# define DOUBLE_MARK '\"'
+# define DOLLAR '$'
+
 typedef enum e_token_type
 {
 	TOKEN_WORD, // normal word
@@ -32,7 +36,7 @@ typedef struct s_token
 
 /*	Tokenize	*/
 t_token	*tokenize_input(char *input);
-void	join_tokens(t_token **tokens);
+void	expand_tokens(t_token **tokens);
 
 /*	Parse	*/
 int	tokenize_check(t_token *tokens);

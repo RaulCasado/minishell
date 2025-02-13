@@ -63,12 +63,48 @@ static int	split_input(ssize_t i, char *ptr, t_token **tokens)
 				&& !ft_symbol_len(&ptr[i + 1]) && ptr[i + 1] != '"' && ptr[i + 1] != '\'')
 				i++;
 			new_word = ft_substr(ptr, j, i - j + 1);
+			if (!new_word)
+				return (0);
 			add_token(tokens, new_word);
 		}
 	}
 	return 1;
 }
 
+/*
+0: echo
+1: -n
+2: -n
+3: -m
+4: "hola que tal"
+5: camello
+
+(symbol) + cmd + (-n -m -l) + (arg) + (symbol / EOF) + cmd ...
+
+i = 0;
+if tokens[i] is symbol
+	i++;
+
+Loop:
+	cmd/file = word[i]
+	i++;
+
+	param = NULL;
+	if (cmd == echo)
+		while (word[i] == '-n')
+			param = "-n"
+			i++;
+	else if (cmd == pwd)
+		fwojqpwfjpw
+	
+	arg = ""
+	while (word[i] != symbol)
+		arg += " " + word[i]
+		i++;
+	
+echo -n -n -m "'$USER'" caballo
+(echo) (-n) (-m "'$USER'" caballo)
+*/
 
 t_token	*tokenize_input(char *input)
 {
@@ -76,6 +112,7 @@ t_token	*tokenize_input(char *input)
 
 	tokens = NULL;
 	split_input(0, input, &tokens);
+	expand_tokens(&tokens);
 	if (!tokens || !tokenize_check(tokens))
 	{
 		free_tokens(tokens);

@@ -13,7 +13,7 @@ LIBFT_DIR = includes/libft
 
 # Archivos fuente
 SRCS =	$(SRC_DIR)/main.c $(SRC_DIR)/tokenize.c $(SRC_DIR)/assignator.c $(SRC_DIR)/signals.c $(SRC_DIR)/memory.c \
-		$(SRC_DIR)/parser.c $(SRC_DIR)/token_utils.c
+		$(SRC_DIR)/parser.c $(SRC_DIR)/token_utils.c $(SRC_DIR)/tokenize_expander.c
 OBJS = $(SRCS:.c=.o)
 
 # Librería Libft
