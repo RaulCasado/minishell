@@ -20,8 +20,6 @@ Deberá implementar los built-ins:
 ◦ cd solo con una ruta relativa o absoluta.
 ◦ pwd sin opciones.
 ◦ export sin opciones.
-6Minishell
-Tan bonito como shell
 ◦ unset sin opciones.
 ◦ env sin opciones o argumentos.
 ◦ exit sin opciones.
@@ -34,5 +32,9 @@ hay que hacer estas funciones
 ✅ unset → Elimina variables de entorno.
 ✅ echo → Maneja -n de forma especial.
 ✅ pwd → No usa execve(), sino getcwd().
+
+
+Si encontramos comillas si cerrar sera un error
+Si encontramos un \ o un ; es un error
 
 Hacer las funciones built in

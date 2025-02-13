@@ -19,23 +19,26 @@
 	echo hi | "|" its ok but should fail doesnt make sense lol
 	check if its correct pipe at the start or end of command
 */
-static int has_open_quotes(char *str)
+static int	has_open_quotes(char *str)
 {
-	int i;
-	int	j;
+	int i = 0;
+	char quote = 0; // Indica si hay una comilla abierta
 
-	i = 0;
-	j = ft_strlen(str) - 1;
-	while (i < j && (str[i] == '\'' || str[j] == '\''
-		|| str[i] == '\"' || str[j] == '\"'))
+	while (str[i])
 	{
-		if (str[i] != str[j])
-			return (1);
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			if (!quote) // Si no hay comilla abierta, la abrimos
+				quote = str[i];
+			else if (quote == str[i]) // Si cerramos la misma comilla, la reiniciamos
+				quote = 0;
+		}
 		i++;
-		j--;
 	}
-	return (0);
+	// Si la variable `quote` sigue con valor, hay comillas sin cerrar
+	return (quote != 0);
 }
+
 
 int	tokenize_check(t_token *tokens)
 {
@@ -46,21 +49,34 @@ int	tokenize_check(t_token *tokens)
 	current = tokens;
 	while (current)
 	{
+		//ERROR: Redirección sin archivo después
 		if (current->type == TOKEN_REDIR_IN || current->type == TOKEN_REDIR_OUT
 		|| current->type == TOKEN_REDIR_APPEND || current->type == TOKEN_HEREDOC)
 		{	
 			if (!(current->next && current->next->type == TOKEN_WORD))
 				return (printf("Syntax error: unexpected token after '%s'\n", current->value), 0);
 		}
+		//ERROR: Pipes incorrectos
 		else if (current->type == TOKEN_PIPE)
 		{
 			if (!before || !current->next || current->next->type == TOKEN_PIPE)
-				return (printf("Syntax error: unexpected token after '%s'\n", current->value), 0);
+				return (printf("Syntax error: unexpected token '%s'\n", current->value), 0);
 		}
-		else if (current->type == TOKEN_WORD)
+		//ERROR: `||` no permitido
+		else if (before && before->type == TOKEN_PIPE && current->type == TOKEN_PIPE)
+			return (printf("Syntax error: unexpected token '||'\n"), 0);
+		//ERROR: Caracteres especiales no permitidos
+		else if (ft_strchr(current->value, '\\') || ft_strchr(current->value, ';') || ft_strchr(current->value, '&'))
+			return (printf("Syntax error: invalid character in input: '%s'\n", current->value), 0);
+		//ERROR: Comillas abiertas
+		else if (current->type == TOKEN_WORD && has_open_quotes(current->value))
+			return (printf("Syntax error: unclosed quotes in '%s'\n", current->value), 0);
+		//ERROR: Token dentro de comillas que contiene solo `|`
+		else if (current->type == TOKEN_WORD && ft_strlen(current->value) == 3
+			&& current->value[0] == '"' && current->value[1] == '|'
+			&& current->value[2] == '"')
 		{
-			if (has_open_quotes(current->value))
-				return (printf("Syntax error: open quotes in '%s'\n", current->value), 0);
+			return (printf("Syntax error: invalid token inside quotes '%s'\n", current->value), 0);
 		}
 		before = current;
 		current = current->next;
