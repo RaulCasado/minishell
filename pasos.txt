@@ -34,7 +34,11 @@ hay que hacer estas funciones
 ✅ pwd → No usa execve(), sino getcwd().
 
 
-Si encontramos comillas si cerrar sera un error
-Si encontramos un \ o un ; es un error
+Si encontramos comillas si cerrar sera un error 
+Claro esto tiene un punto y es que por ejemplo echo "'hola" si es valido ya que la comilla simple esta dentro de las dobles
+Si encontramos un \ o un ; es un error (fuera de las comillas)
 
 Hacer las funciones built in
+
+
+El tester hace primero los builtin luego las pipes redirects y extras

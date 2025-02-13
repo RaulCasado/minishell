@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/13 10:37:47 by racasado         ###   ########.fr       */
+/*   Updated: 2025/02/13 11:59:52 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void minishell_loop() {
 
 		add_history(input);
 		// If the command is exi it also count :c
-		if (ft_strncmp(input, "exit", ft_strlen(input)) == 0)
+		if (ft_strlen(input) == 4 && ft_strncmp(input, "exit", 5) == 0)
 		{
 			free(input);
 			printf("Saliendo de Minishell...\n");
