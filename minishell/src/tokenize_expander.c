@@ -1,27 +1,70 @@
 
 #include "minishell.h"
 
+static char	*forge_value(char *head, char *body, char *tail)
+{
+	char	*new_value;
+	char	len_head;
+	char	len_body;
+	char	len_tail;
+
+	len_head = ft_strlen(head);
+	len_body = ft_strlen(body);
+	if (!tail)
+		len_tail = 0;
+	else
+		len_tail = ft_strlen(tail);
+	new_value = ft_calloc(len_head + len_body + len_tail + 1, sizeof(char));
+	if (!new_value)
+		return (NULL);
+	ft_memcpy(new_value, head, len_head);
+	ft_memcpy(new_value + len_head, body, len_body);
+	ft_memcpy(new_value + len_head + len_body, tail, len_tail);
+	new_value[len_head + len_body + len_tail + 1] = '\0';
+	return (new_value);
+} 
+
 static char	*expand(char *value, ssize_t start, ssize_t end, size_t	len)
 {
 	char	*expansion;
 	char	*head;
 	char	*body;
 	char	*tail;
+	char	*new_value;
 
 	expansion = ft_substr(value, start, end - start + 1);
-	// TODO IF (!head)
-	head = "";// ft_substr(value, 1, len - ft_strlen());
+	if (!expansion)
+		exit(1); // TODO :: Malloc error
+	head = ft_substr(value, 1, start - 2);
+	if (!head)
+		exit(1); // TODO :: Malloc error
 	body = getenv(expansion);
-	tail = "";//ft_substr(value, start, );
-	printf("\t\t%s%s%s // %s\n", head, body, tail, expansion);
-	/*
-	Minishell> echo "$USER" "$-HOLA" "$1ERROR" "$ ERROR" $ERROR
-                droura-s // USER
-                (null) //
-	zsh: segmentation fault (core dumped)  ./minishell
-	*/
-	return (ft_strjoin(ft_strjoin(head, body), tail));
+	if (!body)
+		return (value); // TODO :: Path not found
+	if (end + 1 >= ft_strlen(value) - 1)
+		tail = NULL;
+	else
+	{
+		tail = ft_substr(value, end + 1, ft_strlen(value) - end - 2);
+		if (!tail)
+			exit(1); // TODO :: Malloc error
+	}
+	new_value = forge_value(head, body, tail);
+	if (!new_value)
+		exit(1); // TODO :: Calloc error
+	free(value);
+	return (new_value);		
 }
+
+
+/*
+	echo "$USER" "$-HOLA" "$1ERROR" "$ ERROR" $ERROR
+droura-s 569XZimsHOLA ERROR $ ERROR
+	echo "$USER" "$-HOLA"                           
+droura-s 569XZimsHOLA
+	echo "$USER" "$-"    
+droura-s 569XZims
+*/
 
 // TODO
 /*
@@ -48,7 +91,9 @@ void	expand_tokens(t_token **tokens)
 				if (current->value[i] == DOLLAR && (current->value[i + 1] == '-'
 					|| ft_isalpha(current->value[i + 1])))
 					start = ++i;
-				if (start && !ft_isalnum(current->value[i])) // _ - etc
+				if (start && !ft_isalnum(current->value[i])
+					&& current->value[i] != '_'
+					&& current->value[i] != '-')
 				{
 					current->value = expand(current->value, start, i - 1, ft_strlen(current->value));
 					start = 0;
