@@ -5,6 +5,8 @@
 # define SIMPLE_MARK '\''
 # define DOUBLE_MARK '\"'
 # define DOLLAR '$'
+# define INTERROGATION '?'
+# define HYPHEN '-'
 
 typedef enum e_token_type
 {

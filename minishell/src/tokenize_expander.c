@@ -94,9 +94,14 @@ void	expand_tokens(t_token **tokens)
 			start = 0;
 			while (current->value[++i])
 			{
-				if (current->value[i] == DOLLAR && (current->value[i + 1] == '-'
-					|| ft_isalpha(current->value[i + 1])))
+				if (current->value[i] == DOLLAR && (current->value[i + 1] == HYPHEN
+					|| ft_isalnum(current->value[i + 1])
+					|| current->value[i + 1] == INTERROGATION))
+				{
 					start = ++i;
+					if (current->value[i] == INTERROGATION)
+						exit(3); // TODO IMPLEMENT THIS THING
+				}
 				if (start && !ft_isalnum(current->value[i]) && current->value[i] != '_')
 				{
 					current->value = expand(current->value, start, i - 1, ft_strlen(current->value));
