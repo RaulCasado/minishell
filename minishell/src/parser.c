@@ -39,6 +39,27 @@ static int	has_open_quotes(char *str)
 	return (quote != 0);
 }
 
+int is_invalid_character_outside_quotes(char *str)
+{
+	int i = 0;
+	char quote = 0;
+
+	while (str[i])
+	{
+		if (str[i] == '"' || str[i] == '\'')
+		{
+			if (!quote)
+				quote = str[i];
+			else if (quote == str[i])
+				quote = 0;
+		}
+		else if (!quote && (str[i] == '\\' || str[i] == ';' || str[i] == '&'))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 
 int	tokenize_check(t_token *tokens)
 {
@@ -66,7 +87,7 @@ int	tokenize_check(t_token *tokens)
 		else if (before && before->type == TOKEN_PIPE && current->type == TOKEN_PIPE)
 			return (printf("Syntax error: unexpected token '||'\n"), 0);
 		//ERROR: Caracteres especiales no permitidos
-		else if (ft_strchr(current->value, '\\') || ft_strchr(current->value, ';') || ft_strchr(current->value, '&'))
+		else if (current->type == TOKEN_WORD && is_invalid_character_outside_quotes(current->value))
 			return (printf("Syntax error: invalid character in input: '%s'\n", current->value), 0);
 		//ERROR: Comillas abiertas
 		else if (current->type == TOKEN_WORD && has_open_quotes(current->value))

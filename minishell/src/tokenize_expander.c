@@ -63,7 +63,8 @@ droura-s 569XZimsHOLA ERROR $ ERROR
 	echo "$USER" "$-HOLA"                           
 droura-s 569XZimsHOLA
 	echo "$USER" "$-"    
-droura-s 569XZims
+droura-s 569XZims en el de prueba sale droura-s $-
+CUIDADADO TAMBIEN TENEMOS QUE TENER EN CUENTA LO DE $? QUE ES EL ULTIMO STATUS DE SALIDA
 */
 
 // TODO
