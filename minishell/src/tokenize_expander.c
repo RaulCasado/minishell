@@ -21,6 +21,10 @@ static char	*forge_value(char *head, char *body, char *tail)
 	ft_memcpy(new_value + len_head, body, len_body);
 	ft_memcpy(new_value + len_head + len_body, tail, len_tail);
 	new_value[len_head + len_body + len_tail + 1] = '\0';
+	/* free(head);
+	free(body);
+	if (tail)
+		free(tail); */
 	return (new_value);
 } 
 
@@ -39,8 +43,9 @@ static char	*expand(char *value, ssize_t start, ssize_t end, size_t	len)
 	if (!head)
 		exit(1); // TODO :: Malloc error
 	body = getenv(expansion);
+	/* free(expansion); */
 	if (!body)
-		return (value); // TODO :: Path not found
+		return (ft_strdup("")); // TODO :: Path not found
 	if (end + 1 >= ft_strlen(value) - 1)
 		tail = NULL;
 	else
@@ -52,7 +57,7 @@ static char	*expand(char *value, ssize_t start, ssize_t end, size_t	len)
 	new_value = forge_value(head, body, tail);
 	if (!new_value)
 		exit(1); // TODO :: Calloc error
-	free(value);
+	/* free(value); */
 	return (new_value);		
 }
 
@@ -92,9 +97,7 @@ void	expand_tokens(t_token **tokens)
 				if (current->value[i] == DOLLAR && (current->value[i + 1] == '-'
 					|| ft_isalpha(current->value[i + 1])))
 					start = ++i;
-				if (start && !ft_isalnum(current->value[i])
-					&& current->value[i] != '_'
-					&& current->value[i] != '-')
+				if (start && !ft_isalnum(current->value[i]) && current->value[i] != '_')
 				{
 					current->value = expand(current->value, start, i - 1, ft_strlen(current->value));
 					start = 0;
