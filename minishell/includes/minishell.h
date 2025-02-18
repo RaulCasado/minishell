@@ -27,6 +27,20 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_command
+{
+	/* int		fd_out?;
+	int		fd_in?; 
+	int		infile?
+	int		outfile?*/
+}	t_command;
+
+typedef struct s_minishell
+{
+	t_token		*tokens;
+	t_command	*commands;
+}	t_minishell;
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/17 16:38:02 by racasado         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:27:39 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@
 void minishell_loop() {
 	char	*input;
 	t_token	*tokens;
+	t_minishell	*minishell;
 
 	setup_signals();
 	rl_catch_signals = 0;
+	// minishell = new minishell;
 
 	while (get_signal()) {
 		input = readline("Minishell> ");
@@ -33,6 +35,7 @@ void minishell_loop() {
 			free(input);
 			continue;
 		}
+		// minishell.tokens = tokens;
 
 		add_history(input);
 		// If the command is exi it also count :c
@@ -46,11 +49,16 @@ void minishell_loop() {
 
 		tokens = tokenize_input(input);
 		print_tokens(tokens);
-		if (!tokens)
+		if (tokens)
 		{
+			// minishell.commands = build_commands(tokens)
 			(void) 0; // Execute command
 			free_tokens(tokens);
 			tokens = NULL;
+		}
+		else
+		{
+			// Free something
 		}
 
 		printf("Comando ingresado: %s\n", input);

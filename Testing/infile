@@ -1,1 +1,6 @@
-Hola caracola
+total 16
+-rw-r--r-- 1 droura-s 2024_malaga 984 Feb 18 16:09 execute_try.c
+-rw-r--r-- 1 droura-s 2024_malaga 128 Feb 18 16:09 expand_try.c
+-rw-r--r-- 1 droura-s 2024_malaga   0 Feb 18 16:29 infile
+-rw-r--r-- 1 droura-s 2024_malaga   2 Feb 10 18:30 outfile
+-rw-r--r-- 1 droura-s 2024_malaga   5 Feb 11 15:58 test.txt
