@@ -3,6 +3,7 @@
 static char **add_arg(char **args, char *new_arg)
 {
     int count = 0;
+	int i = 0;
     while (args && args[count])
         count++;
 
@@ -10,8 +11,11 @@ static char **add_arg(char **args, char *new_arg)
     if (!new_args)
         return (NULL);
 
-    for (int i = 0; i < count; i++)
-        new_args[i] = args[i];
+	while (i < count)
+	{
+		new_args[i] = args[i];
+		i++;
+	}
 
     new_args[count] = strdup(new_arg);
     new_args[count + 1] = NULL;
@@ -19,7 +23,7 @@ static char **add_arg(char **args, char *new_arg)
     free(args);
     return new_args;
 }
-
+// create a struct to not pass too many arguments
 static t_command *create_command(char **args, char *infile, char *outfile, int append, int pipe_in, int pipe_out, t_command *next)
 {
     t_command *cmd;
@@ -48,14 +52,14 @@ t_command *parse_tokens(t_token *tokens)
 
     while (tokens)
     {
-        if (tokens->type == TOKEN_WORD) // Guardamos argumentos normales
+        if (tokens->type == TOKEN_WORD)
             args = add_arg(args, tokens->value);
         else if (tokens->type == TOKEN_REDIR_IN) // "<"
         {
             if (tokens->next)
             {
                 infile = tokens->next->value;
-                tokens = tokens->next; // Saltamos el nombre del archivo
+                tokens = tokens->next;
             }
         }
         else if (tokens->type == TOKEN_REDIR_OUT) // ">"
@@ -64,7 +68,7 @@ t_command *parse_tokens(t_token *tokens)
             {
                 outfile = tokens->next->value;
                 append = 1;
-                tokens = tokens->next; // Saltamos el nombre del archivo
+                tokens = tokens->next;
             }
         }
         else if (tokens->type == TOKEN_REDIR_APPEND) // ">>"
@@ -73,7 +77,7 @@ t_command *parse_tokens(t_token *tokens)
             {
                 outfile = tokens->next->value;
                 append = 2;
-                tokens = tokens->next; // Saltamos el nombre del archivo
+                tokens = tokens->next;
             }
         }
         else if (tokens->type == TOKEN_PIPE) // "|"
