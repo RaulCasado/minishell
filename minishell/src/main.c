@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/18 17:53:19 by racasado         ###   ########.fr       */
+/*   Updated: 2025/02/18 19:20:18 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ void minishell_loop() {
 			// minishell.commands = build_commands(tokens)
 			(void) 0; // Execute command
 			commands = parse_tokens(tokens);
-			/* print_commands(commands);
+			print_commands(commands);
 			printf("FIN COMANDOS INGRESADOS\n");
-			free_tokens(tokens); */
+			free_tokens(tokens);
 			tokens = NULL;
 		}
 		else

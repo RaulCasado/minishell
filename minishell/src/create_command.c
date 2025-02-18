@@ -44,29 +44,41 @@ t_command *parse_tokens(t_token *tokens)
     char **args = NULL;
     char *infile = NULL;
     char *outfile = NULL;
-    int append = 0;
-    int pipe_in = 0;
-    int pipe_out = 0;
+    int append = 0, pipe_in = 0, pipe_out = 0;
 
     while (tokens)
     {
-        if (tokens->type == TOKEN_WORD) // Guardamos argumentos
+        if (tokens->type == TOKEN_WORD) // Guardamos argumentos normales
             args = add_arg(args, tokens->value);
         else if (tokens->type == TOKEN_REDIR_IN) // "<"
-            infile = tokens->next ? tokens->next->value : NULL;
+        {
+            if (tokens->next)
+            {
+                infile = tokens->next->value;
+                tokens = tokens->next; // Saltamos el nombre del archivo
+            }
+        }
         else if (tokens->type == TOKEN_REDIR_OUT) // ">"
         {
-            outfile = tokens->next ? tokens->next->value : NULL;
-            append = 1;
+            if (tokens->next)
+            {
+                outfile = tokens->next->value;
+                append = 1;
+                tokens = tokens->next; // Saltamos el nombre del archivo
+            }
         }
         else if (tokens->type == TOKEN_REDIR_APPEND) // ">>"
         {
-            outfile = tokens->next ? tokens->next->value : NULL;
-            append = 2;
+            if (tokens->next)
+            {
+                outfile = tokens->next->value;
+                append = 2;
+                tokens = tokens->next; // Saltamos el nombre del archivo
+            }
         }
         else if (tokens->type == TOKEN_PIPE) // "|"
         {
-            pipe_out = 1;  // Comando actual manda salida a un pipe
+            pipe_out = 1;
             t_command *new_cmd = create_command(args, infile, outfile, append, pipe_in, pipe_out, NULL);
             
             if (!cmd_list)
@@ -79,7 +91,7 @@ t_command *parse_tokens(t_token *tokens)
             infile = NULL;
             outfile = NULL;
             append = 0;
-            pipe_in = 1;  // El siguiente comando recibe entrada del pipe
+            pipe_in = 1;
             pipe_out = 0;
         }
         tokens = tokens->next;
