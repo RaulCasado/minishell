@@ -29,10 +29,17 @@ typedef struct s_token
 
 typedef struct s_command
 {
-	/* int		fd_out?;
-	int		fd_in?; 
-	int		infile?
-	int		outfile?*/
+	// something like this is needed
+	char **args; // ["ls", "-l" "-h", NULL]
+	int pipe_in; // STDIN_FILENO
+	int pipe_out; // STDOUT_FILENO
+	// here we can add more stuff like redirections
+	char *infile; // if this exists we need to redirect stdin to this file
+	char *outfile; // if this exists we need to redirect stdout to this file
+	// if outfile exists we should check if it is going to be appended
+	int append; // if this is 1 we need to append to the file instead of overwriting it (0)
+	struct s_command *next;
+
 }	t_command;
 
 typedef struct s_minishell

@@ -1,1 +1,6 @@
-1
+total 16
+-rw-r--r-- 1 racasado 2024_malaga 984 Feb 18 17:04 execute_try.c
+-rw-r--r-- 1 racasado 2024_malaga 128 Feb 18 17:04 expand_try.c
+-rw-r--r-- 1 racasado 2024_malaga 315 Feb 18 17:04 infile
+-rw-r--r-- 1 racasado 2024_malaga   0 Feb 18 17:19 outfile
+-rw-r--r-- 1 racasado 2024_malaga   5 Feb 18 17:04 test.txt
