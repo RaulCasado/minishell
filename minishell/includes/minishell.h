@@ -87,4 +87,7 @@ char	ft_remove_token(t_token **token, size_t i);
 /*	Extras	*/
 void	print_tokens(t_token *tokens);
 
+/*	Commands	*/
+t_command *parse_tokens(t_token *tokens);
+void print_commands(t_command *commands);
 #endif
