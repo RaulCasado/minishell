@@ -42,3 +42,18 @@ Hacer las funciones built in
 
 
 El tester hace primero los builtin luego las pipes redirects y extras
+
+
+HABLANDO COMO UN IGNORANTE OWO
+
+En /usr/bin esta el ejecutable de los comandos si no 
+encontramos el comando en /usr/bin buscamos en /bin
+si no encontramos en ninguno de los dos es un error
+ya que el comando no existe
+
+Pasos siguientes que podemos seguir crear otra estructura podemos crear una que e llame minishel que sea como global que tenga los tokens el exit code y lo que necesitemos
+y que se vaya pasando por parametros a las funciones que necesiten usarlo
+
+Después podemos hacer otra estrucutra que sea t_command. Que tenga los tokens ya parseados para directamente ejecutarlos sin problema
+
+VER EXECUTE_TRY PARA MAS INFORMACION :D
