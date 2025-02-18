@@ -8,6 +8,8 @@
 # define INTERROGATION '?'
 # define HYPHEN '-'
 
+# define BUFFER_SIZE 1024
+
 typedef enum e_token_type
 {
 	TOKEN_WORD, // normal word
@@ -52,8 +54,8 @@ typedef struct s_minishell
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include<readline/readline.h>
-#include<readline/history.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 #include <signal.h>
 #include "libft/libft.h"
 
@@ -70,7 +72,7 @@ t_token	*create_token(char *value);
 void	add_token(t_token **tokens, char *value);
 
 /*	Signals	*/
-int get_signal();
+int	get_signal();
 void set_signal(int signal);
 void setup_signals(void);
 void handle_sigquit();
