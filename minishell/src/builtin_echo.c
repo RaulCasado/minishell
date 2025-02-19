@@ -1,13 +1,6 @@
 
 #include "minishell.h"
 
-/*
-	/!\ /!\ Testing Grounds /!\ /!\
-
-	write(p[1], msg1, MSGSIZE);
-	execve("/bin/echo", argv, NULL);
-*/
-
 static char	is_flag(char flag, char *arg)
 {
 	size_t	i;
@@ -25,20 +18,7 @@ static char	is_flag(char flag, char *arg)
 	return (0);
 }
 
-static void	write_echo(char **args, size_t i, char newline, char fd)
-{
-	while (args[i])
-	{
-		ft_putstr_fd(args[i], fd);
-		i++;
-		if (args[i])
-			ft_putchar_fd(' ', fd);
-	}
-	if (newline)
-		ft_putchar_fd('\n', fd);
-}
-
-char	echo(t_command *command)
+char	builtin_echo(t_command *command)
 {
 	size_t	i;
 	char	**args;
@@ -48,7 +28,7 @@ char	echo(t_command *command)
 	i = 1;
 	args = command->args;
 	newline = 1;
-	while (is_flag('n', args[i])) // args[i] == "-n"
+	while (is_flag('n', args[i]))
 	{
 		newline = 0;
 		i++;
@@ -57,6 +37,7 @@ char	echo(t_command *command)
 		fd = 1;
 	/* else
 		fd = xd; */
-	write_echo(args, i, newline, fd);
+	// write_echo(args, i, newline, fd);
+	write_strs(args + i, newline, fd);
 	return (0);
 }

@@ -30,20 +30,20 @@ static char	*forge_value(char *head, char *body, char *tail)
 
 static char	*expand(char *value, ssize_t start, ssize_t end, size_t	len)
 {
-	char	*expansion;
+	char	*path;
 	char	*head;
 	char	*body;
 	char	*tail;
 	char	*new_value;
 
-	expansion = ft_substr(value, start, end - start + 1);
-	if (!expansion)
+	path = ft_substr(value, start, end - start + 1);
+	if (!path)
 		exit(1); // TODO :: Malloc error
 	head = ft_substr(value, 1, start - 2);
 	if (!head)
 		exit(1); // TODO :: Malloc error
-	body = getenv(expansion);
-	/* free(expansion); */
+	body = get_env(path);
+	/* free(path); */
 	if (!body)
 		return (ft_strdup("")); // TODO :: Path not found
 	if (end + 1 >= ft_strlen(value) - 1)

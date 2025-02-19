@@ -13,7 +13,7 @@ char	command_executer(t_command *commands)
 
 		if (cmd_len == 4
 			&& !ft_strncmp(current_cmd->args[0], "echo", 4))
-			echo(current_cmd);
+			builtin_echo(current_cmd);
 
 		current_cmd = current_cmd->next;
 	}

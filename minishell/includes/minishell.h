@@ -95,6 +95,13 @@ void	print_commands(t_command *commands);
 char	command_executer(t_command *commands);
 
 /*	Built-ins	*/
-char	echo(t_command *command);
+char	builtin_echo(t_command *command);
+char	builtin_pwd(t_command *command);
+
+/*	Utils	*/
+char	*get_env(char *path);
+
+/*	Str Utils	*/
+void	write_strs(char **strs, char newline, char fd);
 
 #endif
