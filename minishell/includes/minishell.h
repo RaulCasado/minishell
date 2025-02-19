@@ -8,6 +8,8 @@
 # define INTERROGATION '?'
 # define HYPHEN '-'
 
+# define PWD "PWD"
+
 # define BUFFER_SIZE 1024
 
 typedef enum e_token_type
@@ -92,16 +94,18 @@ void	print_tokens(t_token *tokens);
 /*	Commands	*/
 t_command	*parse_tokens(t_token *tokens);
 void	print_commands(t_command *commands);
-char	command_executer(t_command *commands);
+char	command_executer(t_command *commands, char **envp);
 
 /*	Built-ins	*/
 char	builtin_echo(t_command *command);
 char	builtin_pwd(t_command *command);
+char	builtin_env(t_command *command, char **envp);
 
 /*	Utils	*/
 char	*get_env(char *path);
 
 /*	Str Utils	*/
-void	write_strs(char **strs, char newline, char fd);
+void	write_strs(char **strs, char nl, char nll, char fd);
+void	write_str(char *str, char fd);
 
 #endif

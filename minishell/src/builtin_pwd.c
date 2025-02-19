@@ -3,14 +3,18 @@
 
 char	builtin_pwd(t_command *command)
 {
-	/* char	**args;
+	char	*arg;
 	char	fd;
 
-	args = command->args;
+	if (command->args[1]) // There's only 1 arg in pwd
+		return (1);
+	arg = get_env(PWD);
+	/* if (!arg)
+		error xd */
 	if (command->pipe_out == 0)
-		fd = 1; */
+		fd = 1;
 	/* else
 		fd = xd; */
-	//write_strs(, newline, fd);
+	write_str(arg, fd);
 	return (0);
 }

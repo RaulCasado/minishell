@@ -38,6 +38,6 @@ char	builtin_echo(t_command *command)
 	/* else
 		fd = xd; */
 	// write_echo(args, i, newline, fd);
-	write_strs(args + i, newline, fd);
+	write_strs(args + i, newline, 0, fd);
 	return (0);
 }

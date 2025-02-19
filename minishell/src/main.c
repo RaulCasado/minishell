@@ -6,7 +6,7 @@
 /*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/19 17:32:00 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:21:41 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 #include "minishell.h"
 
-void minishell_loop() {
+static void minishell_loop(char **envp)
+{
 	char	*input;
 	t_token	*tokens;
 	t_minishell	*minishell;
@@ -59,7 +60,7 @@ void minishell_loop() {
 			printf("FIN COMANDOS INGRESADOS\n\n");
 			free_tokens(tokens);
 			tokens = NULL;
-			if (command_executer(commands)) // Error in some command execution
+			if (command_executer(commands, envp)) // Error in some command execution
 				printf("ERROR IN COMMANDS\n");
 		}
 		else
@@ -72,7 +73,7 @@ void minishell_loop() {
 }
 
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	(void)argv; // i dont know if we will need this in the future
 	if (argc > 1)
@@ -80,6 +81,6 @@ int	main(int argc, char **argv)
 		ft_putendl_fd("Error: Minishell no acepta argumentos", 2);
 		return (1);
 	}
-	minishell_loop();
+	minishell_loop(envp);
 	return (0);
 }
