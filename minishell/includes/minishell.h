@@ -80,8 +80,8 @@ void handle_sigint(int sig);
 void handle_eof();
 
 /*	Token utils */
-t_token *ft_get_last(t_token *token);
-t_token *ft_get_token(t_token *token, size_t i);
+t_token	*ft_get_last(t_token *token);
+t_token	*ft_get_token(t_token *token, size_t i);
 size_t	ft_token_len(t_token *token);
 char	ft_add_token(t_token **token, t_token *new_token, size_t i);
 char	ft_remove_token(t_token **token, size_t i);
@@ -90,6 +90,11 @@ char	ft_remove_token(t_token **token, size_t i);
 void	print_tokens(t_token *tokens);
 
 /*	Commands	*/
-t_command *parse_tokens(t_token *tokens);
-void print_commands(t_command *commands);
+t_command	*parse_tokens(t_token *tokens);
+void	print_commands(t_command *commands);
+char	command_executer(t_command *commands);
+
+/*	Built-ins	*/
+char	echo(t_command *command);
+
 #endif

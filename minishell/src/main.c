@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/18 19:20:18 by racasado         ###   ########.fr       */
+/*   Updated: 2025/02/19 17:32:00 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void minishell_loop() {
 			break;
 		}
 
+		printf("Comando ingresado: %s\n", input);
 		tokens = tokenize_input(input);
 		if (tokens)
 		{
@@ -55,16 +56,16 @@ void minishell_loop() {
 			(void) 0; // Execute command
 			commands = parse_tokens(tokens);
 			print_commands(commands);
-			printf("FIN COMANDOS INGRESADOS\n");
+			printf("FIN COMANDOS INGRESADOS\n\n");
 			free_tokens(tokens);
 			tokens = NULL;
+			if (command_executer(commands)) // Error in some command execution
+				printf("ERROR IN COMMANDS\n");
 		}
 		else
 		{
 			// Free something
 		}
-
-		printf("Comando ingresado: %s\n", input);
 
 		free(input);
 	}

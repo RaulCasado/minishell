@@ -7,38 +7,56 @@
 	write(p[1], msg1, MSGSIZE);
 	execve("/bin/echo", argv, NULL);
 */
-char	echo(t_command *command)
+
+static char	is_flag(char flag, char *arg)
 {
-	ft_putstr_fd(command->args[2], command->pipe_out);
-	if (!ft_strnstr(command->args[1], "-n", ft_strlen(command->args[1])))
-		ft_putstr_fd('\n', command->pipe_out);
+	size_t	i;
+
+	if (ft_strlen(arg) >= 2 && arg[0] == '-')
+	{
+		i = 1;
+		while (arg[i] == flag)
+		{
+			i++;
+			if (!arg[i])
+				return (1);
+		}
+	}
 	return (0);
 }
 
-char	echo2(t_command *command)
+static void	write_echo(char **args, size_t i, char newline, char fd)
 {
-	int pipe[2];
-	char	*argv = command->args; //[] {"echo", "-n", "hola que tal", NULL};
+	while (args[i])
+	{
+		ft_putstr_fd(args[i], fd);
+		i++;
+		if (args[i])
+			ft_putchar_fd(' ', fd);
+	}
+	if (newline)
+		ft_putchar_fd('\n', fd);
+}
 
-	char	*msg;
-	char	new_line;
-	size_t	arg_len = ft_strlen(argv[2]);
+char	echo(t_command *command)
+{
+	size_t	i;
+	char	**args;
+	char	newline;
+	char	fd;
 
-	new_line = !ft_strnstr(argv[1], "-n", ft_strlen(argv[1]));
-	if (new_line)
-		msg = ft_calloc((arg_len + 1 + 1), sizeof(char));
-	else
-		msg = ft_calloc((arg_len + 1), sizeof(char));
-
-	if (!msg)
-		return (1);
-	if (new_line)
-		msg[arg_len + 1] = '\n';
-	ft_strlcpy(msg, argv[2], arg_len);
-
-	/* if (0) // There's a redir
-		write(pipe[1], msg, BUFFER_SIZE);
-	else */
-	ft_putstr_fd(msg, command->pipe_in);
+	i = 1;
+	args = command->args;
+	newline = 1;
+	while (is_flag('n', args[i])) // args[i] == "-n"
+	{
+		newline = 0;
+		i++;
+	}
+	if (command->pipe_out == 0)
+		fd = 1;
+	/* else
+		fd = xd; */
+	write_echo(args, i, newline, fd);
 	return (0);
 }
