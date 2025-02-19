@@ -50,6 +50,7 @@ typedef struct s_minishell
 {
 	t_token		*tokens;
 	t_command	*commands;
+	char		**envp;
 }	t_minishell;
 
 #include <stdio.h>
@@ -60,6 +61,9 @@ typedef struct s_minishell
 #include <readline/history.h>
 #include <signal.h>
 #include "libft/libft.h"
+
+/*	Minishell	*/
+t_minishell	*minishell_builder(char **envp);
 
 /*	Tokenize	*/
 t_token	*tokenize_input(char *input);
@@ -94,12 +98,16 @@ void	print_tokens(t_token *tokens);
 /*	Commands	*/
 t_command	*parse_tokens(t_token *tokens);
 void	print_commands(t_command *commands);
-char	command_executer(t_command *commands, char **envp);
+char	command_executer(t_minishell *minishell);
 
 /*	Built-ins	*/
-char	builtin_echo(t_command *command);
-char	builtin_pwd(t_command *command);
-char	builtin_env(t_command *command, char **envp);
+char	builtin_echo(t_minishell *minishell, t_command *command);
+char	builtin_cd(t_minishell *minishell, t_command *command);
+char	builtin_pwd(t_minishell *minishell, t_command *command);
+char	builtin_export(t_minishell *minishell, t_command *command);
+char	builtin_unset(t_minishell *minishell, t_command *command);
+char	builtin_env(t_minishell *minishell, t_command *command);
+char	builtin_exit(t_minishell *minishell, t_command *command);
 
 /*	Utils	*/
 char	*get_env(char *path);

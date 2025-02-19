@@ -18,7 +18,7 @@ static char	is_flag(char flag, char *arg)
 	return (0);
 }
 
-char	builtin_echo(t_command *command)
+char	builtin_echo(t_minishell *minishell, t_command *command)
 {
 	size_t	i;
 	char	**args;

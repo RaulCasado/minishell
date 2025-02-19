@@ -1,7 +1,7 @@
 
 #include "minishell.h"
 
-char	builtin_pwd(t_command *command)
+char	builtin_pwd(t_minishell *minishell, t_command *command)
 {
 	char	*arg;
 	char	fd;

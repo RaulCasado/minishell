@@ -1,7 +1,7 @@
 
 #include "minishell.h"
 
-char	builtin_env(t_command *command, char **envp)
+char	builtin_env(t_minishell *minishell, t_command *command)
 {
 	char	fd;
 
@@ -11,6 +11,6 @@ char	builtin_env(t_command *command, char **envp)
 		fd = 1;
 	/* else
 		fd = xd; */
-	write_strs(envp, 1, 1, fd);
+	write_strs(minishell->envp, 1, 1, fd);
 	return (0);
 }

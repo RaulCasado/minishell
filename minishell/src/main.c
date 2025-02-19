@@ -6,7 +6,7 @@
 /*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/19 18:21:41 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/02/19 18:58:55 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void minishell_loop(char **envp)
 
 	setup_signals();
 	rl_catch_signals = 0;
-	// minishell = new minishell;
+	minishell = minishell_builder(envp);
 
 	while (get_signal()) {
 		input = readline("Minishell> ");
@@ -37,7 +37,7 @@ static void minishell_loop(char **envp)
 			free(input);
 			continue;
 		}
-		// minishell.tokens = tokens;
+		minishell->tokens = tokens;
 
 		add_history(input);
 		// If the command is exi it also count :c
@@ -53,14 +53,14 @@ static void minishell_loop(char **envp)
 		tokens = tokenize_input(input);
 		if (tokens)
 		{
-			// minishell.commands = build_commands(tokens)
-			(void) 0; // Execute command
 			commands = parse_tokens(tokens);
+			minishell->commands = commands;
 			print_commands(commands);
 			printf("FIN COMANDOS INGRESADOS\n\n");
 			free_tokens(tokens);
-			tokens = NULL;
-			if (command_executer(commands, envp)) // Error in some command execution
+			tokens = NULL; // User only one tokens or minishell.tokens
+			minishell->tokens = NULL;
+			if (command_executer(minishell)) // Error in some command execution
 				printf("ERROR IN COMMANDS\n");
 		}
 		else
