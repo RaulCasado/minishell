@@ -22,3 +22,25 @@ char *get_env(char *name, char **envp)
     }
     return NULL;
 }
+
+char **copy_envp(char **envp)
+{
+    int i = 0;
+    char **new_envp;
+
+    while (envp[i])
+        i++;
+
+    new_envp = malloc(sizeof(char *) * (i + 1));
+    if (!new_envp)
+        return (NULL);
+
+    i = 0;
+    while (envp[i])
+    {
+        new_envp[i] = ft_strdup(envp[i]);
+        i++;
+    }
+    new_envp[i] = NULL;
+    return (new_envp);
+}

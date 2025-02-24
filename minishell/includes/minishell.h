@@ -116,6 +116,7 @@ char	builtin_exit(t_minishell *minishell, t_command *command);
 
 /*	Utils	*/
 char *get_env(char *name, char **envp);
+char **copy_envp(char **envp);
 
 /*	Str Utils	*/
 void	write_strs(char **strs, char nl, char nll, char fd);

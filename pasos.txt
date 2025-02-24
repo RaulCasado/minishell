@@ -57,3 +57,21 @@ y que se vaya pasando por parametros a las funciones que necesiten usarlo
 Después podemos hacer otra estrucutra que sea t_command. Que tenga los tokens ya parseados para directamente ejecutarlos sin problema
 
 VER EXECUTE_TRY PARA MAS INFORMACION :D
+
+
+
+VER BUILTINT UNSET PARA MAS INFORMACION :D
+
+PASOS SIGUIENTES REALMENTE NOS QUEDA REDIRECCIONES, PIPES Y EXITS (CODE Y MEMORIA)
+
+YO PROPONGO LO SIGUIENTE 
+
+1. Hacer las redirecciones
+2. Hacer los pipes
+3. Hacer el exit CODE
+4. Revisar los leaks
+5. Refactorizar este puede ir despues del 3 o 4 en verdad pero creo que aqui sera mejor 
+ya que si refactorizamos antes de hacer el exit code y hay un error en el exit code no sabremos
+ si es por el exit code o por el refactor
+ 6. Testing
+ 7. Entrega (emojis de fiesta) :D

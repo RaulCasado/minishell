@@ -1,4 +1,10 @@
+// IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT
+// PLS READ builtin_unset comments before touching this file
+// IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT
 
+// IF YOU GET ANY SOLUTIONS FOR THE PROBLEM EXPLAINED IN THE COMMENT ABOVE
+// AND CHECK LINE 50 KINDA SUS AMONG US TUN TUN TUN TUN TURUN TUN TUN TUN TUN
+// FIX IT AND REMOVE THE COMMENT :D
 #include "minishell.h"
 
 /*
@@ -34,7 +40,7 @@ static void update_env_var(t_minishell *minishell, char *key, char *value)
     if (pos != -1)
     {
 		//idk if we should free this
-        //free(minishell->envp[pos]);
+        free(minishell->envp[pos]);
         minishell->envp[pos] = new_var;
     }
 }
