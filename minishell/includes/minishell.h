@@ -66,8 +66,8 @@ typedef struct s_minishell
 t_minishell	*minishell_builder(char **envp);
 
 /*	Tokenize	*/
-t_token	*tokenize_input(char *input);
-void	expand_tokens(t_token **tokens);
+t_token	*tokenize_input(char *input,t_minishell *minishell);
+void	expand_tokens(t_token **tokens, t_minishell *minishell);
 
 /*	Parse	*/
 int	tokenize_check(t_token *tokens);
@@ -110,7 +110,7 @@ char	builtin_env(t_minishell *minishell, t_command *command);
 char	builtin_exit(t_minishell *minishell, t_command *command);
 
 /*	Utils	*/
-char	*get_env(char *path);
+char *get_env(char *name, char **envp);
 
 /*	Str Utils	*/
 void	write_strs(char **strs, char nl, char nll, char fd);

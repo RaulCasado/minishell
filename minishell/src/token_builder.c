@@ -106,13 +106,13 @@ echo -n -n -m "'$USER'" caballo
 (echo) (-n) (-m "'$USER'" caballo)
 */
 
-t_token	*tokenize_input(char *input)
+t_token	*tokenize_input(char *input,t_minishell *minishell)
 {
 	t_token	*tokens;
 
 	tokens = NULL;
 	split_input(0, input, &tokens);
-	expand_tokens(&tokens);
+	expand_tokens(&tokens,minishell);
 	if (!tokens || !tokenize_check(tokens))
 	{
 		free_tokens(tokens);

@@ -28,7 +28,7 @@ static char	*forge_value(char *head, char *body, char *tail)
 	return (new_value);
 } 
 
-static char	*expand(char *value, ssize_t start, ssize_t end, size_t	len)
+static char	*expand(char *value, ssize_t start, ssize_t end, size_t	len,t_minishell *minishell)
 {
 	char	*path;
 	char	*head;
@@ -42,7 +42,7 @@ static char	*expand(char *value, ssize_t start, ssize_t end, size_t	len)
 	head = ft_substr(value, 1, start - 2);
 	if (!head)
 		exit(1); // TODO :: Malloc error
-	body = get_env(path);
+	body = get_env(path, minishell->envp);
 	/* free(path); */
 	if (!body)
 		return (ft_strdup("")); // TODO :: Path not found
@@ -77,7 +77,7 @@ CUIDADADO TAMBIEN TENEMOS QUE TENER EN CUENTA LO DE $? QUE ES EL ULTIMO STATUS D
 echo " '$USER' "
 echo "$USER" "$-HOLA" "$1ERROR" "$ ERROR" $ERROR
 */
-void	expand_tokens(t_token **tokens)
+void	expand_tokens(t_token **tokens,t_minishell *minishell)
 {
 	t_token	*current;
 	ssize_t	i;
@@ -104,7 +104,7 @@ void	expand_tokens(t_token **tokens)
 				}
 				if (start && !ft_isalnum(current->value[i]) && current->value[i] != '_')
 				{
-					current->value = expand(current->value, start, i - 1, ft_strlen(current->value));
+					current->value = expand(current->value, start, i - 1, ft_strlen(current->value), minishell);
 					start = 0;
 				}
 			}
