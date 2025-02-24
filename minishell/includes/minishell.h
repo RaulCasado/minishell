@@ -72,7 +72,12 @@ void	expand_tokens(t_token **tokens, t_minishell *minishell);
 /*	Parse	*/
 int	tokenize_check(t_token *tokens);
 
-/* */
+/* Memory	*/
+void	free_tokens(t_token *tokens);
+void	free_minishell(t_minishell *minishell);
+void	free_commands(t_command *commands);
+
+/*	Tokens	*/
 void	free_tokens(t_token *tokens);
 t_token	*create_token(char *value);
 void	add_token(t_token **tokens, char *value);
