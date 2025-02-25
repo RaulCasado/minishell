@@ -25,6 +25,8 @@ char	command_executer(t_minishell *minishell)
 			builtin_env(minishell, cmd);
 		else if (cmd_len == 4 && !ft_strncmp(cmd->args[0], "exit", 3))
 			builtin_exit(minishell, cmd);
+		else
+			command_process(minishell, cmd);
 
 		cmd = cmd->next;
 	}

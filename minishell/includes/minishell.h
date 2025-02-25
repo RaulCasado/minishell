@@ -60,6 +60,7 @@ typedef struct s_minishell
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
+#include <sys/types.h> // pid_t?
 #include "libft/libft.h"
 
 /*	Minishell	*/
@@ -105,6 +106,7 @@ void	print_tokens(t_token *tokens);
 t_command	*parse_tokens(t_token *tokens);
 void	print_commands(t_command *commands);
 char	command_executer(t_minishell *minishell);
+char	command_process(t_minishell *minishell, t_command *command);
 
 /*	Built-ins	*/
 char	builtin_echo(t_minishell *minishell, t_command *command);
