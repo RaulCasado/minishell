@@ -39,6 +39,7 @@ char **copy_envp(char **envp)
     while (envp[i])
     {
         new_envp[i] = ft_strdup(envp[i]);
+        // is !new_envp => free (0..i-1)
         i++;
     }
     new_envp[i] = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/24 14:12:06 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/02/25 13:34:10 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,18 @@
 static void minishell_loop(char **envp)
 {
 	char	*input;
-	t_token	*tokens;
 	t_minishell	*minishell;
-	t_command	*commands;
 
 	setup_signals();
 	rl_catch_signals = 0;
 	minishell = minishell_builder(envp);
-
-	while (get_signal()) {
+	if (!minishell)
+		return ; // Throw error message
+	while (get_signal() && minishell)
+	{
+		minishell->tokens = NULL;
+		minishell->commands = NULL;
 		input = readline("Minishell> ");
-		tokens = NULL;
 
 		if (!input) {
 			handle_eof();
@@ -37,40 +38,25 @@ static void minishell_loop(char **envp)
 			free(input);
 			continue;
 		}
-		minishell->tokens = tokens;
 
 		add_history(input);
-		// If the command is exi it also count :c
-		if (ft_strlen(input) == 4 && ft_strncmp(input, "exit", 5) == 0)
-		{
-			free(input);
-			printf("Saliendo de Minishell...\n");
-			set_signal(0);
-			break;
-		}
 
 		printf("Comando ingresado: %s\n", input);
-		tokens = tokenize_input(input, minishell);
+		minishell->tokens = tokenize_input(input, minishell);
 		free(input);
 
-		if (tokens)
+		if (minishell->tokens)
 		{
-			commands = parse_tokens(tokens);
-			minishell->commands = commands;
-			print_commands(commands);
+			minishell->commands = parse_tokens(minishell->tokens);
+			print_commands(minishell->commands);
 			printf("FIN COMANDOS INGRESADOS\n\n");
-			free_tokens(tokens);
-			tokens = NULL; // User only one tokens or minishell.tokens
+			free_tokens(minishell->tokens);
 			minishell->tokens = NULL;
 			if (command_executer(minishell)) // Error in some command execution
 				printf("ERROR IN COMMANDS\n");
 		}
-		else
-		{
-			// Free something
-		}
-
 	}
+	free_minishell(minishell);
 }
 
 

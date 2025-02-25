@@ -13,7 +13,10 @@ t_minishell	*minishell_builder(char **envp)
 	minishell->tokens = NULL;
 	new_envp = copy_envp(envp);
 	if (!new_envp)
+	{
+		free(minishell);
 		return (NULL);
+	}
 	minishell->envp = new_envp;
 	return (minishell);
 }

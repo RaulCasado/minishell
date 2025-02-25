@@ -73,6 +73,7 @@ void	expand_tokens(t_token **tokens, t_minishell *minishell);
 int	tokenize_check(t_token *tokens);
 
 /* Memory	*/
+void	free_envp(char **envp);
 void	free_tokens(t_token *tokens);
 void	free_minishell(t_minishell *minishell);
 void	free_commands(t_command *commands);
