@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/25 13:34:10 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/02/26 23:11:00 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ static void minishell_loop(char **envp)
 			minishell->commands = parse_tokens(minishell->tokens);
 			print_commands(minishell->commands);
 			printf("FIN COMANDOS INGRESADOS\n\n");
-			free_tokens(minishell->tokens);
+			//free_tokens(minishell->tokens); !!CUIDADO!!
+			/*PROBLEM WHEN WE FREE TOKENS THE OUTFILE IS A POINTER TO TOKENS SO IF WE FREE TOKENS WE REMOVE THE POINTER FROM THE COMMAND
+			STRUCTURE CAUSING SOME ISSUE WE SHOULD DUPLICATE WITH STRDUP OR SOMETHING LIKE THAT*/
 			minishell->tokens = NULL;
 			if (command_executer(minishell)) // Error in some command execution
 				printf("ERROR IN COMMANDS\n");

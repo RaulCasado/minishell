@@ -62,6 +62,8 @@ typedef struct s_minishell
 #include <signal.h>
 #include <sys/types.h> // pid_t?
 #include "libft/libft.h"
+#include <fcntl.h>
+#include <sys/wait.h> // needed for wait_pid
 
 /*	Minishell	*/
 t_minishell	*minishell_builder(char **envp);
@@ -124,5 +126,8 @@ char **copy_envp(char **envp);
 /*	Str Utils	*/
 void	write_strs(char **strs, char nl, char nll, char fd);
 void	write_str(char *str, char fd);
+
+/*	Redirections	*/
+void handle_redirections(t_command *cmd);
 
 #endif
