@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:20:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/02/26 23:11:00 by racasado         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:24:23 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,15 @@ static void minishell_loop(char **envp)
 
 		add_history(input);
 
-		printf("Comando ingresado: %s\n", input);
+		//printf("Comando ingresado: %s\n", input);
 		minishell->tokens = tokenize_input(input, minishell);
 		free(input);
 
 		if (minishell->tokens)
 		{
 			minishell->commands = parse_tokens(minishell->tokens);
-			print_commands(minishell->commands);
-			printf("FIN COMANDOS INGRESADOS\n\n");
+			//print_commands(minishell->commands);
+			//printf("FIN COMANDOS INGRESADOS\n\n");
 			//free_tokens(minishell->tokens); !!CUIDADO!!
 			/*PROBLEM WHEN WE FREE TOKENS THE OUTFILE IS A POINTER TO TOKENS SO IF WE FREE TOKENS WE REMOVE THE POINTER FROM THE COMMAND
 			STRUCTURE CAUSING SOME ISSUE WE SHOULD DUPLICATE WITH STRDUP OR SOMETHING LIKE THAT*/
