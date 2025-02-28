@@ -42,8 +42,7 @@ static void execute_command(t_minishell *minishell, t_command *cmd)
 // redirections are handled in the execute_command function
 // instead of the builtin functions themselves for example
 // (no se como explicarme en ingles pero lo que teniamos de si el fd no es 1 xd y cosas asi)
-// other think we should check is echo hola | wc -c this command it counts the bytes of the string hola
-// rn it says its 80 bytes but it should be 5 bytes xd
+
 char command_executer(t_minishell *minishell)
 {
     t_command *cmd = minishell->commands;
