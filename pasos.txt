@@ -75,3 +75,25 @@ ya que si refactorizamos antes de hacer el exit code y hay un error en el exit c
  si es por el exit code o por el refactor
  6. Testing
  7. Entrega (emojis de fiesta) :D
+
+
+Soon:
+- Arreglar el error que ocurre cuando se ejecuta un solo comando externo
+	"Minishell> ls -l
+	(El comando se ejecuta bien y se muestra)
+	Saliendo de minishell"
+	Cuando vuelve al bucle peta, por alguna señal y coso en la memoria
+- Crear la estructura de "free" y llamarla con cada null check y malloc ?
+- Crear la estrucutra del exit code
+	Meterlo en el t_minishell
+	Investigar dónde se modifica
+	Añadirlo al $?
+	"c2r2s2% hola
+	zsh: command not found: hola
+	c2r2s2% echo "$?"
+	127
+	c2r2s2% echo hola
+	hola
+	c2r2s2% echo "$?"
+	0"
+	Error en quotes = 2?
