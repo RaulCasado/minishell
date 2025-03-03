@@ -48,9 +48,10 @@ typedef struct s_command
 
 typedef struct s_minishell
 {
-	t_token		*tokens;
-	t_command	*commands;
-	char		**envp;
+	t_token			*tokens;
+	t_command		*commands;
+	char			**envp;
+	unsigned char	exit_code;
 }	t_minishell;
 
 #include <stdio.h>

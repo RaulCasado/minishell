@@ -28,7 +28,7 @@ static char	*forge_value(char *head, char *body, char *tail)
 	return (new_value);
 } 
 
-static char	*expand(char *value, ssize_t start, ssize_t end, size_t	len,t_minishell *minishell)
+static char	*expand(char *value, ssize_t start, ssize_t end, size_t	len, t_minishell *minishell)
 {
 	char	*path;
 	char	*head;
@@ -55,6 +55,18 @@ static char	*expand(char *value, ssize_t start, ssize_t end, size_t	len,t_minish
 			exit(1); // TODO :: Malloc error
 	}
 	new_value = forge_value(head, body, tail);
+	if (!new_value)
+		exit(1); // TODO :: Calloc error
+	/* free(value); */
+	return (new_value);		
+}
+
+
+static char	*expand_exit_code(char *value, ssize_t start, ssize_t end, size_t len, t_minishell *minishell)
+{
+	char	*new_value;
+
+	new_value = ft_itoa(minishell->exit_code);
 	if (!new_value)
 		exit(1); // TODO :: Calloc error
 	/* free(value); */
@@ -99,8 +111,11 @@ void	expand_tokens(t_token **tokens,t_minishell *minishell)
 					|| current->value[i + 1] == INTERROGATION))
 				{
 					start = ++i;
-					if (current->value[i] == INTERROGATION)
-						exit(3); // TODO IMPLEMENT THIS THING
+					if (current->value[i] == INTERROGATION) // This logic is working but it's badly coded, it needs simplicity
+					{
+						current->value = expand_exit_code(current->value, start, i - 1, ft_strlen(current->value), minishell);
+						start = 0;
+					}
 				}
 				if (start && !ft_isalnum(current->value[i]) && current->value[i] != '_')
 				{

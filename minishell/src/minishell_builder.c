@@ -11,6 +11,7 @@ t_minishell	*minishell_builder(char **envp)
 		return(NULL);
 	minishell->commands = NULL;
 	minishell->tokens = NULL;
+	minishell->exit_code = 0;
 	new_envp = copy_envp(envp);
 	if (!new_envp)
 	{
