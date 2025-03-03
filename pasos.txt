@@ -78,6 +78,7 @@ ya que si refactorizamos antes de hacer el exit code y hay un error en el exit c
 
 
 Soon:
+- Las comillas fallan otra vez, se muestran por pantalla.
 - Arreglar el error que ocurre cuando se ejecuta un solo comando externo
 	"Minishell> ls -l
 	(El comando se ejecuta bien y se muestra)
