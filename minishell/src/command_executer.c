@@ -51,6 +51,7 @@ char command_executer(t_minishell *minishell)
 	t_command *cmd = minishell->commands;
 	int pipe_fd[2], prev_pipe_in = 0, num_commands = 0;
 	pid_t pid;
+	int	status;
 
 	// Count commands
 	t_command *tmp = cmd;
@@ -61,7 +62,7 @@ char command_executer(t_minishell *minishell)
 	}
 
 	// Single builtin: execute in parent
-	if (num_commands == 1 && is_builtin(cmd->args[0]))
+	/* if (num_commands == 1 && is_builtin(cmd->args[0]))
 	{
 		int saved_stdin = dup(STDIN_FILENO);
 		int saved_stdout = dup(STDOUT_FILENO);
@@ -72,7 +73,7 @@ char command_executer(t_minishell *minishell)
 		close(saved_stdin);
 		close(saved_stdout);
 		return (0);
-	}
+	} */
 
 	// Pipeline handling
 	while (cmd)
@@ -112,7 +113,14 @@ char command_executer(t_minishell *minishell)
 	}
 
 	// Wait for all children
-	while (waitpid(-1, NULL, 0) > 0);
+	while (waitpid(pid, &status, 0) > 0);
 
+	// echo "$?"
+	if (WIFEXITED(status))
+	{
+		// minishell->exit_code = WEXITSTATUS(status);
+		minishell->exit_code = WEXITSTATUS(status);
+		printf("Exit status of the child was %d\n", minishell->exit_code);
+	}
 	return (0);
 }

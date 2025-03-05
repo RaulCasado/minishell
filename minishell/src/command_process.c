@@ -77,7 +77,7 @@ char command_process(t_minishell *minishell, t_command *command)
     {
         ft_putstr_fd(command->args[0], 2);
         ft_putstr_fd(": command not found\n", 2);
-        return (127);
+        exit(127);
     }
     
     // Execute command with all arguments and environment

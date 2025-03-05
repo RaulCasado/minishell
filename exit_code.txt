@@ -6,7 +6,6 @@ Note: It is also to taken into consideration that an exit code with a value grea
 For Example: If we execute a statement exit(9999) then it will execute exit(15) as 9999%256 = 15.
 Some of the Exit Codes are: 
  
-
     exit(1): It indicates abnormal termination of a program perhaps as a result a minor problem in the code.
     exit(2): It is similar to exit(1) but is displayed when the error occurred is a major one. This statement is rarely seen.
     exit(127): It indicates command not found.
