@@ -1,11 +1,5 @@
 
 #include "minishell.h"
-#include <sys/wait.h>
-
-#define MSGSIZE 512 
-
-
-/*	This file is a prototype to build the Pipex	*/
 
 void ft_free_split(char **split)
 {

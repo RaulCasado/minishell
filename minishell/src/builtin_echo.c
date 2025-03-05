@@ -32,9 +32,6 @@ char builtin_echo(t_minishell *minishell, t_command *command)
 		newline = 0;
 		i++;
 	}
-	
-	// Since redirections are handled in command_executer.c,
-	// we can just use the standard output file descriptor
 	fd = STDOUT_FILENO;
 	
 	write_strs(args + i, newline, 0, fd);

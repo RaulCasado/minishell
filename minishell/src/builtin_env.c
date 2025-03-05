@@ -5,12 +5,10 @@ char	builtin_env(t_minishell *minishell, t_command *command)
 {
 	char	fd;
 
-	if (command->args[1]) // There's only 1 arg in env
+	if (command->args[1])
 		return (1);
-	if (command->pipe_out == 0)
-		fd = 1;
-	/* else
-		fd = xd; */
+	
+	fd = STDOUT_FILENO;
 	write_strs(minishell->envp, 1, 1, fd);
 	return (0);
 }

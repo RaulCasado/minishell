@@ -1,13 +1,3 @@
-// i dont fucking know what to do with the remove_env_var function
-// Its not malloc allocated so we cant free it, right now this works its "unsets" the env var
-// but i dont know if its the right way to do it leaks wise
-
-// possible solution is to malloc our envp array and then free it when we remove an env var so we can control the memory
-// but i dont know if this is the right way to do it :D (this was the solution i went with)
-
-// unset is a builtin command that removes environment variables from the environment.
-// The unset utility shall remove variable assignments from the environment of the current shell execution environment. aka minishell
-// The unset utility shall not affect the current shell execution environment.
 #include "minishell.h"
 
 static int find_env_var(char **envp, const char *var)

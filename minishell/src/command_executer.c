@@ -44,7 +44,7 @@ static void execute_command(t_minishell *minishell, t_command *cmd)
 // btw we should check the fd of every builtin funciton since the
 // redirections are handled in the execute_command function
 // instead of the builtin functions themselves for example
-// (no se como explicarme en ingles pero lo que teniamos de si el fd no es 1 xd y cosas asi)
+// (no se como explicarme en ingles pero lo que teniamos de si el fd no es 1 xd y cosas asi) done i think check it later
 
 char command_executer(t_minishell *minishell)
 {

@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 char *get_env(char *name, char **envp)
