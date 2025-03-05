@@ -10,7 +10,7 @@
 
 # define PWD "PWD"
 
-# define BUFFER_SIZE 1024
+# define CWD_SIZE 1024
 
 typedef enum e_token_type
 {

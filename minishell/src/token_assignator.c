@@ -48,13 +48,13 @@ void add_token(t_token **tokens, char *value)
 
 const char *token_type_to_string(int type)
 {
-    if (type == TOKEN_WORD) return "TOKEN_WORD";
-    if (type == TOKEN_PIPE) return "TOKEN_PIPE";
-    if (type == TOKEN_REDIR_IN) return "TOKEN_REDIR_IN";
-    if (type == TOKEN_REDIR_OUT) return "TOKEN_REDIR_OUT";
-    if (type == TOKEN_REDIR_APPEND) return "TOKEN_REDIR_APPEND";
-    if (type == TOKEN_HEREDOC) return "TOKEN_HEREDOC";
-    return "UNKNOWN_TOKEN"; // En caso de error
+	if (type == TOKEN_WORD) return "TOKEN_WORD";
+	if (type == TOKEN_PIPE) return "TOKEN_PIPE";
+	if (type == TOKEN_REDIR_IN) return "TOKEN_REDIR_IN";
+	if (type == TOKEN_REDIR_OUT) return "TOKEN_REDIR_OUT";
+	if (type == TOKEN_REDIR_APPEND) return "TOKEN_REDIR_APPEND";
+	if (type == TOKEN_HEREDOC) return "TOKEN_HEREDOC";
+	return "UNKNOWN_TOKEN"; // En caso de error
 }
 
 
