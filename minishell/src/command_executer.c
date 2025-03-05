@@ -62,7 +62,7 @@ char command_executer(t_minishell *minishell)
 	}
 
 	// Single builtin: execute in parent
-	/* if (num_commands == 1 && is_builtin(cmd->args[0]))
+	if (num_commands == 1 && is_builtin(cmd->args[0]))
 	{
 		int saved_stdin = dup(STDIN_FILENO);
 		int saved_stdout = dup(STDOUT_FILENO);
@@ -73,7 +73,7 @@ char command_executer(t_minishell *minishell)
 		close(saved_stdin);
 		close(saved_stdout);
 		return (0);
-	} */
+	}
 
 	// Pipeline handling
 	while (cmd)
