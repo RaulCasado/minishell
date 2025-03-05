@@ -1,0 +1,31 @@
+Why Use int Instead of unsigned char?
+
+    Ease of Use:
+
+        int is the default integer type in C and is easier to work with than unsigned char.
+
+        You don't need to worry about overflow or underflow when performing arithmetic operations.
+
+    Flexibility:
+
+        int can hold values larger than 255, which is useful for intermediate calculations (e.g., wrapping around exit codes).
+
+        You can easily handle negative values and perform modulo operations without casting.
+
+    Standard Practice:
+
+        Most C programs use int for exit codes, even though the final value is truncated to 8 bits when passed to exit() or returned to the parent process.
+
+    Compatibility:
+
+        Functions like waitpid() and WEXITSTATUS() return exit codes as int, so using int avoids unnecessary type conversions.
+
+How Exit Codes Are Handled
+
+When you call exit() or return from main(), the exit code is truncated to 8 bits by the operating system. For example:
+
+    exit(300) → Exit code 44 (300 % 256 = 44)
+
+    exit(-1) → Exit code 255 (unsigned 8-bit representation of -1 is 255)
+
+This truncation happens automatically, so you don't need to worry about it in your code.
