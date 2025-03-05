@@ -4,6 +4,8 @@
 
 # define SIMPLE_MARK '\''
 # define DOUBLE_MARK '\"'
+# define DOUBLE_MARK_STR "\""
+# define DOUBLE_DOUBLE_MARK_STR "\"\""
 # define DOLLAR '$'
 # define INTERROGATION '?'
 # define HYPHEN '-'
@@ -79,6 +81,7 @@ int	tokenize_check(t_token *tokens);
 /* Memory	*/
 void	free_envp(char **envp);
 void	free_tokens(t_token *tokens);
+void	free_token(t_token *token);
 void	free_minishell(t_minishell *minishell);
 void	free_commands(t_command *commands);
 
@@ -86,6 +89,7 @@ void	free_commands(t_command *commands);
 void	free_tokens(t_token *tokens);
 t_token	*create_token(char *value);
 void	add_token(t_token **tokens, char *value);
+void	unquoter(t_token **tokens);
 
 /*	Signals	*/
 int	get_signal();

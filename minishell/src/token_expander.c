@@ -39,18 +39,18 @@ static char	*expand(char *value, ssize_t start, ssize_t end, size_t	len, t_minis
 	path = ft_substr(value, start, end - start + 1);
 	if (!path)
 		exit(1); // TODO :: Malloc error
-	head = ft_substr(value, 1, start - 2);
+	head = ft_substr(value, 0, start - 1);
 	if (!head)
 		exit(1); // TODO :: Malloc error
 	body = get_env(path, minishell->envp);
 	/* free(path); */
 	if (!body)
-		return (ft_strdup("")); // TODO :: Path not found
+		return (ft_strdup(DOUBLE_DOUBLE_MARK_STR)); // TODO :: Path not found // ERRO RANDOM SYMBOLS
 	if (end + 1 >= ft_strlen(value) - 1)
-		tail = NULL;
+		tail = DOUBLE_MARK_STR;
 	else
 	{
-		tail = ft_substr(value, end + 1, ft_strlen(value) - end - 2);
+		tail = ft_substr(value, end + 1, ft_strlen(value) - end - 1);
 		if (!tail)
 			exit(1); // TODO :: Malloc error
 	}
@@ -60,7 +60,6 @@ static char	*expand(char *value, ssize_t start, ssize_t end, size_t	len, t_minis
 	/* free(value); */
 	return (new_value);		
 }
-
 
 static char	*expand_exit_code(char *value, ssize_t start, ssize_t end, size_t len, t_minishell *minishell)
 {

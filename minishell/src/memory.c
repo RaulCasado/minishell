@@ -6,7 +6,7 @@
 /*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 17:30:04 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/05 11:39:31 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/03/05 12:38:19 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,12 @@ void	free_minishell(t_minishell *minishell)
 	free(minishell->tokens);
 	free_envp(minishell->envp);
 	free(minishell);
+}
+
+void	free_token(t_token *token)
+{
+	free(token->value);
+	free(token);
 }
 
 void	free_tokens(t_token *tokens)

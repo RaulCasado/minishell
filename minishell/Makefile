@@ -17,7 +17,7 @@ SRCS =	$(SRC_DIR)/main.c $(SRC_DIR)/signals.c $(SRC_DIR)/memory.c \
 		$(SRC_DIR)/env.c \
 		$(SRC_DIR)/str_utils.c \
 		$(SRC_DIR)/token_builder.c $(SRC_DIR)/token_expander.c $(SRC_DIR)/token_assignator.c \
-		$(SRC_DIR)/token_parser.c $(SRC_DIR)/token_utils.c \
+		$(SRC_DIR)/token_parser.c $(SRC_DIR)/token_utils.c $(SRC_DIR)/token_unquoter.c \
 		$(SRC_DIR)/command_creator.c $(SRC_DIR)/command_executer.c  $(SRC_DIR)/command_process.c \
 		$(SRC_DIR)/builtin_echo.c $(SRC_DIR)/builtin_cd.c $(SRC_DIR)/builtin_pwd.c $(SRC_DIR)/builtin_export.c \
 		$(SRC_DIR)/builtin_unset.c $(SRC_DIR)/builtin_env.c $(SRC_DIR)/builtin_exit.c $(SRC_DIR)/redirections.c 

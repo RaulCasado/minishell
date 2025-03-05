@@ -54,10 +54,10 @@ static void update_pwd(t_minishell *minishell)
 		perror("Minishell: getcwd");
 		return;
 	}
-	pos_oldpwd = find_env_var(minishell->envp, "PWD");
+	pos_oldpwd = find_env_var(minishell->envp, PWD);
 	if (pos_oldpwd != -1)
 		update_env_var(minishell, "OLDPWD", minishell->envp[pos_oldpwd] + 4);
-	update_env_var(minishell, "PWD", cwd);
+	update_env_var(minishell, PWD, cwd);
 }
 
 static char *build_full_path(char *path)

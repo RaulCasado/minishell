@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int ft_strcmp(const char *s1, const char *s2)
+static int	ft_strcmp(const char *s1, const char *s2)
 {
 	while (*s1 && *s1 == *s2)
 	{
@@ -9,14 +9,17 @@ static int ft_strcmp(const char *s1, const char *s2)
 	}
 	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
-static int is_builtin(char *cmd)
+static int	is_builtin(char *cmd)
 {
 	if (!cmd)
 		return (0);
-	return (ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "cd") == 0 ||
-			ft_strcmp(cmd, "pwd") == 0 || ft_strcmp(cmd, "export") == 0 ||
-			ft_strcmp(cmd, "unset") == 0 || ft_strcmp(cmd, "env") == 0 ||
-			ft_strcmp(cmd, "exit") == 0);
+	return (ft_strcmp(cmd, "echo") == 0
+		|| ft_strcmp(cmd, "cd") == 0
+		|| ft_strcmp(cmd, "pwd") == 0
+		|| ft_strcmp(cmd, "export") == 0
+		|| ft_strcmp(cmd, "unset") == 0
+		|| ft_strcmp(cmd, "env") == 0
+		|| ft_strcmp(cmd, "exit") == 0);
 }
 
 static void execute_command(t_minishell *minishell, t_command *cmd)

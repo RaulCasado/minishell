@@ -118,5 +118,6 @@ t_token	*tokenize_input(char *input,t_minishell *minishell)
 		free_tokens(tokens);
 		return (NULL);
 	}
+	unquoter(&tokens);
 	return (tokens);
 }
