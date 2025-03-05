@@ -12,6 +12,14 @@
 
 # define PWD "PWD"
 
+# define ECHO_LOWER "echo"
+# define CD_LOWER "cd"
+# define PWD_LOWER "pwd"
+# define EXPORT_LOWER "export"
+# define UNSET_LOWER "unset"
+# define ENV_LOWER "env"
+# define EXIT_LOWER "exit"
+
 # define CWD_SIZE 1024
 
 typedef enum e_token_type

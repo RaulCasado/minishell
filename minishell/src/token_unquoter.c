@@ -8,9 +8,14 @@ static char	*unquote_token(t_token *token, size_t value_len)
 	if (value_len == 2)
 	{
 		free(token->value);
-		return (NULL);
+		return (ft_strdup(""));
 	}
 	new_value = malloc(sizeof(char) * (value_len - 1));
+	if (!new_value)
+	{
+		free(token->value);
+		return (NULL);
+	}
 	ft_memcpy(new_value, token->value + 1, value_len - 2);
 	free(token->value);
 	return (new_value);
@@ -30,18 +35,9 @@ void	unquoter(t_token **tokens)
 			&&(current->value[0] == DOUBLE_MARK
 			|| current->value[0] == SIMPLE_MARK))
 		{
-			new_value = unquote_token(current, ft_strlen(current->value));
-			if (new_value)
-				current->value = new_value;
-			else
-			{
-				if (!before)
-					tokens = &current->next;
-				else
-					before->next = current->next;
-				current = current->next;
-				continue;
-			}
+			current->value = unquote_token(current, ft_strlen(current->value));
+			if (!current->value)
+				exit(3); // TODO Error in ft_strdup or malloc
 		}
 		before = current;
 		current = current->next;
