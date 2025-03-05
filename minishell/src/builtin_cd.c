@@ -39,7 +39,6 @@ static void update_env_var(t_minishell *minishell, char *key, char *value)
     pos = find_env_var(minishell->envp, key);
     if (pos != -1)
     {
-		//idk if we should free this
         free(minishell->envp[pos]);
         minishell->envp[pos] = new_var;
     }
@@ -61,35 +60,50 @@ static void update_pwd(t_minishell *minishell)
     update_env_var(minishell, "PWD", cwd);
 }
 
-static int is_valid_path(char *path)
+static char *build_full_path(char *path)
 {
+    char cwd[1024];
+    char *full_path;
+
     if (!path)
-        return (0);
+        return (NULL);
     if (path[0] == '/' || (path[0] == '.' && (path[1] == '/' || path[1] == '.')))
-        return (1);
-    return (0);
+        return (ft_strdup(path));
+
+    if (!getcwd(cwd, sizeof(cwd)))
+    {
+        perror("Minishell: getcwd");
+        return (NULL);
+    }
+    full_path = ft_strjoin(cwd, "/");
+    full_path = ft_strjoin(full_path, path);
+    return (full_path);
 }
 
 char builtin_cd(t_minishell *minishell, t_command *command)
 {
     char *path;
+    char *full_path;
 
     if (!command->args[1] || command->args[2])
     {
         ft_putendl_fd("Minishell: cd: usage: cd <absolute|relative path>", 2);
         return (1);
     }
+
     path = command->args[1];
-    if (!is_valid_path(path))
-    {
-        ft_putendl_fd("Minishell: cd: only absolute or relative paths allowed", 2);
+    full_path = build_full_path(path);
+    if (!full_path)
         return (1);
-    }
-    if (chdir(path) != 0)
+
+    if (chdir(full_path) != 0)
     {
         perror("Minishell: cd");
+        free(full_path);
         return (1);
     }
+
     update_pwd(minishell);
+    free(full_path);
     return (0);
 }

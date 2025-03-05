@@ -30,8 +30,7 @@ static void minishell_loop(char **envp)
 		minishell->commands = NULL;
 		if (isatty(STDIN_FILENO) == 0) 
 		{
-    		printf("DEBUG: stdin se ha cerrado, restaurándolo...\n");
-    		dup2(open("/dev/tty", O_RDONLY), STDIN_FILENO);
+			dup2(open("/dev/tty", O_RDONLY), STDIN_FILENO);
 		}
 
 		input = readline("Minishell> ");
