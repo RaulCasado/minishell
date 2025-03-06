@@ -130,7 +130,7 @@ int		builtin_cd(t_minishell *minishell, t_command *command);
 char	builtin_pwd(t_minishell *minishell, t_command *command);
 char	builtin_export(t_minishell *minishell, t_command *command);
 char	builtin_unset(t_minishell *minishell, t_command *command);
-char	builtin_env(t_minishell *minishell, t_command *command);
+int 	builtin_env(t_minishell *minishell, t_command *command);
 char	builtin_exit(t_minishell *minishell, t_command *command);
 
 /*	Utils	*/
