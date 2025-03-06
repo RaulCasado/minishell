@@ -1,22 +1,26 @@
 
 #include "minishell.h"
 
-void	write_strs(char **strs, char nl, char nll, char fd)
+int write_strs(char **strs, char nl, char nll, int fd)
 {
-	while (*strs)
-	{
-		ft_putstr_fd(*strs, fd);
-		strs++;
-		if (*strs)
-		{
-			if (nll)
-				ft_putchar_fd('\n', fd);
-			else
-				ft_putchar_fd(' ', fd);
-		}
-	}
-	if (nl)
-		ft_putchar_fd('\n', fd);
+    char *sep = " ";
+    if (nll)
+        sep = "\n";
+
+    while (*strs)
+    {
+		// we have to check if the fd ran into an error
+        if (write(fd, *strs, ft_strlen(*strs)) == -1)
+            return (-1);
+        strs++;
+        if (*strs && write(fd, sep, 1) == -1)
+            return (-1);
+    }
+
+    if (nl && write(fd, "\n", 1) == -1)
+        return (-1);
+
+    return (0);
 }
 
 void	write_str(char *str, char fd)

@@ -137,7 +137,7 @@ char *get_env(char *name, char **envp);
 char **copy_envp(char **envp);
 
 /*	Str Utils	*/
-void	write_strs(char **strs, char nl, char nll, char fd);
+int		write_strs(char **strs, char nl, char nll, int fd);
 void	write_str(char *str, char fd);
 
 /*	Redirections	*/
