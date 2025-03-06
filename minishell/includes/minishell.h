@@ -75,6 +75,7 @@ typedef struct s_minishell
 #include "libft/libft.h"
 #include <fcntl.h>
 #include <sys/wait.h> // needed for wait_pid
+#include <errno.h>
 
 /*	Minishell	*/
 t_minishell	*minishell_builder(char **envp);
@@ -124,8 +125,8 @@ char	command_executer(t_minishell *minishell);
 char	command_process(t_minishell *minishell, t_command *command);
 
 /*	Built-ins	*/
-char	builtin_echo(t_minishell *minishell, t_command *command);
-char	builtin_cd(t_minishell *minishell, t_command *command);
+int		builtin_echo(t_minishell *minishell, t_command *command);
+int		builtin_cd(t_minishell *minishell, t_command *command);
 char	builtin_pwd(t_minishell *minishell, t_command *command);
 char	builtin_export(t_minishell *minishell, t_command *command);
 char	builtin_unset(t_minishell *minishell, t_command *command);
