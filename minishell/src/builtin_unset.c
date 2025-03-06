@@ -16,6 +16,22 @@ static int find_env_var(char **envp, const char *var)
 	return (-1);
 }
 
+static int is_valid_identifier(const char *var)
+{
+	int i;
+
+	if (!var || (!ft_isalpha(var[0]) && var[0] != '_'))
+		return (0);
+	i = 1;
+	while (var[i])
+	{
+		if (!ft_isalnum(var[i]) && var[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 static void remove_env_var(t_minishell *minishell, int pos)
 {
 	int i;
@@ -30,10 +46,11 @@ static void remove_env_var(t_minishell *minishell, int pos)
 	minishell->envp[i] = NULL;
 }
 
-char builtin_unset(t_minishell *minishell, t_command *command)
+int builtin_unset(t_minishell *minishell, t_command *command)
 {
 	int i;
 	int pos;
+	int status = 0;
 
 	if (!command->args[1])
 		return (0);
@@ -41,11 +58,21 @@ char builtin_unset(t_minishell *minishell, t_command *command)
 	i = 1;
 	while (command->args[i] != NULL)
 	{
-		pos = find_env_var(minishell->envp, command->args[i]);
-		if (pos != -1)
-			remove_env_var(minishell, pos);
+		if (!is_valid_identifier(command->args[i]))
+		{
+			ft_putstr_fd("Minishell: unset: `", 2);
+			ft_putstr_fd(command->args[i], 2);
+			ft_putendl_fd("': not a valid identifier", 2);
+			status = 1;
+		}
+		else
+		{
+			pos = find_env_var(minishell->envp, command->args[i]);
+			if (pos != -1)
+				remove_env_var(minishell, pos);
+		}
 		i++;
 	}
 
-	return (0);
+	return (status);
 }
