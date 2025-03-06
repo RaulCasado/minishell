@@ -96,43 +96,69 @@ static void print_sorted_env(char **envp)
 	}
 }
 
-static void add_or_replace_env_var(t_minishell *minishell, char *var)
+static int add_or_replace_env_var(t_minishell *minishell, char *var)
 {
-	int pos;
-	char *equal_sign;
+    int pos;
+    char *equal_sign;
+    char **new_envp;
+    char *new_value;
 
-	equal_sign = ft_strchr(var, '=');
-	if (!equal_sign)
-		return;  // Solo export VAR (sin `=`), no hace nada
+    equal_sign = ft_strchr(var, '=');
+    if (!equal_sign)
+        return (0);  // No '=', not an error
 
-	pos = find_env_var(minishell->envp, var);
-	if (pos != -1)
-	{
-		// we found it so we need to replace it
-		free(minishell->envp[pos]);
-		minishell->envp[pos] = var;
-	}
-	else
-		minishell->envp = add_env_var(minishell, var);
+    pos = find_env_var(minishell->envp, var);
+    if (pos != -1)
+    {
+        new_value = ft_strdup(var);  // Create copy first
+        if (!new_value)
+            return (1);  // Allocation error
+        free(minishell->envp[pos]);
+        minishell->envp[pos] = new_value;
+    }
+    else
+    {
+        new_envp = add_env_var(minishell, var);
+        if (!new_envp)
+            return (1);  // Allocation error
+        minishell->envp = new_envp;
+    }
+    return (0);
 }
 
-char builtin_export(t_minishell *minishell, t_command *command)
+int builtin_export(t_minishell *minishell, t_command *command)
 {
-	int i;
+    int i;
+    int exit_code;
+    int result;
 
-	if (!command->args[1])
-	{
-		print_sorted_env(minishell->envp);
-		return (0);
-	}
-	i = 1;
-	while (command->args[i])
-	{
-		if (!is_valid_identifier(command->args[i]))
-			printf("Minishell: export: `%s': not a valid identifier\n", command->args[i]);
-		else
-			add_or_replace_env_var(minishell, command->args[i]);
-		i++;
-	}
-	return (0);
+    exit_code = 0;
+    if (!command->args[1])
+    {
+        print_sorted_env(minishell->envp);
+        return (0);  // Success: printed environment
+    }
+
+    i = 1;
+    while (command->args[i])
+    {
+        if (!is_valid_identifier(command->args[i]))
+        {
+            // Error: invalid identifier (exit code 1)
+            ft_putstr_fd("Minishell: export: `", STDERR_FILENO);
+            exit_code = 1;
+        }
+        else
+        {
+            result = add_or_replace_env_var(minishell, command->args[i]);
+            if (result != 0)
+            {
+                // Error: memory allocation failure (exit code 1)
+                ft_putendl_fd("Minishell: export: memory allocation failed", STDERR_FILENO);
+                exit_code = 1;
+            }
+        }
+        i++;
+    }
+    return (exit_code);
 }
