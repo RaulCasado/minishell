@@ -127,7 +127,7 @@ char	command_process(t_minishell *minishell, t_command *command);
 /*	Built-ins	*/
 int		builtin_echo(t_minishell *minishell, t_command *command);
 int		builtin_cd(t_minishell *minishell, t_command *command);
-char	builtin_pwd(t_minishell *minishell, t_command *command);
+int		builtin_pwd(t_minishell *minishell, t_command *command);
 int		builtin_export(t_minishell *minishell, t_command *command);
 char	builtin_unset(t_minishell *minishell, t_command *command);
 int 	builtin_env(t_minishell *minishell, t_command *command);
@@ -139,7 +139,7 @@ char **copy_envp(char **envp);
 
 /*	Str Utils	*/
 int		write_strs(char **strs, char nl, char nll, int fd);
-void	write_str(char *str, char fd);
+int 	write_str(char *str, int fd);
 
 /*	Redirections	*/
 void handle_redirections(t_command *cmd);

@@ -23,7 +23,11 @@ int write_strs(char **strs, char nl, char nll, int fd)
     return (0);
 }
 
-void	write_str(char *str, char fd)
+int write_str(char *str, int fd)
 {
-	ft_putendl_fd(str, fd);
+    if (write(fd, str, ft_strlen(str)) == -1)
+        return (-1);
+    if (write(fd, "\n", 1) == -1)
+        return (-1);
+    return (0);
 }
