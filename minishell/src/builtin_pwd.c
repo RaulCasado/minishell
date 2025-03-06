@@ -31,11 +31,5 @@ int builtin_pwd(t_minishell *minishell, t_command *command)
         perror("Minishell: pwd");
         return (1);
     }
-    if (write(fd, "\n", 1) == -1)
-    {
-        perror("Minishell: pwd");
-        return (1);
-    }
-
     return (0);
 }
