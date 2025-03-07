@@ -142,6 +142,6 @@ int		write_strs(char **strs, char nl, char nll, int fd);
 int 	write_str(char *str, int fd);
 
 /*	Redirections	*/
-void handle_redirections(t_command *cmd);
+int handle_redirections(t_command *cmd);
 
 #endif

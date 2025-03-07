@@ -18,8 +18,7 @@ int builtin_pwd(t_minishell *minishell, t_command *command)
         if (!getcwd(cwd, sizeof(cwd)))
         {
             perror("Minishell: pwd");
-            if (errno == EACCES) return (126);  // Permission denied
-            if (errno == ENOENT) return (127);  // Path resolution failed
+            // same as cd error
             return (1);  // Generic error
         }
         pwd = cwd;

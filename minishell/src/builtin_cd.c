@@ -101,11 +101,10 @@ int builtin_cd(t_minishell *minishell, t_command *command)
     {
         free(full_path);
         perror("Minishell: cd");
-        
-        // Handle specific errors
-        if (errno == EACCES) return (126);   // Permission denied
-        if (errno == ENOENT) return (127);   // Path not found
-        return (1);                          // Generic error
+        //here i had return value to check if you dont have the 
+        // permission to access the directory
+        // but the normal shell doesnt give a fuck and return 1
+        return (1);
     }
 
     update_pwd(minishell);
