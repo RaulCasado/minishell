@@ -23,6 +23,7 @@ static char **add_arg(char **args, char *new_arg)
 	free(args);
 	return new_args;
 }
+
 // create a struct to not pass too many arguments
 static t_command *create_command(char **args, char *infile, char *outfile, int append, int pipe_in, int pipe_out, t_command *next)
 {

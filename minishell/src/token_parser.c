@@ -60,7 +60,6 @@ int is_invalid_character_outside_quotes(char *str)
 	return (0);
 }
 
-
 int	tokenize_check(t_token *tokens)
 {
 	t_token	*before;

@@ -13,7 +13,6 @@ size_t	ft_token_len(t_token *token)
 	return (len);
 }
 
-
 t_token *ft_get_last(t_token *token)
 {
 	t_token	*current;

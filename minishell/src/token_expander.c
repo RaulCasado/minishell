@@ -26,7 +26,7 @@ static char	*forge_value(char *head, char *body, char *tail)
 	if (tail)
 		free(tail); */
 	return (new_value);
-} 
+}
 
 static char	*expand(char *value, ssize_t start, ssize_t end, size_t	len, t_minishell *minishell)
 {
