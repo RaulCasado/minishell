@@ -25,90 +25,80 @@ static char **add_arg(char **args, char *new_arg)
 }
 
 // create a struct to not pass too many arguments
-static t_command *create_command(char **args, char *infile, char *outfile, int append, int pipe_in, int pipe_out, t_command *next)
+t_command *create_command(t_command_info *ci, t_command *next)
 {
-	t_command *cmd;
+    t_command    *cmd;
 
-	cmd = malloc(sizeof(t_command));
-	if (!cmd)
-		return (NULL);
-	cmd->args = args;
-	cmd->infile = infile;
-	cmd->outfile = outfile;
-	cmd->append = append;
-	cmd->pipe_in = pipe_in;
-	cmd->pipe_out = pipe_out;
-	cmd->next = next;
-	return (cmd);
+    cmd = malloc(sizeof(t_command));
+    if (!cmd)
+        return (NULL);
+    cmd->args = ci->args;
+    cmd->infile = ci->infile;
+    cmd->outfile = ci->outfile;
+    cmd->append = ci->append;
+    cmd->pipe_in = ci->pipe_in;
+    cmd->pipe_out = ci->pipe_out;
+    cmd->next = next;
+    return (cmd);
 }
 
-t_command *parse_tokens(t_token *tokens)
+static void handle_redirection(t_token **t, t_command_info *ci, int type)
 {
-	t_command *cmd_list = NULL;
-	t_command *current_cmd = NULL;
-	char **args = NULL;
-	char *infile = NULL;
-	char *outfile = NULL;
-	int append = 0, pipe_in = 0, pipe_out = 0;
+    if (!(*t)->next)
+        return;
+    *t = (*t)->next;
+    if (type == TOKEN_REDIR_IN)
+        ci->infile = (*t)->value;
+    else if (type == TOKEN_REDIR_OUT)
+        ci->outfile = (*t)->value, ci->append = 1;
+    else if (type == TOKEN_REDIR_APPEND)
+        ci->outfile = (*t)->value, ci->append = 2;
+}
 
-	while (tokens)
-	{
-		if (tokens->type == TOKEN_WORD)
-			args = add_arg(args, tokens->value);
-		else if (tokens->type == TOKEN_REDIR_IN) // "<"
-		{
-			if (tokens->next)
-			{
-				infile = tokens->next->value;
-				tokens = tokens->next;
-			}
-		}
-		else if (tokens->type == TOKEN_REDIR_OUT) // ">"
-		{
-			if (tokens->next)
-			{
-				outfile = tokens->next->value;
-				append = 1;
-				tokens = tokens->next;
-			}
-		}
-		else if (tokens->type == TOKEN_REDIR_APPEND) // ">>"
-		{
-			if (tokens->next)
-			{
-				outfile = tokens->next->value;
-				append = 2;
-				tokens = tokens->next;
-			}
-		}
-		else if (tokens->type == TOKEN_PIPE) // "|"
-		{
-			pipe_out = 1;
-			t_command *new_cmd = create_command(args, infile, outfile, append, pipe_in, pipe_out, NULL);
-			
-			if (!cmd_list)
-				cmd_list = new_cmd;
-			else
-				current_cmd->next = new_cmd;
-
-			current_cmd = new_cmd;
-			args = NULL;
-			infile = NULL;
-			outfile = NULL;
-			append = 0;
-			pipe_in = 1;
-			pipe_out = 0;
-		}
-		tokens = tokens->next;
-	}
-
-	t_command *last_cmd = create_command(args, infile, outfile, append, pipe_in, pipe_out, NULL);
-	if (!cmd_list)
-		cmd_list = last_cmd;
+static void handle_pipe(t_command **cl, t_command_info *ci, t_command **curr)
+{
+	ci->pipe_out = 1;
+	if (*cl)
+		*curr = create_command(ci, *curr);
 	else
-		current_cmd->next = last_cmd;
+	{
+		*curr = create_command(ci, NULL);
+		*cl = *curr;
+	}
+	ci->args = NULL;
+	ci->infile = NULL;
+	ci->outfile = NULL;
+	ci->append = 0;
+	ci->pipe_in = 1;
+	ci->pipe_out = 0;
+}
 
-	return (cmd_list);
+static void handle_word(t_command_info *ci, char *value)
+{
+    ci->args = add_arg(ci->args, value);
+}
+
+t_command *parse_tokens(t_token *t)
+{
+    t_command        *cl = NULL;
+    t_command        *curr = NULL;
+    t_command_info   ci = {0};
+
+    while (t)
+    {
+        if (t->type == TOKEN_WORD)
+            handle_word(&ci, t->value);
+        else if (t->type >= TOKEN_REDIR_IN && t->type <= TOKEN_REDIR_APPEND)
+            handle_redirection(&t, &ci, t->type);
+        else if (t->type == TOKEN_PIPE)
+            handle_pipe(&cl, &ci, &curr);
+        t = t->next;
+    }
+    if (cl)
+        curr->next = create_command(&ci, NULL);
+    else
+        cl = create_command(&ci, NULL);
+    return (cl);
 }
 
 void print_commands(t_command *commands)

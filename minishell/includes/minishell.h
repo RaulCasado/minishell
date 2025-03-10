@@ -74,6 +74,15 @@ typedef struct s_command
 
 }	t_command;
 
+typedef struct s_command_info {
+    char    **args;
+    char    *infile;
+    char    *outfile;
+    int     append;
+    int     pipe_in;
+    int     pipe_out;
+}   t_command_info;
+
 typedef struct s_minishell
 {
 	t_token			*tokens;
