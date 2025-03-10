@@ -6,21 +6,11 @@
 /*   By: droura-s <droura-s@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 17:30:04 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/08 13:54:51 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/03/10 14:13:31 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
-
-void	free_envp(char **envp)
-{
-	size_t	i;
-
-	i = 0;
-	while(envp[i])
-		free(envp[i++]);
-	free(envp);
-}
+#include "minishell.h"
 
 static void	free_command(t_command *command)
 {

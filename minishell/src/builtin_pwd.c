@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-int builtin_pwd(t_minishell *minishell, t_command *command)
+int	builtin_pwd(t_minishell *minishell, t_command *command)
 {
-	char    *pwd;
-	char    cwd[CWD_SIZE];
-	int     fd;
+	char	*pwd;
+	char	cwd[CWD_SIZE];
+	int	fd;
 
 	if (command->args[1])
 	{
@@ -14,16 +14,13 @@ int builtin_pwd(t_minishell *minishell, t_command *command)
 	pwd = get_env("PWD", minishell->envp);
 	if (!pwd)
 	{
-		// Fallback to current directory
-		if (!getcwd(cwd, sizeof(cwd)))
+		if (!getcwd(cwd, sizeof(cwd))) // Fallback to current directory
 		{
-			perror("Minishell: pwd");
-			// same as cd error
+			perror("Minishell: pwd"); // same as cd error
 			return (1);  // Generic error
 		}
 		pwd = cwd;
 	}
-
 	fd = STDOUT_FILENO;
 	if (write_str(pwd, fd) == -1)
 	{

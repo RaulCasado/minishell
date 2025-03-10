@@ -3,28 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 17:30:48 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/05 10:49:14 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/10 14:35:02 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int g_signal = 1;
-
-int get_signal()
-{
-	return (g_signal);
-}
-void set_signal(int signal)
-{
-	g_signal = signal;
-}
-
 //for ctrl+c shouldnt do anything
-void handle_sigint(int sig)
+void	handle_sigint(int sig)
 {
 	(void)sig;
 	printf("\n");
@@ -34,29 +23,28 @@ void handle_sigint(int sig)
 }
 
 //for ctrl+d should exit
-void handle_eof()
+void	handle_eof(void)
 {
 	printf("Saliendo de Minishell...\n");
 	set_signal(0);
 }
 
 //for ctrl+\ shouldnt do anything this is so bugged
-void handle_sigquit(int sig)
+void	handle_sigquit(int sig)
 {
 	(void)sig;
 }
 
 void	setup_signals(void)
 {
-	struct sigaction sa_int;
-	struct sigaction sa_quit;
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
 
 	// Configurar Ctrl+C (SIGINT)
 	sa_int.sa_handler = handle_sigint;
 	sa_int.sa_flags = SA_RESTART;
 	sigemptyset(&sa_int.sa_mask);
 	sigaction(SIGINT, &sa_int, NULL);
-
 	// Configurar Ctrl+\ (SIGQUIT) -> No hace nada
 	sa_quit.sa_handler = handle_sigquit;
 	sa_quit.sa_flags = SA_RESTART;

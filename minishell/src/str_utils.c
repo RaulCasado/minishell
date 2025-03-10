@@ -1,33 +1,30 @@
-
 #include "minishell.h"
 
-int write_strs(char **strs, char nl, char nll, int fd)
+int	write_strs(char **strs, char nl, char nll, int fd)
 {
-    char *sep = " ";
-    if (nll)
-        sep = "\n";
+	char	*sep;
 
-    while (*strs)
-    {
-		// we have to check if the fd ran into an error
-        if (write(fd, *strs, ft_strlen(*strs)) == -1)
-            return (-1);
-        strs++;
-        if (*strs && write(fd, sep, 1) == -1)
-            return (-1);
-    }
-
-    if (nl && write(fd, "\n", 1) == -1)
-        return (-1);
-
-    return (0);
+	sep = " ";
+	if (nll)
+		sep = "\n";
+	while (*strs)
+	{
+		if (write(fd, *strs, ft_strlen(*strs)) == -1)
+			return (-1);
+		strs++;
+		if (*strs && write(fd, sep, 1) == -1)
+			return (-1);
+	}
+	if (nl && write(fd, "\n", 1) == -1)
+		return (-1);
+	return (0);
 }
 
-int write_str(char *str, int fd)
+int	write_str(char *str, int fd)
 {
-    if (write(fd, str, ft_strlen(str)) == -1)
-        return (-1);
-    if (write(fd, "\n", 1) == -1)
-        return (-1);
-    return (0);
+	if (write(fd, str, ft_strlen(str)) == -1)
+		return (-1);
+	if (write(fd, "\n", 1) == -1)
+		return (-1);
+	return (0);
 }

@@ -10,62 +10,74 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// main principal del minichell
-
 #include "minishell.h"
 
-static void minishell_loop(char **envp)
+static void	initialize_main(t_minishell **minishell, char **envp)
 {
-	char	*input;
-	t_minishell	*minishell;
-
 	setup_signals();
 	rl_catch_signals = 0;
-	minishell = minishell_builder(envp);
+	*minishell = minishell_builder(envp);
 	if (!minishell)
-		return ; // Throw error message
+	{
+		// Throw error message
+		exit(1);
+	}
+}
+
+static int	check_input_exit(char *input)
+{
+	if (!input)
+	{
+		handle_eof();
+		return (1);
+	}
+	return (0);
+}
+
+static int	check_input_empty(char *input)
+{
+	if (*input == '\0')
+	{
+		free(input);
+		return (1);
+	}
+	return (0);
+}
+
+//print_commands(minishell->commands);
+//free_tokens(minishell->tokens); !!CUIDADO!!
+/* PROBLEM WHEN WE FREE TOKENS THE OUTFILE IS A POINTER
+TO TOKENS SO IF WE FREE TOKENS WE REMOVE THE POINTER
+FROM THE COMMAND STRUCTURE CAUSING SOME ISSUE WE SHOULD
+DUPLICATE WITH STRDUP OR SOMETHING LIKE THAT */
+static void	minishell_loop(char **envp)
+{
+	char		*input;
+	t_minishell	*minishell;
+
+	initialize_main(&minishell, envp);
 	while (get_signal() && minishell)
 	{
-		minishell->tokens = NULL;
-		minishell->commands = NULL;
-		if (isatty(STDIN_FILENO) == 0) 
-		{
+		if (isatty(STDIN_FILENO) == 0)
 			dup2(open("/dev/tty", O_RDONLY), STDIN_FILENO);
-		}
-
 		input = readline("Minishell> ");
-
-		if (!input) {
-			handle_eof();
-			break;
-		}
-		if (*input == '\0') {
-			free(input);
-			continue;
-		}
-
-		add_history(input);
-
-		//printf("Comando ingresado: %s\n", input);
-		minishell->tokens = tokenize_input(input, minishell);
-		free(input);
-
+		if (check_input_exit(input))
+			break ;
+		if (check_input_empty(input))
+			continue ;
+		add_history(input); //printf("Comando ingresado: %s\n", input);
+		minishell->tokens = tokenize_input(input, minishell); // free input
 		if (minishell->tokens)
 		{
 			minishell->commands = parse_tokens(minishell->tokens);
-			//print_commands(minishell->commands);
-			//printf("FIN COMANDOS INGRESADOS\n\n");
-			//free_tokens(minishell->tokens); !!CUIDADO!!
-			/*PROBLEM WHEN WE FREE TOKENS THE OUTFILE IS A POINTER TO TOKENS SO IF WE FREE TOKENS WE REMOVE THE POINTER FROM THE COMMAND
-			STRUCTURE CAUSING SOME ISSUE WE SHOULD DUPLICATE WITH STRDUP OR SOMETHING LIKE THAT*/
-			minishell->tokens = NULL;
-			if (command_executer(minishell)) // Error in some command execution
+			if (command_executer(minishell)) // Error in command execution
 				printf("ERROR IN COMMANDS\n");
 		}
+		// minishell_reset_loop(minishell); // Doesn't work in every case yet
+		// echo hola | env | export | echo hola > outfile
 	}
 	free_minishell(minishell);
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {

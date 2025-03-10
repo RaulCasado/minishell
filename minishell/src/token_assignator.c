@@ -1,9 +1,7 @@
-
 #include "minishell.h"
 
-t_token	*create_token(char *value)
+static t_token	*create_token(char *value)
 {
-	//value is a string allocated by malloc
 	t_token	*token;
 
 	if (!value)
@@ -27,7 +25,8 @@ t_token	*create_token(char *value)
 	token->next = NULL;
 	return (token);
 }
-void add_token(t_token **tokens, char *value)
+
+void	add_token(t_token **tokens, char *value)
 {
 	t_token	*last;
 	t_token	*new_token;
@@ -46,17 +45,22 @@ void add_token(t_token **tokens, char *value)
 	last->next = new_token;
 }
 
-const char *token_type_to_string(int type)
+const char	*token_type_to_string(int type)
 {
-	if (type == TOKEN_WORD) return "TOKEN_WORD";
-	if (type == TOKEN_PIPE) return "TOKEN_PIPE";
-	if (type == TOKEN_REDIR_IN) return "TOKEN_REDIR_IN";
-	if (type == TOKEN_REDIR_OUT) return "TOKEN_REDIR_OUT";
-	if (type == TOKEN_REDIR_APPEND) return "TOKEN_REDIR_APPEND";
-	if (type == TOKEN_HEREDOC) return "TOKEN_HEREDOC";
-	return "UNKNOWN_TOKEN"; // En caso de error
+	if (type == TOKEN_WORD)
+		return ("TOKEN_WORD");
+	if (type == TOKEN_PIPE)
+		return ("TOKEN_PIPE");
+	if (type == TOKEN_REDIR_IN)
+		return ("TOKEN_REDIR_IN");
+	if (type == TOKEN_REDIR_OUT)
+		return ("TOKEN_REDIR_OUT");
+	if (type == TOKEN_REDIR_APPEND)
+		return ("TOKEN_REDIR_APPEND");
+	if (type == TOKEN_HEREDOC)
+		return ("TOKEN_HEREDOC");
+	return ("UNKNOWN_TOKEN");
 }
-
 
 void	print_tokens(t_token *tokens)
 {

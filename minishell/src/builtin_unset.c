@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-static int find_env_var(char **envp, const char *var)
+static int	find_env_var(char **envp, const char *var)
 {
-	int i;
-	size_t len;
+	int		i;
+	size_t	len;
 
 	i = 0;
 	len = ft_strlen(var);
@@ -16,9 +16,9 @@ static int find_env_var(char **envp, const char *var)
 	return (-1);
 }
 
-static int is_valid_identifier(const char *var)
+static int	is_valid_identifier(const char *var)
 {
-	int i;
+	int	i;
 
 	if (!var || (!ft_isalpha(var[0]) && var[0] != '_'))
 		return (0);
@@ -32,9 +32,9 @@ static int is_valid_identifier(const char *var)
 	return (1);
 }
 
-static void remove_env_var(t_minishell *minishell, int pos)
+static void	remove_env_var(t_minishell *minishell, int pos)
 {
-	int i;
+	int	i;
 
 	free(minishell->envp[pos]);
 	i = pos;
@@ -46,17 +46,17 @@ static void remove_env_var(t_minishell *minishell, int pos)
 	minishell->envp[i] = NULL;
 }
 
-int builtin_unset(t_minishell *minishell, t_command *command)
+int	builtin_unset(t_minishell *minishell, t_command *command)
 {
-	int i;
-	int pos;
-	int status = 0;
+	int	i;
+	int	pos;
+	int	status;
 
+	status = 0;
 	if (!command->args[1])
 		return (0);
-
-	i = 1;
-	while (command->args[i] != NULL)
+	i = 0;
+	while (command->args[++i] != NULL)
 	{
 		if (!is_valid_identifier(command->args[i]))
 		{
@@ -71,8 +71,6 @@ int builtin_unset(t_minishell *minishell, t_command *command)
 			if (pos != -1)
 				remove_env_var(minishell, pos);
 		}
-		i++;
 	}
-
 	return (status);
 }

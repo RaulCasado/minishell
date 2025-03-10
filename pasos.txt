@@ -98,3 +98,10 @@ Soon:
 	c2r2s2% echo "$?"
 	0"
 	Error en quotes = 2?
+
+Racasado
+- Refactor Commands (3)
+Droura
+- Refactor everything else
+- Export check marks/quotes
+	>export AZUL="MAR"  ===   export AZUL=MAR<

@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 t_minishell	*minishell_builder(char **envp)
@@ -8,7 +7,7 @@ t_minishell	*minishell_builder(char **envp)
 
 	minishell = malloc(sizeof(struct s_minishell));
 	if (!minishell)
-		return(NULL);
+		return (NULL);
 	minishell->commands = NULL;
 	minishell->tokens = NULL;
 	minishell->exit_code = 0;
@@ -20,4 +19,18 @@ t_minishell	*minishell_builder(char **envp)
 	}
 	minishell->envp = new_envp;
 	return (minishell);
+}
+
+void	minishell_reset_loop(t_minishell *minishell)
+{
+	/*
+	Double frees in Outfile and Infile
+	Poorly implemented solution that *works*::
+	*/
+	minishell->commands->outfile = NULL;
+	minishell->commands->infile = NULL;
+	free_commands(minishell->commands);
+	minishell->commands = NULL;
+	free_tokens(minishell->tokens);
+	minishell->tokens = NULL;
 }
