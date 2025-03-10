@@ -13,47 +13,74 @@ void ft_free_split(char **split)
 	}
 	free(split);
 }
-char *find_command_path(char *cmd, char **envp)
+static char	*handle_direct_path(char *cmd)
 {
-    char *path_env, *path, *full_path;
-    char **paths;
-    int i;
-    
-    // Handle builtin commands or absolute/relative paths
-    if (cmd[0] == '/' || cmd[0] == '.')
-        return (ft_strdup(cmd));
-    
-    // Get PATH environment variable
-    path_env = get_env("PATH", envp);
-    if (!path_env)
-        return (NULL);
-    
-    // Split PATH into individual directories
-    paths = ft_split(path_env, ':');
-    if (!paths)
-        return (NULL);
-    
-    // Try each directory
-    i = 0;
-    while (paths[i])
-    {
-        path = ft_strjoin(paths[i], "/");
-        full_path = ft_strjoin(path, cmd);
-        free(path);
-        
-        if (access(full_path, X_OK) == 0)
-        {
-            // Clean up and return found path
-            ft_free_split(paths);
-            return (full_path);
-        }
-        
-        free(full_path);
-        i++;
-    }
-    
-    ft_free_split(paths);
-    return (NULL);
+	if (cmd[0] == '/' || cmd[0] == '.')
+		return (ft_strdup(cmd));
+	return (NULL);
+}
+
+static char	**get_path_directories(char **envp)
+{
+	char	*path_env;
+	char	**paths;
+
+	path_env = get_env("PATH", envp);
+	if (!path_env)
+		return (NULL);
+	paths = ft_split(path_env, ':');
+	return (paths);
+}
+
+static char	*try_path(char *dir, char *cmd)
+{
+	char	*path;
+	char	*full_path;
+
+	path = ft_strjoin(dir, "/");
+	if (!path)
+		return (NULL);
+	full_path = ft_strjoin(path, cmd);
+	free(path);
+	if (!full_path)
+		return (NULL);
+	if (access(full_path, X_OK) == 0)
+		return (full_path);
+	free(full_path);
+	return (NULL);
+}
+
+static char	*search_in_path(char *cmd, char **paths)
+{
+	int		i;
+	char	*result;
+
+	i = 0;
+	while (paths[i])
+	{
+		result = try_path(paths[i], cmd);
+		if (result)
+			return (result);
+		i++;
+	}
+	return (NULL);
+}
+
+char	*find_command_path(char *cmd, char **envp)
+{
+	char	*direct_path;
+	char	**paths;
+	char	*result;
+
+	direct_path = handle_direct_path(cmd);
+	if (direct_path)
+		return (direct_path);
+	paths = get_path_directories(envp);
+	if (!paths)
+		return (NULL);
+	result = search_in_path(cmd, paths);
+	ft_free_split(paths);
+	return (result);
 }
 
 
