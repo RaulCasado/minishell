@@ -104,7 +104,7 @@ void	unquoter(t_token **tokens);
 int	get_signal();
 void set_signal(int signal);
 void setup_signals(void);
-void handle_sigquit();
+void handle_sigquit(int sig);
 void handle_sigint(int sig);
 void handle_eof();
 
@@ -134,8 +134,9 @@ int 	builtin_env(t_minishell *minishell, t_command *command);
 char	builtin_exit(t_minishell *minishell, t_command *command);
 
 /*	Utils	*/
-char *get_env(char *name, char **envp);
-char **copy_envp(char **envp);
+char	*get_env(char *name, char **envp);
+char	**copy_envp(char **envp);
+int	add_or_replace_env_var(t_minishell *minishell, char *var);
 
 /*	Str Utils	*/
 int		write_strs(char **strs, char nl, char nll, int fd);

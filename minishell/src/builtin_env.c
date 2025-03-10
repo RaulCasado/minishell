@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-int builtin_env(t_minishell *minishell, t_command *command)
+int	builtin_env(t_minishell *minishell, t_command *command)
 {
-	int     fd;
-	int     write_result;
+	int	fd;
+	int	write_result;
 
 	if (command->args[1])
 	{
