@@ -6,7 +6,7 @@
 # define DOUBLE_MARK_STR "\""
 # define DOUBLE_DOUBLE_MARK_STR "\"\""
 # define DOLLAR '$'
-# define INTERROGATION '?'
+# define QUESTION_MARK '?'
 # define HYPHEN '-'
 
 # define PWD "PWD"

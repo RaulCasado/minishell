@@ -9,7 +9,6 @@ static char	*unquote_token(t_token *token, size_t value_len)
 		free(token->value);
 		return (ft_strdup(""));
 	}
-
 	new_value = malloc(sizeof(char) * (value_len - 1));
 	if (!new_value)
 	{
@@ -18,7 +17,6 @@ static char	*unquote_token(t_token *token, size_t value_len)
 	}
 	ft_memcpy(new_value, token->value + 1, value_len - 2);
 	new_value[value_len - 2] = '\0';
-
 	free(token->value);
 	return (new_value);
 }
@@ -26,15 +24,16 @@ static char	*unquote_token(t_token *token, size_t value_len)
 void	unquoter(t_token **tokens)
 {
 	t_token	*current;
+	char	*new_value;
 
 	current = *tokens;
 	while (current)
 	{
 		if (current->type == TOKEN_WORD
 			&& (current->value[0] == DOUBLE_MARK
-			|| current->value[0] == SIMPLE_MARK))
+				|| current->value[0] == SIMPLE_MARK))
 		{
-			char *new_value = unquote_token(current, ft_strlen(current->value));
+			new_value = unquote_token(current, ft_strlen(current->value));
 			if (!new_value)
 			{
 				perror("Minishell: malloc failed in unquoter");

@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 size_t	ft_token_len(t_token *token)
@@ -13,7 +12,7 @@ size_t	ft_token_len(t_token *token)
 	return (len);
 }
 
-t_token *ft_get_last(t_token *token)
+t_token	*ft_get_last(t_token *token)
 {
 	t_token	*current;
 
@@ -25,7 +24,7 @@ t_token *ft_get_last(t_token *token)
 	return (current);
 }
 
-t_token *ft_get_token(t_token *token, size_t i)
+t_token	*ft_get_token(t_token *token, size_t i)
 {
 	t_token	*current;
 
