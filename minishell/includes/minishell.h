@@ -98,6 +98,8 @@ void		minishell_reset_loop(t_minishell *minishell);
 /*	Tokenize	*/
 t_token		*tokenize_input(char *input, t_minishell *minishell);
 void		expand_tokens(t_token **tokens, t_minishell *minishell);
+char		*expand_variable(char *value, ssize_t start, ssize_t end,
+							t_minishell *minishell);
 
 /*	Parse	*/
 int			tokenize_check(t_token *tokens);

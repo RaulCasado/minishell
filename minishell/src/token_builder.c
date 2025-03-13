@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 static ssize_t	ft_symbol_len(char *ptr)
@@ -141,7 +140,7 @@ t_token	*tokenize_input(char *input, t_minishell *minishell)
 	expand_tokens(&tokens, minishell);
 	if (!tokens || !tokenize_check(tokens))
 	{
-		free_tokens(tokens);
+		free_tokens(tokens); // if !tokens why free?
 		return (NULL);
 	}
 	unquoter(&tokens);
