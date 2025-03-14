@@ -101,6 +101,7 @@ t_token		*tokenize_input(char *input, t_minishell *minishell);
 void		expand_tokens(t_token **tokens, t_minishell *minishell);
 char		*expand_variable(char *value, ssize_t start, ssize_t end,
 				t_minishell *minishell);
+int			split_input(ssize_t i, char *ptr, t_token **tokens);
 
 /*	Parse	*/
 int			tokenize_check(t_token *tokens);
@@ -162,5 +163,8 @@ int			write_str(char *str, int fd);
 
 /*	Redirections	*/
 int			handle_redirections(t_command *cmd);
+
+/*	Symbol	*/
+ssize_t		ft_symbol_len(char *ptr);
 
 #endif
