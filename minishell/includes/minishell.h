@@ -113,6 +113,7 @@ void		free_token(t_token *token);
 void		free_minishell(t_minishell *minishell);
 void		free_commands(t_command *commands);
 void		free_ptr_ptr(char **ptr, size_t len);
+void		ft_free_split(char **split);
 
 /*	Tokens	*/
 void		free_tokens(t_token *tokens);
@@ -160,11 +161,30 @@ int			add_or_replace_env_var(t_minishell *minishell, char *var);
 /*	Str Utils	*/
 int			write_strs(char **strs, char nl, char nll, int fd);
 int			write_str(char *str, int fd);
+int			ft_strcmp(const char *s1, const char *s2);
+int			is_builtin(char *cmd);
 
 /*	Redirections	*/
 int			handle_redirections(t_command *cmd);
 
-/*	Symbol	*/
+/*	Command utils */
+char		**add_arg(char **args, char *new_arg);
+t_command	*create_command(t_command_info *ci, t_command *next);
+
+/*	Executer utils */
+int			count_commands(t_command *cmd);
+int			setup_pipe(int pipe_fd[2]);
+int			handle_parent_process(int prev_pipe_in,
+				int pipe_fd[2], t_command **cmd);
+void		cleanup_fds(int fd1, int fd2);
+void		wait_for_children(t_minishell *minishell);
+void		execute_command(t_minishell *minishell, t_command *cmd);
+
+/*	Command process utils */
+char		*handle_direct_path(char *cmd);
+char		**get_path_directories(char **envp);
+
+/*	Symbol */
 ssize_t		ft_symbol_len(char *ptr);
 
 #endif

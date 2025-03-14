@@ -12,56 +12,6 @@
 
 #include "minishell.h"
 
-static int	ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 && *s1 == *s2)
-	{
-		s1++;
-		s2++;
-	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
-}
-static int	is_builtin(char *cmd)
-{
-	if (!cmd)
-		return (0);
-	return (ft_strcmp(cmd, ECHO_LOWER) == 0
-		|| ft_strcmp(cmd, CD_LOWER) == 0
-		|| ft_strcmp(cmd, PWD_LOWER) == 0
-		|| ft_strcmp(cmd, EXPORT_LOWER) == 0
-		|| ft_strcmp(cmd, UNSET_LOWER) == 0
-		|| ft_strcmp(cmd, ENV_LOWER) == 0
-		|| ft_strcmp(cmd, EXIT_LOWER) == 0);
-}
-
-static void execute_command(t_minishell *minishell, t_command *cmd)
-{
-	if (ft_strcmp(cmd->args[0], ECHO_LOWER) == 0)
-		builtin_echo(minishell, cmd);
-	else if (ft_strcmp(cmd->args[0], CD_LOWER) == 0)
-		builtin_cd(minishell, cmd);
-	else if (ft_strcmp(cmd->args[0], PWD_LOWER) == 0)
-		builtin_pwd(minishell, cmd);
-	else if (ft_strcmp(cmd->args[0], EXPORT_LOWER) == 0)
-		builtin_export(minishell, cmd);
-	else if (ft_strcmp(cmd->args[0], UNSET_LOWER) == 0)
-		builtin_unset(minishell, cmd);
-	else if (ft_strcmp(cmd->args[0], ENV_LOWER) == 0)
-		builtin_env(minishell, cmd);
-	else if (ft_strcmp(cmd->args[0], EXIT_LOWER) == 0)
-		builtin_exit(minishell, cmd);
-	else
-		command_process(minishell, cmd);
-}
-
-static void	cleanup_fds(int fd1, int fd2)
-{
-	if (fd1 != 0)
-		close(fd1);
-	if (fd2 != 0)
-		close(fd2);
-}
-
 static void	execute_single_builtin(t_minishell *minishell, t_command *cmd)
 {
 	int	saved_stdin;
@@ -75,31 +25,6 @@ static void	execute_single_builtin(t_minishell *minishell, t_command *cmd)
 	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdin);
 	close(saved_stdout);
-}
-
-static int	count_commands(t_command *cmd)
-{
-	int			num_commands;
-	t_command	*tmp;
-
-	num_commands = 0;
-	tmp = cmd;
-	while (tmp)
-	{
-		num_commands++;
-		tmp = tmp->next;
-	}
-	return (num_commands);
-}
-
-static int	setup_pipe(int pipe_fd[2])
-{
-	if (pipe(pipe_fd) == -1)
-	{
-		perror("minishell: pipe");
-		return (1);
-	}
-	return (0);
 }
 
 static int	setup_child_process(t_minishell *minishell, t_command *cmd,
@@ -118,29 +43,6 @@ static int	setup_child_process(t_minishell *minishell, t_command *cmd,
 	execute_command(minishell, cmd);
 	exit(EXIT_SUCCESS);
 	return (0);
-}
-
-static int	handle_parent_process(int prev_pipe_in, int pipe_fd[2], t_command **cmd)
-{
-	if (prev_pipe_in != 0)
-		close(prev_pipe_in);
-	close(pipe_fd[1]);
-	*cmd = (*cmd)->next;
-	return (pipe_fd[0]);
-}
-
-static void	wait_for_children(t_minishell *minishell)
-{
-	pid_t	pid;
-	int		status;
-
-	while ((pid = waitpid(-1, &status, 0)) > 0)
-		;
-	if (WIFEXITED(status))
-	{
-		minishell->exit_code = WEXITSTATUS(status);
-		printf("Exit status of the child was %d\n", minishell->exit_code);
-	}
 }
 
 static int	create_process(t_minishell *minishell, t_command **cmd,

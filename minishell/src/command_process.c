@@ -12,37 +12,6 @@
 
 #include "minishell.h"
 
-void ft_free_split(char **split)
-{
-	int i;
-	
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
-static char	*handle_direct_path(char *cmd)
-{
-	if (cmd[0] == '/' || cmd[0] == '.')
-		return (ft_strdup(cmd));
-	return (NULL);
-}
-
-static char	**get_path_directories(char **envp)
-{
-	char	*path_env;
-	char	**paths;
-
-	path_env = get_env("PATH", envp);
-	if (!path_env)
-		return (NULL);
-	paths = ft_split(path_env, ':');
-	return (paths);
-}
-
 static char	*try_path(char *dir, char *cmd)
 {
 	char	*path;
@@ -94,11 +63,10 @@ char	*find_command_path(char *cmd, char **envp)
 	return (result);
 }
 
-
-char command_process(t_minishell *minishell, t_command *command)
+char	command_process(t_minishell *minishell, t_command *command)
 {
-	char *path;
-	
+	char	*path;
+
 	if (!command->args[0])
 		return (1);
 	path = find_command_path(command->args[0], minishell->envp);

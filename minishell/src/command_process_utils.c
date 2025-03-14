@@ -1,46 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   memory_extras.c                                    :+:      :+:    :+:   */
+/*   command_process_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/10 14:06:08 by droura-s          #+#    #+#             */
-/*   Updated: 2025/03/14 18:57:27 by racasado         ###   ########.fr       */
+/*   Created: 2025/03/14 18:55:25 by racasado          #+#    #+#             */
+/*   Updated: 2025/03/14 19:00:00 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_envp(char **envp)
+char	*handle_direct_path(char *cmd)
 {
-	size_t	i;
-
-	i = 0;
-	while (envp[i])
-		free(envp[i++]);
-	free(envp);
+	if (cmd[0] == '/' || cmd[0] == '.')
+		return (ft_strdup(cmd));
+	return (NULL);
 }
 
-void	free_ptr_ptr(char **ptr, size_t len)
+char	**get_path_directories(char **envp)
 {
-	ssize_t	i;
+	char	*path_env;
+	char	**paths;
 
-	i = 0;
-	while (i < len)
-		free(ptr[i++]);
-	free(ptr);
-}
-
-void ft_free_split(char **split)
-{
-	int i;
-	
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
+	path_env = get_env("PATH", envp);
+	if (!path_env)
+		return (NULL);
+	paths = ft_split(path_env, ':');
+	return (paths);
 }
