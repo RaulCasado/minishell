@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_executer.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/14 17:30:34 by racasado          #+#    #+#             */
+/*   Updated: 2025/03/14 17:30:34 by racasado         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	ft_strcmp(const char *s1, const char *s2)
@@ -41,10 +53,6 @@ static void execute_command(t_minishell *minishell, t_command *cmd)
 	else
 		command_process(minishell, cmd);
 }
-// btw we should check the fd of every builtin funciton since the
-// redirections are handled in the execute_command function
-// instead of the builtin functions themselves for example
-// (no se como explicarme en ingles pero lo que teniamos de si el fd no es 1 xd y cosas asi) done i think check it later
 
 static void	cleanup_fds(int fd1, int fd2)
 {

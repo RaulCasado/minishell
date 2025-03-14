@@ -1,10 +1,15 @@
-// this function is used to export environment variables
-// it can also be used to print the environment variables
-// if no arguments are passed
-// it will print the environment variables in sorted order
-// if arguments are passed, it will add or replace the environment variables
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_export.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/14 17:23:31 by racasado          #+#    #+#             */
+/*   Updated: 2025/03/14 17:40:37 by racasado         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// READ UNSET BUILTIN COMMENTS FIRST PLS
 #include "minishell.h"
 
 static int	is_valid_identifier(const char *var)
@@ -48,38 +53,38 @@ static void	print_sorted_env(char **envp)
 	}
 }
 
+static void	process_export_arg(t_minishell *minishell, char *arg
+	, int *exit_code)
+{
+	if (!is_valid_identifier(arg))
+	{
+		ft_putstr_fd("Minishell: export: `", STDERR_FILENO);
+		*exit_code = 1;
+		return ;
+	}
+	if (add_or_replace_env_var(minishell, arg) != 0)
+	{
+		ft_putendl_fd("Minishell: export: memory allocation failed",
+			STDERR_FILENO);
+		*exit_code = 1;
+	}
+}
+
 int	builtin_export(t_minishell *minishell, t_command *command)
 {
-	int	i;
 	int	exit_code;
-	int	result;
+	int	i;
 
 	exit_code = 0;
 	if (!command->args[1])
 	{
 		print_sorted_env(minishell->envp);
-		return (0); // Success: printed environment
+		return (0);
 	}
 	i = 1;
 	while (command->args[i])
 	{
-		if (!is_valid_identifier(command->args[i]))
-		{
-			// Error: invalid identifier (exit code 1)
-			ft_putstr_fd("Minishell: export: `", STDERR_FILENO);
-			exit_code = 1;
-		}
-		else
-		{
-			result = add_or_replace_env_var(minishell, command->args[i]);
-			if (result != 0)
-			{
-				// Error: memory allocation failure (exit code 1)
-				ft_putendl_fd("Minishell: export: memory allocation failed",
-					STDERR_FILENO);
-				exit_code = 1;
-			}
-		}
+		process_export_arg(minishell, command->args[i], &exit_code);
 		i++;
 	}
 	return (exit_code);

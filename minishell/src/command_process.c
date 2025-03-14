@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_process.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/14 17:30:47 by racasado          #+#    #+#             */
+/*   Updated: 2025/03/14 17:30:47 by racasado         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -86,28 +97,20 @@ char	*find_command_path(char *cmd, char **envp)
 
 char command_process(t_minishell *minishell, t_command *command)
 {
-    char *path;
-    
-    // Handle command not found
-    if (!command->args[0])
-        return (1);
-    
-    // Get command path
-    path = find_command_path(command->args[0], minishell->envp);
-    if (!path)
-    {
-        ft_putstr_fd(command->args[0], 2);
-        ft_putstr_fd(": command not found\n", 2);
-        exit(127);
-    }
-    
-    // Execute command with all arguments and environment
-    execve(path, command->args, minishell->envp);
-    
-    // If execve fails
-    perror("minishell");
-    free(path);
-    exit(1);
-    
-    return (0); // This line is never reached
+	char *path;
+	
+	if (!command->args[0])
+		return (1);
+	path = find_command_path(command->args[0], minishell->envp);
+	if (!path)
+	{
+		ft_putstr_fd(command->args[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+		exit(127);
+	}
+	execve(path, command->args, minishell->envp);
+	perror("minishell");
+	free(path);
+	exit(1);
+	return (0);
 }

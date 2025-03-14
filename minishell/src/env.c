@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/14 17:31:23 by racasado          #+#    #+#             */
+/*   Updated: 2025/03/14 17:31:41 by racasado         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*get_env(char *name, char **envp)
@@ -13,7 +25,6 @@ char	*get_env(char *name, char **envp)
 	{
 		if (ft_strncmp(envp[i], name, len) == 0 && envp[i][len] == '=')
 			return (&envp[i][len + 1]);
-			// Return the value after the '=' character
 		i++;
 	}
 	return (NULL);
@@ -98,13 +109,13 @@ int	add_or_replace_env_var(t_minishell *minishell, char *var)
 
 	equal_sign = ft_strchr(var, '=');
 	if (!equal_sign)
-		return (0); // No '=', not an error
+		return (0);
 	pos = find_env_var(minishell->envp, var);
 	if (pos != -1)
 	{
-		new_value = ft_strdup(var); // Create copy first
+		new_value = ft_strdup(var);
 		if (!new_value)
-			return (1); // Allocation error
+			return (1);
 		free(minishell->envp[pos]);
 		minishell->envp[pos] = new_value;
 	}
@@ -112,7 +123,7 @@ int	add_or_replace_env_var(t_minishell *minishell, char *var)
 	{
 		new_envp = add_env_var(minishell, var);
 		if (!new_envp)
-			return (1); // Allocation error
+			return (1);
 		minishell->envp = new_envp;
 	}
 	return (0);

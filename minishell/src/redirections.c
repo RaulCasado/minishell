@@ -1,7 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/14 17:32:48 by racasado          #+#    #+#             */
+/*   Updated: 2025/03/14 17:32:48 by racasado         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-#include <fcntl.h>
-#include <unistd.h>
-#include <errno.h>
 
 static int	open_output_file(char *file, int append)
 {
@@ -37,6 +46,7 @@ static char	handle_outfile(t_command *cmd)
 		return (1);
 	}
 	close(fd);
+	return (0);
 }
 
 static char	handle_infile(t_command *cmd)
@@ -56,6 +66,7 @@ static char	handle_infile(t_command *cmd)
 		return (1);
 	}
 	close(fd);
+	return (0);
 }
 
 int	handle_redirections(t_command *cmd)

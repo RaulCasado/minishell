@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/14 18:03:37 by racasado          #+#    #+#             */
+/*   Updated: 2025/03/14 18:03:37 by racasado         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -21,32 +33,27 @@
 
 # define CWD_SIZE 1024
 
+# include "libft/libft.h"
+# include <errno.h>
+# include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h>
 # include <string.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <signal.h>
 # include <sys/types.h>
-# include "libft/libft.h"
-# include <fcntl.h>
-# include <sys/wait.h> // needed for wait_pid
-# include <errno.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 typedef enum e_token_type
 {
-	TOKEN_WORD, // normal word
-	TOKEN_PIPE, // |
-	TOKEN_REDIR_IN, // <
-	TOKEN_REDIR_OUT, // >
-	TOKEN_REDIR_APPEND, // >>
-	TOKEN_HEREDOC, // <<
-	// we could add TOKEN_ENV_VAR OR TOKEN_FLAG
-	//	but right now its in TOKEN_WORD
-	//TOKEN_COMMAND,
-	// maybe join it with TOKEN_WORD because
-	// its difficult to differentiate
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_REDIR_APPEND,
+	TOKEN_HEREDOC,
 }	t_token_type;
 
 typedef struct s_token
@@ -58,37 +65,31 @@ typedef struct s_token
 
 typedef struct s_command
 {
-	// something like this is needed
-	char				**args; // ["ls", "-l" "-h", NULL]
-	int					pipe_in; // STDIN_FILENO
-	int					pipe_out; // STDOUT_FILENO
-	// here we can add more stuff like redirections
-	// if this exists we need to redirect stdin to this file
+	char				**args;
+	int					pipe_in;
+	int					pipe_out;
 	char				*infile;
-	// if this exists we need to redirect stdout to this file
 	char				*outfile;
-	// if outfile exists we should check if it is going to be appended
 	int					append;
-	// if this is 1 we need to append to the file instead of overwriting it (0)
 	struct s_command	*next;
-
 }	t_command;
 
-typedef struct s_command_info {
-    char    **args;
-    char    *infile;
-    char    *outfile;
-    int     append;
-    int     pipe_in;
-    int     pipe_out;
-}   t_command_info;
+typedef struct s_command_info
+{
+	char	**args;
+	char	*infile;
+	char	*outfile;
+	int		append;
+	int		pipe_in;
+	int		pipe_out;
+}	t_command_info;
 
 typedef struct s_minishell
 {
-	t_token			*tokens;
-	t_command		*commands;
-	char			**envp;
-	int				exit_code;
+	t_token		*tokens;
+	t_command	*commands;
+	char		**envp;
+	int			exit_code;
 }	t_minishell;
 
 /*	Minishell	*/
@@ -99,7 +100,7 @@ void		minishell_reset_loop(t_minishell *minishell);
 t_token		*tokenize_input(char *input, t_minishell *minishell);
 void		expand_tokens(t_token **tokens, t_minishell *minishell);
 char		*expand_variable(char *value, ssize_t start, ssize_t end,
-							t_minishell *minishell);
+				t_minishell *minishell);
 
 /*	Parse	*/
 int			tokenize_check(t_token *tokens);

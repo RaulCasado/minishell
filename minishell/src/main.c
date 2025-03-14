@@ -44,12 +44,6 @@ static int	check_input_empty(char *input)
 	return (0);
 }
 
-//print_commands(minishell->commands);
-//free_tokens(minishell->tokens); !!CUIDADO!!
-/* PROBLEM WHEN WE FREE TOKENS THE OUTFILE IS A POINTER
-TO TOKENS SO IF WE FREE TOKENS WE REMOVE THE POINTER
-FROM THE COMMAND STRUCTURE CAUSING SOME ISSUE WE SHOULD
-DUPLICATE WITH STRDUP OR SOMETHING LIKE THAT */
 static void	minishell_loop(char **envp)
 {
 	char		*input;
@@ -65,7 +59,7 @@ static void	minishell_loop(char **envp)
 			break ;
 		if (check_input_empty(input))
 			continue ;
-		add_history(input); //printf("Comando ingresado: %s\n", input);
+		add_history(input);
 		minishell->tokens = tokenize_input(input, minishell); // free input
 		if (minishell->tokens)
 		{
@@ -81,7 +75,7 @@ static void	minishell_loop(char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	(void)argv; // i dont know if we will need this in the future
+	(void)argv;
 	if (argc > 1)
 	{
 		ft_putendl_fd("Error: Minishell no acepta argumentos", 2);
