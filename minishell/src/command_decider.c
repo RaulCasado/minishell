@@ -6,13 +6,13 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 18:52:54 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/14 18:53:02 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/15 21:24:51 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void execute_command(t_minishell *minishell, t_command *cmd)
+void	execute_command(t_minishell *minishell, t_command *cmd)
 {
 	if (ft_strcmp(cmd->args[0], ECHO_LOWER) == 0)
 		builtin_echo(minishell, cmd);

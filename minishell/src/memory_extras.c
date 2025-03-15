@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 14:06:08 by droura-s          #+#    #+#             */
-/*   Updated: 2025/03/14 18:57:27 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/15 21:25:40 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ void	free_ptr_ptr(char **ptr, size_t len)
 	free(ptr);
 }
 
-void ft_free_split(char **split)
+void	ft_free_split(char **split)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	while (split[i])
 	{

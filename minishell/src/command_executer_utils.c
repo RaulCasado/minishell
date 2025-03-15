@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 18:47:07 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/14 18:51:36 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/15 21:26:34 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ void	wait_for_children(t_minishell *minishell)
 	pid_t	pid;
 	int		status;
 
-	while ((pid = waitpid(-1, &status, 0)) > 0)
-		;
+	pid = waitpid(-1, &status, 0);
+	while (pid > 0)
+		pid = waitpid(-1, &status, 0);
 	if (WIFEXITED(status))
 	{
 		minishell->exit_code = WEXITSTATUS(status);
