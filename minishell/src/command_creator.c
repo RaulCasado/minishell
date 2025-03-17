@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:30:13 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/14 18:41:28 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/17 11:48:43 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	handle_word(t_command_info *ci, char *value)
 	ci->args = add_arg(ci->args, value);
 }
 
-static void	process_token(t_token *t, t_command_info *ci,
+static t_token	*process_token(t_token *t, t_command_info *ci,
 		t_command **cl, t_command **curr)
 {
 	if (t->type == TOKEN_WORD)
@@ -63,6 +63,7 @@ static void	process_token(t_token *t, t_command_info *ci,
 		handle_redirection(&t, ci, t->type);
 	else if (t->type == TOKEN_PIPE)
 		handle_pipe(cl, ci, curr);
+	return (t->next);
 }
 
 t_command	*parse_tokens(t_token *t)
@@ -81,8 +82,7 @@ t_command	*parse_tokens(t_token *t)
 	ci.pipe_out = 0;
 	while (t)
 	{
-		process_token(t, &ci, &cl, &curr);
-		t = t->next;
+		t = process_token(t, &ci, &cl, &curr);
 	}
 	if (cl)
 		curr->next = create_command(&ci, NULL);
