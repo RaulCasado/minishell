@@ -39,8 +39,6 @@ void	minishell_reset_loop(t_minishell *minishell)
 	Double frees in Outfile and Infile
 	Poorly implemented solution that *works*::
 	*/
-	minishell->commands->outfile = NULL;
-	minishell->commands->infile = NULL;
 	free_commands(minishell->commands);
 	minishell->commands = NULL;
 	free_tokens(minishell->tokens);

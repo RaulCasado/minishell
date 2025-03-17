@@ -170,6 +170,7 @@ int			handle_redirections(t_command *cmd);
 /*	Command utils */
 char		**add_arg(char **args, char *new_arg);
 t_command	*create_command(t_command_info *ci, t_command *next);
+void		reset_command_info(t_command_info *ci);
 
 /*	Executer utils */
 int			count_commands(t_command *cmd);

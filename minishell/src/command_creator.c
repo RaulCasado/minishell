@@ -12,55 +12,62 @@
 
 #include "minishell.h"
 
-static void	handle_redirection(t_token **t, t_command_info *ci, int type)
+void	handle_redirection(t_token **t, t_command_info *ci)
 {
-	if (!((*t)->next))
+	if (!(*t)->next)
 		return ;
 	*t = (*t)->next;
-	if (type == TOKEN_REDIR_IN)
-		ci->infile = (*t)->value;
-	else if (type == TOKEN_REDIR_OUT)
+	if ((*t)->type == TOKEN_REDIR_IN)
 	{
-		ci->outfile = (*t)->value;
+		free(ci->infile);
+		ci->infile = ft_strdup((*t)->value); // what if ft_strdup fails
+	}
+	else if ((*t)->type == TOKEN_REDIR_OUT)
+	{
+		free(ci->outfile);
+		ci->outfile = ft_strdup((*t)->value); // what if ft_strdup fails
 		ci->append = 1;
 	}
-	else if (type == TOKEN_REDIR_APPEND)
+	else if ((*t)->type == TOKEN_REDIR_APPEND)
 	{
-		ci->outfile = (*t)->value;
+		free(ci->outfile);
+		ci->outfile = ft_strdup((*t)->value); // what if ft_strdup fails
 		ci->append = 2;
 	}
 }
 
-static void	handle_pipe(t_command **cl, t_command_info *ci, t_command **curr)
+void	handle_pipe(t_command **cl, t_command_info *ci, t_command **curr)
 {
 	ci->pipe_out = 1;
 	if (*cl)
-		*curr = create_command(ci, *curr);
+	{
+		(*curr)->next = create_command(ci, NULL);
+		*curr = (*curr)->next;
+	}
 	else
 	{
-		*curr = create_command(ci, NULL);
-		*cl = *curr;
+		*cl = create_command(ci, NULL);
+		*curr = *cl;
 	}
-	ci->args = NULL;
-	ci->infile = NULL;
-	ci->outfile = NULL;
-	ci->append = 0;
+	reset_command_info(ci);
 	ci->pipe_in = 1;
-	ci->pipe_out = 0;
 }
 
-static void	handle_word(t_command_info *ci, char *value)
+void	handle_word(t_command_info *ci, char *value)
 {
 	ci->args = add_arg(ci->args, value);
 }
 
-static t_token	*process_token(t_token *t, t_command_info *ci,
-		t_command **cl, t_command **curr)
+t_token	*process_token(t_token *t, t_command_info *ci,
+	t_command **cl, t_command **curr)
 {
 	if (t->type == TOKEN_WORD)
 		handle_word(ci, t->value);
 	else if (t->type >= TOKEN_REDIR_IN && t->type <= TOKEN_REDIR_APPEND)
-		handle_redirection(&t, ci, t->type);
+	{
+		handle_redirection(&t, ci);
+		return (t);
+	}
 	else if (t->type == TOKEN_PIPE)
 		handle_pipe(cl, ci, curr);
 	return (t->next);
@@ -70,23 +77,21 @@ t_command	*parse_tokens(t_token *t)
 {
 	t_command		*cl;
 	t_command		*curr;
+	t_command		*last_cmd;
 	t_command_info	ci;
 
 	cl = NULL;
 	curr = NULL;
-	ci.args = NULL;
-	ci.infile = NULL;
-	ci.outfile = NULL;
-	ci.append = 0;
-	ci.pipe_in = 0;
-	ci.pipe_out = 0;
+	reset_command_info(&ci);
 	while (t)
-	{
 		t = process_token(t, &ci, &cl, &curr);
+	if (ci.args || ci.infile || ci.outfile)
+	{
+		last_cmd = create_command(&ci, NULL);
+		if (!cl)
+			cl = last_cmd;
+		else
+			curr->next = last_cmd;
 	}
-	if (cl)
-		curr->next = create_command(&ci, NULL);
-	else
-		cl = create_command(&ci, NULL);
 	return (cl);
 }

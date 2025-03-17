@@ -65,6 +65,6 @@ void	wait_for_children(t_minishell *minishell)
 	if (WIFEXITED(status))
 	{
 		minishell->exit_code = WEXITSTATUS(status);
-		printf("Exit status of the child was %d\n", minishell->exit_code);
+		// printf("Exit status of the child was %d\n", minishell->exit_code);
 	}
 }

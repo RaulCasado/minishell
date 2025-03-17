@@ -12,6 +12,26 @@
 
 #include "minishell.h"
 
+static char	*copy_or_null(char *file)
+{
+	char	*copy;
+
+	copy = NULL;
+	if (file)
+		copy = ft_strdup(file);
+	return (copy);
+}
+
+void	reset_command_info(t_command_info *ci)
+{
+	ci->args = NULL;
+	ci->infile = NULL;
+	ci->outfile = NULL;
+	ci->append = 0;
+	ci->pipe_in = 0;
+	ci->pipe_out = 0;
+}
+
 t_command	*create_command(t_command_info *ci, t_command *next)
 {
 	t_command	*cmd;
@@ -20,12 +40,13 @@ t_command	*create_command(t_command_info *ci, t_command *next)
 	if (!cmd)
 		return (NULL);
 	cmd->args = ci->args;
-	cmd->infile = ci->infile;
-	cmd->outfile = ci->outfile;
+	cmd->infile = copy_or_null(ci->infile); // what if ft_strdup fails
+	cmd->outfile = copy_or_null(ci->outfile); // what if ft_strdup fails
 	cmd->append = ci->append;
 	cmd->pipe_in = ci->pipe_in;
 	cmd->pipe_out = ci->pipe_out;
 	cmd->next = next;
+	reset_command_info(ci);
 	return (cmd);
 }
 

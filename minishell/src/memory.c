@@ -30,7 +30,6 @@ static void	free_command(t_command *command)
 void	free_commands(t_command *commands)
 {
 	t_command	*tmp_cmd;
-	size_t		i;
 
 	while (commands)
 	{
@@ -64,6 +63,8 @@ void	free_tokens(t_token *tokens)
 	{
 		tmp = tokens;
 		tokens = tokens->next;
+		/*if (tmp->type != TOKEN_REDIR_IN && tmp->type != TOKEN_REDIR_OUT
+			&& tmp->type != TOKEN_HEREDOC && tmp->type != TOKEN_REDIR_APPEND)*/
 		free(tmp->value);
 		free(tmp);
 	}
