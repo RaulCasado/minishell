@@ -94,7 +94,7 @@ typedef struct s_minishell
 
 /*	Minishell	*/
 t_minishell	*minishell_builder(char **envp);
-void		minishell_reset_loop(t_minishell *minishell);
+void		minishell_reset_loop(char *input, t_minishell *minishell);
 
 /*	Tokenize	*/
 t_token		*tokenize_input(char *input, t_minishell *minishell);
@@ -140,7 +140,6 @@ void		print_tokens(t_token *tokens);
 
 /*	Commands	*/
 t_command	*parse_tokens(t_token *tokens);
-void		print_commands(t_command *commands);
 char		command_executer(t_minishell *minishell);
 char		command_process(t_minishell *minishell, t_command *command);
 

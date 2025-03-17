@@ -63,8 +63,6 @@ void	free_tokens(t_token *tokens)
 	{
 		tmp = tokens;
 		tokens = tokens->next;
-		/*if (tmp->type != TOKEN_REDIR_IN && tmp->type != TOKEN_REDIR_OUT
-			&& tmp->type != TOKEN_HEREDOC && tmp->type != TOKEN_REDIR_APPEND)*/
 		free(tmp->value);
 		free(tmp);
 	}

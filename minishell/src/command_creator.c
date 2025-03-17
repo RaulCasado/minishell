@@ -14,24 +14,26 @@
 
 void	handle_redirection(t_token **t, t_command_info *ci)
 {
-	if (!(*t)->next)
+	t_token	*next;
+
+	next = (*t)->next;
+	if (!next)
 		return ;
-	*t = (*t)->next;
-	if ((*t)->type == TOKEN_REDIR_IN)
+	if (next->type == TOKEN_REDIR_IN)
 	{
 		free(ci->infile);
-		ci->infile = ft_strdup((*t)->value); // what if ft_strdup fails
+		ci->infile = ft_strdup(next->value); // what if ft_strdup fails
 	}
-	else if ((*t)->type == TOKEN_REDIR_OUT)
+	else if (next->type == TOKEN_REDIR_OUT)
 	{
 		free(ci->outfile);
-		ci->outfile = ft_strdup((*t)->value); // what if ft_strdup fails
+		ci->outfile = ft_strdup(next->value); // what if ft_strdup fails
 		ci->append = 1;
 	}
-	else if ((*t)->type == TOKEN_REDIR_APPEND)
+	else if (next->type == TOKEN_REDIR_APPEND)
 	{
 		free(ci->outfile);
-		ci->outfile = ft_strdup((*t)->value); // what if ft_strdup fails
+		ci->outfile = ft_strdup(next->value); // what if ft_strdup fails
 		ci->append = 2;
 	}
 }
@@ -64,10 +66,7 @@ t_token	*process_token(t_token *t, t_command_info *ci,
 	if (t->type == TOKEN_WORD)
 		handle_word(ci, t->value);
 	else if (t->type >= TOKEN_REDIR_IN && t->type <= TOKEN_REDIR_APPEND)
-	{
 		handle_redirection(&t, ci);
-		return (t);
-	}
 	else if (t->type == TOKEN_PIPE)
 		handle_pipe(cl, ci, curr);
 	return (t->next);

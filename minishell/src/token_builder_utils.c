@@ -81,6 +81,5 @@ int	split_input(ssize_t i, char *ptr, t_token **tokens)
 				return (0);
 		}
 	}
-	free(ptr);
 	return (1);
 }
