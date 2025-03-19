@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:23:15 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/14 17:23:16 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/19 11:58:55 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ char	builtin_exit(t_minishell *minishell, t_command *cmd)
 	}
 	else
 		exit_code = minishell->exit_code;
-	printf("Saliendo de Minishell...\n");
 	free_minishell(minishell);
 	exit(exit_code);
 }

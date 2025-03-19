@@ -101,27 +101,14 @@ Soon:
 
 
 
-Minishell> ls -h
-==3999== Syscall param close(fd) contains uninitialised byte(s)
-==3999==    at 0x49CBF67: close (close.c:27)
-==3999==    by 0x10BCD1: setup_child_process (in /mnt/c/Users/danie/minichell/minishell/minishell)
-==3999==    by 0x10BD7E: create_process (in /mnt/c/Users/danie/minichell/minishell/minishell)
-==3999==    by 0x10BE4B: execute_pipeline (in /mnt/c/Users/danie/minichell/minishell/minishell)
-==3999==    by 0x10BEFA: command_executer (in /mnt/c/Users/danie/minichell/minishell/minishell)
-==3999==    by 0x10966A: minishell_loop (in /mnt/c/Users/danie/minichell/minishell/minishell)
-==3999==    by 0x10970D: main (in /mnt/c/Users/danie/minichell/minishell/minishell)
-==3999== 
-==3999== Warning: invalid file descriptor 1090453 in syscall close()
-
-
-
 Racasado
-- Refactor Commands (3)
+
 Droura
-- Refactor everything else
+
 - Export check marks/quotes
 	>export AZUL="MAR"  ===   export AZUL=MAR<
-- Memory fixes => Leaks => Main has an explanation of the problem
-- valgrind --leak-check=full -s ./minishell
-	- Minishell> a
-	- Errors
+
+- Spaces in echo must been check
+- Rerefactor the commands to follow the norme
+- Check the leaks
+- Check the exit code

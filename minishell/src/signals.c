@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 17:30:48 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/10 14:35:02 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/03/19 11:58:59 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	handle_sigint(int sig)
 //for ctrl+d should exit
 void	handle_eof(void)
 {
-	printf("Saliendo de Minishell...\n");
 	set_signal(0);
 }
 

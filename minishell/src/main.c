@@ -52,8 +52,6 @@ static void	minishell_loop(char **envp)
 	initialize_main(&minishell, envp);
 	while (get_signal() && minishell)
 	{
-		if (isatty(STDIN_FILENO) == 0)
-			dup2(open("/dev/tty", O_RDONLY), STDIN_FILENO);
 		input = readline("Minishell> ");
 		if (check_input_exit(input))
 			break ;

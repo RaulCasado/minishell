@@ -15,7 +15,8 @@
 static int	setup_child_process(t_minishell *minishell, t_command *cmd,
 	int prev_pipe_in, int pipe_fd[2])
 {
-	if (prev_pipe_in >= 0)
+	// Only dup2 if prev_pipe_in is valid (not -1)
+	if (prev_pipe_in != -1)
 	{
 		dup2(prev_pipe_in, STDIN_FILENO);
 		close(prev_pipe_in);
@@ -53,12 +54,15 @@ static int	create_process(t_minishell *minishell, t_command **cmd,
 		else
 			*prev_pipe_in = 0;
 	}
-	else if (*prev_pipe_in > 0)
+	else
 	{
-		cleanup_fds(*prev_pipe_in, 0);
-		*prev_pipe_in = 0;
+		*cmd = (*cmd)->next;
+		if (*prev_pipe_in > 0)
+		{
+			cleanup_fds(*prev_pipe_in, 0);
+			*prev_pipe_in = 0;
+		}
 	}
-	*cmd = (*cmd)->next;
 	return (0);
 }
 
@@ -82,13 +86,23 @@ static int	execute_pipeline(t_minishell *minishell, t_command *cmd)
 	int		pipe_fd[2];
 	int		prev_pipe_in;
 
-	pipe_fd[0] = -1; // Default to 0 is a bad idea, 0 is STD_IN
-	pipe_fd[1] = -1; // So we use -1 and check if it's open with ">= 0"
-	prev_pipe_in = 0;
+	pipe_fd[0] = -1; // Default: invalid
+	pipe_fd[1] = -1;
+	// Use -1 for an invalid fd (instead of 0, which is STDIN)
+	prev_pipe_in = -1;
 	while (cmd)
 	{
-		if (cmd->next && setup_pipe(pipe_fd))
-			return (1);
+		if (cmd->next)
+		{
+			if (setup_pipe(pipe_fd))
+				return (1);
+		}
+		else
+		{
+			// For the last command, ensure no pipe is used.
+			pipe_fd[0] = -1;
+			pipe_fd[1] = -1;
+		}
 		if (create_process(minishell, &cmd, &prev_pipe_in, pipe_fd))
 			return (1);
 	}
@@ -103,9 +117,17 @@ char	command_executer(t_minishell *minishell)
 
 	cmd = minishell->commands;
 	num_commands = count_commands(cmd);
+	// Single builtin: execute in parent with proper fd backup/restoration
 	if (num_commands == 1 && is_builtin(cmd->args[0]))
 	{
-		execute_single_builtin(minishell, cmd);
+		int saved_stdin = dup(STDIN_FILENO);
+		int saved_stdout = dup(STDOUT_FILENO);
+		handle_redirections(cmd);
+		execute_command(minishell, cmd);
+		dup2(saved_stdin, STDIN_FILENO);
+		dup2(saved_stdout, STDOUT_FILENO);
+		close(saved_stdin);
+		close(saved_stdout);
 		return (0);
 	}
 	return (execute_pipeline(minishell, cmd));

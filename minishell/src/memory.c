@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 17:30:04 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/10 14:13:31 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/03/19 11:47:52 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	free_minishell(t_minishell *minishell)
 	rl_clear_history();
 	free_commands(minishell->commands);
 	free_tokens(minishell->tokens);
-	free(minishell->tokens);
+	//free(minishell->tokens);
 	free_envp(minishell->envp);
 	free(minishell);
 }
