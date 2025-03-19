@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:23:31 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/14 17:40:37 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:47:42 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,12 @@ int	builtin_export(t_minishell *minishell, t_command *command)
 	i = 1;
 	while (command->args[i])
 	{
+		/* if (command->args[i][ft_strlen(command->args[i])-1] == '=')
+		{
+			process_export_arg(minishell, ft_strjoin(command->args[i], command->args[i + 1]), &exit_code);
+			i++;
+		}
+		else */
 		process_export_arg(minishell, command->args[i], &exit_code);
 		i++;
 	}

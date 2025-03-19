@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_builder.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:10 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/14 17:33:11 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/19 13:08:59 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ t_token	*tokenize_input(char *input, t_minishell *minishell)
 		return (NULL);
 	if (!tokens)
 		return (NULL);
+	print_tokens(tokens);
 	expand_tokens(&tokens, minishell);
+	print_tokens(tokens);
 	if (!tokenize_check(tokens))
 	{
 		free_tokens(tokens);

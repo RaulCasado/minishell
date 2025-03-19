@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   token_unquoter.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:52 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/14 17:33:52 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:28:01 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*unquote_token(t_token *token, size_t value_len)
+char	*unquote_token(t_token *token, size_t value_len)
 {
 	char	*new_value;
 

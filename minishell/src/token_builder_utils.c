@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_builder_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com    +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 18:54:11 by droura-s          #+#    #+#             */
-/*   Updated: 2025/03/14 18:54:11 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:58:54 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static int	handle_word(char *ptr, ssize_t *i, t_token **tokens)
 
 	j = *i;
 	while (ptr[*i + 1] != ' ' && ptr[*i + 1] != '\0'
-		&& !ft_symbol_len(&ptr[*i + 1])
-		&& ptr[*i + 1] != '"' && ptr[*i + 1] != '\'')
+		&& !ft_symbol_len(&ptr[*i + 1]))
+		//&& ptr[*i + 1] != '"' && ptr[*i + 1] != '\'')
 		(*i)++;
 	return (build_and_add(ptr, j, *i - j + 1, tokens));
 }
@@ -69,17 +69,27 @@ int	split_input(ssize_t i, char *ptr, t_token **tokens)
 			if (!build_and_add(ptr, i, symbol_len, tokens))
 				return (0); // Frees
 			i += symbol_len - 1;
-		}
+		}/* 
 		else if (ptr[i] == '\'' || ptr[i] == '"')
 		{
 			if (!handle_quotes(ptr, &i, tokens))
 				return (0);
-		}
+		} */
 		else if (ptr[i] != ' ')
 		{
 			if (!handle_word(ptr, &i, tokens))
 				return (0);
 		}
 	}
+	// print_tokens(*tokens);
 	return (1);
 }
+
+/*
+echo hola ""    "" hola
+
+echo hola ""    ccalcio""hola
+bash: hola  ccalciohola
+mini: hola  ccalcio  hola
+
+*/

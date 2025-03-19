@@ -105,10 +105,32 @@ Racasado
 
 Droura
 
+
 - Export check marks/quotes
 	>export AZUL="MAR"  ===   export AZUL=MAR<
+		export z=z	 ==> export z=z		arg_count = 2
+		export z="z" ==> export z= z	arg_count = 3
 
 - Spaces in echo must been check
 - Rerefactor the commands to follow the norme
 - Check the leaks
 - Check the exit code
+- Minishell> echo "hola $?" '$?'
+	hola 127 127
+
+
+Racasado: "Y si hacemos que los tokens que están dentro de las mismas comillas no se separen?"
+Printing tokens:
+0: echo
+1: $USER
+2: "$USER
+3: $?"
+4: '$USER'
+
+
+Printing tokens:
+0: echo
+1: $USER
+2: "$USER
+3: 
+4: '$USER'
