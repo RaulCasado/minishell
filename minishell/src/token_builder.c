@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+void	handle_marks(char chr, char *mark_d, char *mark_s, char is_mark_s)
+{
+	if (chr == DOUBLE_MARK)
+		*mark_d = !(*mark_d);
+	else if (is_mark_s && chr == SIMPLE_MARK)
+		*mark_s = !(*mark_s);
+}
+
 ssize_t	ft_symbol_len(char *ptr)
 {
 	if (*ptr == '|')
@@ -40,9 +48,7 @@ t_token	*tokenize_input(char *input, t_minishell *minishell)
 		return (NULL);
 	if (!tokens)
 		return (NULL);
-	print_tokens(tokens);
 	expand_tokens(&tokens, minishell);
-	print_tokens(tokens);
 	if (!tokenize_check(tokens))
 	{
 		free_tokens(tokens);

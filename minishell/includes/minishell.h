@@ -102,6 +102,7 @@ void		expand_tokens(t_token **tokens, t_minishell *minishell);
 char		*expand_variable(char *value, ssize_t start, ssize_t end,
 				t_minishell *minishell);
 int			split_input(ssize_t i, char *ptr, t_token **tokens);
+void		handle_marks(char chr, char *mark_d, char *mark_s, char is_mark_s);
 
 /*	Parse	*/
 int			tokenize_check(t_token *tokens);

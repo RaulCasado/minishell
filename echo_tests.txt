@@ -1,0 +1,123 @@
+🔹 Pruebas caseras:
+
+echo $USER "$USER" '$USER'
+
+	echo "$USER" "$-HOLA" "$1ERROR" "$ ERROR" $ERROR
+droura-s 569XZimsHOLA ERROR $ ERROR
+	echo "$USER" "$-HOLA"
+droura-s 569XZimsHOLA
+	echo "$USER" "$-"
+droura-s 569XZims en el de prueba sale droura-s $-
+
+echo " '$USER' "
+echo "$USER" "$-HOLA" "$1ERROR" "$ ERROR" $ERROR
+echo hola "$USER $?" adios
+
+echo hola ""    "" hola
+
+echo hola ""    ccalcio""hola
+bash: hola  ccalciohola
+mini: hola  ccalcio  hola
+
+echo "Hello world"
+bash: Hello world
+
+
+
+🔹 Pruebas con comillas
+
+echo "Hello world"
+✅ Debe imprimir: Hello world
+
+echo 'Hello world'
+✅ Debe imprimir: Hello world
+
+echo "Hello 'world'"
+✅ Debe imprimir: Hello 'world'
+
+echo 'Hello "world"'
+✅ Debe imprimir: Hello "world"
+
+echo "Hello (comilla sin cerrar)
+❌ Debe dar error de sintaxis: Syntax error: unclosed quotes
+
+echo 'Hello (comilla sin cerrar)
+❌ Debe dar error de sintaxis: Syntax error: unclosed quotes
+
+
+
+🔹 Pruebas con espacios y caracteres especiales
+
+echo " Hello world "
+✅ Debe imprimir: Hello world (respetando los espacios dentro de comillas).
+
+echo Hello   world
+✅ Debe imprimir: Hello world (colapsando espacios múltiples en uno).
+
+echo "*"
+✅ Debe imprimir: * (sin expandir como wildcard, a menos que lo haga bash).
+
+echo "$USER"
+✅ Debe imprimir: el valor de $USER si soportas variables de entorno.
+
+echo '$USER'
+✅ Debe imprimir: $USER (sin expandir la variable porque está entre comillas simples).
+
+
+
+🔹 Pruebas con -n
+
+echo -n Hello
+✅ Debe imprimir: Hello (sin salto de línea).
+
+echo -nnnnnn Hello
+✅ Debe imprimir: Hello (opciones -n consecutivas deben ser ignoradas como en bash).
+
+
+
+Printing tokens:
+0: echo
+1: -nnnnn
+
+        --Hello
+
+Printing tokens:
+0: echo
+1: -nnnnn
+2: Hello
+
+        --
+
+Printing tokens:
+0: echo
+1: -nnnnn
+2: Hello
+3: 
+
+
+Printing tokens:
+0: echo
+1: -nnnnn
+2: Hello
+3: 
+
+* Fallo extraño que pasa cuando cambias el número de "n" en echo -n a 4 (solo a veces)
+
+static int	build_and_add(char *ptr, size_t start, size_t len, t_token **tokens)
+{
+	char	*new_word;
+
+	new_word = ft_substr(ptr, start, len);
+	if (!new_word)
+	{
+		printf("FREEEEEEEING\n\n");
+		free_tokens(*tokens);
+		*tokens = NULL;
+		return (0);
+	}
+	if (!ft_strlen(new_word))
+		free(new_word);
+	else
+		add_token(tokens, new_word);
+	return (1);
+}

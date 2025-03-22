@@ -134,3 +134,26 @@ Printing tokens:
 2: "$USER
 3: 
 4: '$USER'
+
+
+
+
+***** LEAKS:
+Minishell> a
+==91378== 
+==91378== HEAP SUMMARY:
+==91378==     in use at exit: 214,030 bytes in 273 blocks
+==91378==   total heap usage: 663 allocs, 390 frees, 248,480 bytes allocated
+==91378== 
+==91378== LEAK SUMMARY:
+==91378==    definitely lost: 0 bytes in 0 blocks
+==91378==    indirectly lost: 0 bytes in 0 blocks
+==91378==      possibly lost: 0 bytes in 0 blocks
+==91378==    still reachable: 214,030 bytes in 273 blocks
+==91378==         suppressed: 0 bytes in 0 blocks
+==91378== Reachable blocks (those to which a pointer was found) are not shown.
+==91378== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==91378== 
+==91378== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+Remove_quotes al terminar el programa

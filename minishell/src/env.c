@@ -103,12 +103,10 @@ static int	find_env_var(char **envp, const char *var)
 int	add_or_replace_env_var(t_minishell *minishell, char *var)
 {
 	int		pos;
-	char	*equal_sign;
 	char	**new_envp;
 	char	*new_value;
 
-	equal_sign = ft_strchr(var, '=');
-	if (!equal_sign)
+	if (!ft_strchr(var, '='))
 		return (0);
 	pos = find_env_var(minishell->envp, var);
 	if (pos != -1)
