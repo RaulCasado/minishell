@@ -27,6 +27,7 @@ static int	expand_loop(t_token *token, t_minishell *minishell,
 	token->value = expand_variable(token->value, (*i), j, minishell);
 	if (!token->value)
 		return (0);
+	(*i) = -1;
 	return (1);
 }
 
@@ -42,7 +43,6 @@ void	expand_tokens(t_token **tokens, t_minishell *minishell)
 {
 	t_token	*current;
 	ssize_t	i;
-	ssize_t	start;
 	char	marks;
 
 	marks = 0;

@@ -63,6 +63,7 @@ echo "$USER"
 echo '$USER'
 ✅ Debe imprimir: $USER (sin expandir la variable porque está entre comillas simples).
 
+echo "hola $USER" "hola $?" '$?'
 
 
 🔹 Pruebas con -n
@@ -72,6 +73,28 @@ echo -n Hello
 
 echo -nnnnnn Hello
 ✅ Debe imprimir: Hello (opciones -n consecutivas deben ser ignoradas como en bash).
+
+
+
+Echo error
+echo "hola $?" '$?'
+==6769== Invalid read of size 1
+==6769==    at 0x10ABA2: expand_tokens (in /mnt/c/Users/danie/minichell/minishell/minishell)
+==6769==    by 0x10A4D7: tokenize_input (in /mnt/c/Users/danie/minichell/minishell/minishell)
+==6769==    by 0x109638: minishell_loop (in /mnt/c/Users/danie/minichell/minishell/minishell)
+==6769==    by 0x109714: main (in /mnt/c/Users/danie/minichell/minishell/minishell)
+==6769==  Address 0x4b571a8 is 1 bytes after a block of size 7 alloc'd
+==6769==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==6769==    by 0x10DFDC: ft_calloc (in /mnt/c/Users/danie/minichell/minishell/minishell)
+==6769==    by 0x10AD80: forge_value (in /mnt/c/Users/danie/minichell/minishell/minishell)
+==6769==    by 0x10AF41: expand_variable (in /mnt/c/Users/danie/minichell/minishell/minishell)
+==6769==    by 0x10AA5C: expand_loop (in /mnt/c/Users/danie/minichell/minishell/minishell)
+==6769==    by 0x10AB82: expand_tokens (in /mnt/c/Users/danie/minichell/minishell/minishell)
+==6769==    by 0x10A4D7: tokenize_input (in /mnt/c/Users/danie/minichell/minishell/minishell)
+==6769==    by 0x109638: minishell_loop (in /mnt/c/Users/danie/minichell/minishell/minishell)
+==6769==    by 0x109714: main (in /mnt/c/Users/danie/minichell/minishell/minishell)
+==6769== 
+Syntax error: unclosed quotes in '"hola '
 
 
 
@@ -115,7 +138,7 @@ static int	build_and_add(char *ptr, size_t start, size_t len, t_token **tokens)
 		*tokens = NULL;
 		return (0);
 	}
-	if (!ft_strlen(new_word))
+	if (!ft_strlen(new_word)) // Fixing the heisenbug of ghost tokens in echo -n
 		free(new_word);
 	else
 		add_token(tokens, new_word);

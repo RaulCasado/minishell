@@ -71,8 +71,6 @@ static char	handle_infile(t_command *cmd)
 
 int	handle_redirections(t_command *cmd)
 {
-	int	fd;
-
 	if (cmd->outfile)
 	{
 		if (handle_outfile(cmd))

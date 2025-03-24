@@ -66,7 +66,7 @@ static int	create_process(t_minishell *minishell, t_command **cmd,
 	return (0);
 }
 
-static void	execute_single_builtin(t_minishell *minishell, t_command *cmd)
+/*static void	execute_single_builtin(t_minishell *minishell, t_command *cmd)
 {
 	int	saved_stdin;
 	int	saved_stdout;
@@ -79,7 +79,7 @@ static void	execute_single_builtin(t_minishell *minishell, t_command *cmd)
 	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdin);
 	close(saved_stdout);
-}
+}*/
 
 static int	execute_pipeline(t_minishell *minishell, t_command *cmd)
 {
@@ -114,14 +114,16 @@ char	command_executer(t_minishell *minishell)
 {
 	t_command	*cmd;
 	int			num_commands;
+	int			saved_stdin;
+	int			saved_stdout;
 
 	cmd = minishell->commands;
 	num_commands = count_commands(cmd);
 	// Single builtin: execute in parent with proper fd backup/restoration
 	if (num_commands == 1 && is_builtin(cmd->args[0]))
 	{
-		int saved_stdin = dup(STDIN_FILENO);
-		int saved_stdout = dup(STDOUT_FILENO);
+		saved_stdin = dup(STDIN_FILENO);
+		saved_stdout = dup(STDOUT_FILENO);
 		handle_redirections(cmd);
 		execute_command(minishell, cmd);
 		dup2(saved_stdin, STDIN_FILENO);

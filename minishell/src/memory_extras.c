@@ -24,7 +24,7 @@ void	free_envp(char **envp)
 
 void	free_ptr_ptr(char **ptr, size_t len)
 {
-	ssize_t	i;
+	size_t	i;
 
 	i = 0;
 	while (i < len)

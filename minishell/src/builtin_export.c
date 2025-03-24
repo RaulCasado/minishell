@@ -53,12 +53,12 @@ static void	print_sorted_env(char **envp)
 	}
 }
 
-static char *remove_quotes(char *str)
+static char	*remove_quotes(char *str)
 {
-	size_t  len;
-	char    *new_arg;
-	char    *equal_sign;
-	char    *value;
+	size_t	len;
+	char	*new_arg;
+	char	*equal_sign;
+	char	*value;
 
 	if (!str)
 		return (NULL);
@@ -70,7 +70,6 @@ static char *remove_quotes(char *str)
 	{
 		len = ft_strlen(value) - 2;
 		new_arg = malloc(sizeof(char) * (equal_sign - str + 1 + len + 1));
-
 		if (!new_arg)
 			return (str);
 		ft_memcpy(new_arg, str, equal_sign - str + 1);

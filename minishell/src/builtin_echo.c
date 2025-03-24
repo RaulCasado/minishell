@@ -36,6 +36,7 @@ int	builtin_echo(t_minishell *minishell, t_command *command)
 	char	newline;
 	int		fd;
 
+	(void) minishell;
 	i = 1;
 	args = command->args;
 	newline = 1;

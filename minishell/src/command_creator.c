@@ -12,29 +12,26 @@
 
 #include "minishell.h"
 
-char **add_arg(char **args, char *new_arg)
+char	**add_arg(char **args, char *new_arg)
 {
-	int count = 0;
-	int i = 0;
+	int		count = 0;
+	int		i = 0;
+	char	**new_args;
+
 	while (args && args[count])
 		count++;
-
-	char **new_args = malloc(sizeof(char *) * (count + 2));
+	new_args = malloc(sizeof(char *) * (count + 2));
 	if (!new_args)
 		return (NULL);
-
 	while (i < count)
 	{
 		new_args[i] = args[i];
 		i++;
 	}
-
-	// Use ft_strdup for consistency
 	new_args[count] = ft_strdup(new_arg);
 	new_args[count + 1] = NULL;
-
 	free(args);
-	return new_args;
+	return (new_args);
 }
 
 void	handle_redirection(t_token **t, t_command_info *ci)
@@ -106,7 +103,7 @@ t_token	*process_token(t_token *t, t_command_info *ci,
 	else if (t->type == TOKEN_PIPE)
 	{
 		handle_pipe(cl, ci, curr);
-		t = t->next;  // skip the pipe token
+		t = t->next; // skip the pipe token
 	}
 	return (t);
 }
