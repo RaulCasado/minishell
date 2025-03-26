@@ -102,8 +102,13 @@ Soon:
 
 
 Racasado
-
+	- Ser padre de los builtin
 Droura
+	- Revisar comillas interiores
+	echo hello'world'
+	echo hello""world
+	- Leaks de locos tío
+	- El export no necesita quitar comillas ya.
 
 
 - Export check marks/quotes

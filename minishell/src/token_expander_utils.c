@@ -6,7 +6,7 @@
 /*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/26 12:55:16 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/03/26 14:07:45 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ char	*expand_variable(char *value, ssize_t start,
 	head = ft_substr(value, 0, start - 1);
 	if (!head)
 		return (free_mallocs(NULL, expansion, NULL, NULL));
-	/* if (ft_strlen(expansion) == 0)
-		end--; */
 	if (value[end] == DOUBLE_MARK)
 		tail = ft_strdup("\"");
 	else
