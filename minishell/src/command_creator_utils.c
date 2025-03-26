@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 18:40:43 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/19 11:18:56 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/26 12:09:17 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ void	reset_command_info(t_command_info *ci)
 	ci->append = 0;
 	ci->pipe_in = 0;
 	ci->pipe_out = 0;
+	// Reset extra redirections:
+	ci->extra_outfiles = NULL;
+	ci->extra_count = 0;
 }
 
 t_command	*create_command(t_command_info *ci, t_command *next)
@@ -45,6 +48,9 @@ t_command	*create_command(t_command_info *ci, t_command *next)
 	cmd->append = ci->append;
 	cmd->pipe_in = ci->pipe_in;
 	cmd->pipe_out = ci->pipe_out;
+	// Transfer extra redirections:
+	cmd->extra_outfiles = ci->extra_outfiles;
+	cmd->extra_count = ci->extra_count;
 	cmd->next = next;
 	reset_command_info(ci);
 	return (cmd);

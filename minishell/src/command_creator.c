@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:30:13 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/19 11:28:47 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/26 12:09:03 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,26 @@ char	**add_arg(char **args, char *new_arg)
 	return (new_args);
 }
 
+// Add helper function to immediately open output file for side-effect.
+static int immediate_open_output_file(char *file, int append)
+{
+	// Similar to open_output_file in redirections.c
+	int	fd;
+
+	if (append == 2)
+		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (append == 1)
+		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else
+		return (1);
+	if (fd == -1)
+	{
+		perror("Minishell: open");
+		return (-1);
+	}
+	return (fd);
+}
+
 void	handle_redirection(t_token **t, t_command_info *ci)
 {
 	t_token	*next;
@@ -41,7 +61,7 @@ void	handle_redirection(t_token **t, t_command_info *ci)
 	next = (*t)->next;
 	if (!next)
 		return ;
-	// Use the type of the redirection operator (i.e., *t) instead of next->type
+	// Process redirection based on operator type.
 	if ((*t)->type == TOKEN_REDIR_IN)
 	{
 		free(ci->infile);
@@ -49,13 +69,36 @@ void	handle_redirection(t_token **t, t_command_info *ci)
 	}
 	else if ((*t)->type == TOKEN_REDIR_OUT)
 	{
-		free(ci->outfile);
+		{
+			int fd = immediate_open_output_file(next->value, 1);
+			if (fd == -1)
+				return ;
+			close(fd);
+		}
+		// If an outfile already exists, push it to extra_outfiles.
+		if (ci->outfile)
+		{
+			ci->extra_outfiles = add_arg(ci->extra_outfiles, ci->outfile);
+			ci->extra_count++;
+			free(ci->outfile);
+		}
 		ci->outfile = ft_strdup(next->value); // what if ft_strdup fails
 		ci->append = 1;
 	}
 	else if ((*t)->type == TOKEN_REDIR_APPEND)
 	{
-		free(ci->outfile);
+		{
+			int fd = immediate_open_output_file(next->value, 2);
+			if (fd == -1)
+				return ;
+			close(fd);
+		}
+		if (ci->outfile)
+		{
+			ci->extra_outfiles = add_arg(ci->extra_outfiles, ci->outfile);
+			ci->extra_count++;
+			free(ci->outfile);
+		}
 		ci->outfile = ft_strdup(next->value); // what if ft_strdup fails
 		ci->append = 2;
 	}

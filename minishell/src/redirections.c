@@ -30,13 +30,77 @@ static int	open_output_file(char *file, int append)
 	return (fd);
 }
 
+// New helper: create a tee redirection for multiple output files.
+static int	setup_tee_redirection(t_command *cmd)
+{
+	int		pipefd[2];
+	pid_t	pid;
+
+	if (pipe(pipefd) == -1)
+	{
+		perror("Minishell: pipe");
+		return (-1);
+	}
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("Minishell: fork");
+		return (-1);
+	}
+	if (pid == 0)
+	{
+		/* Child process acts as tee */
+		close(pipefd[1]);
+		{
+			char	buffer[1024];
+			int		n;
+			int		fd_main = open_output_file(cmd->outfile, cmd->append);
+			if (fd_main < 0)
+				exit(1);
+			// Allocate array for extra files.
+			int	*extra_fds = malloc(sizeof(int) * cmd->extra_count);
+			for (int i = 0; i < cmd->extra_count; i++)
+			{
+				extra_fds[i] = open_output_file(cmd->extra_outfiles[i], cmd->append);
+				// In a real-world case, check for errors here.
+			}
+			while ((n = read(pipefd[0], buffer, sizeof(buffer))) > 0)
+			{
+				write(fd_main, buffer, n);
+				for (int i = 0; i < cmd->extra_count; i++)
+					write(extra_fds[i], buffer, n);
+			}
+			close(fd_main);
+			for (int i = 0; i < cmd->extra_count; i++)
+				close(extra_fds[i]);
+			free(extra_fds);
+		}
+		exit(0);
+	}
+	/* Parent process: use pipe write end for command stdout */
+	close(pipefd[0]);
+	if (dup2(pipefd[1], STDOUT_FILENO) == -1)
+	{
+		perror("Minishell: dup2");
+		close(pipefd[1]);
+		return (-1);
+	}
+	close(pipefd[1]);
+	return (0);
+}
+
 static char	handle_outfile(t_command *cmd)
 {
-	int	fd;
-
 	if (cmd->outfile[0] == '\0' || (unsigned char)cmd->outfile[0] > 127)
 		return (1);
-	fd = open_output_file(cmd->outfile, cmd->append);
+	// If there are extra outfiles, set up tee redirection.
+	if (cmd->extra_count > 0)
+	{
+		if (setup_tee_redirection(cmd) < 0)
+			return (1);
+		return (0);
+	}
+	int	fd = open_output_file(cmd->outfile, cmd->append);
 	if (fd == -1)
 		return (1);
 	if (dup2(fd, STDOUT_FILENO) == -1)

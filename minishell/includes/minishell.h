@@ -71,6 +71,9 @@ typedef struct s_command
 	char				*infile;
 	char				*outfile;
 	int					append;
+	// Added fields for multiple output redirections:
+	char				**extra_outfiles;
+	int					extra_count;
 	struct s_command	*next;
 }	t_command;
 
@@ -82,6 +85,9 @@ typedef struct s_command_info
 	int		append;
 	int		pipe_in;
 	int		pipe_out;
+	// Added fields for temporary storage during parsing:
+	char	**extra_outfiles;
+	int		extra_count;
 }	t_command_info;
 
 typedef struct s_minishell
