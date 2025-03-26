@@ -121,17 +121,3 @@ Droura
 
 Racasado: "Y si hacemos que los tokens que están dentro de las mismas comillas no se separen?"
 Printing tokens:
-
-Fix:
-0: echo
-1: $USER
-2: "$USER
-3: $?"
-4: '$USER'
-
-Printing tokens:
-0: echo
-1: $USER
-2: "$USER
-3: 
-4: '$USER'

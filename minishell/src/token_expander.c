@@ -6,7 +6,7 @@
 /*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:35 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/19 13:51:04 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/03/26 12:26:13 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ static int	expand_loop(t_token *token, t_minishell *minishell,
 	(*i)++;
 	if (!token->value[*i] || token->value[*i] == ' ')
 		return (0);
-	j = *i + 1;
+	j = *i;
 	while (token->value[j + 1] && token->value[j + 1] != ' '
 		&& token->value[j + 1] != DOUBLE_MARK)
 		j++;
-	token->value = expand_variable(token->value, (*i), j, minishell);
+	token->value = expand_variable(token->value, *i, j, minishell);
+	(*i) = 0;
 	if (!token->value)
 		return (0);
-	(*i) = -1;
 	return (1);
 }
 

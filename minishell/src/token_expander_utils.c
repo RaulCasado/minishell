@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_expander_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/14 17:33:27 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/26 12:33:05 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ static char	*get_variable(char *value, ssize_t start,
 	char	*var_name;
 
 	if (start == end && value[start] == QUESTION_MARK)
-	{
-		return (ft_itoa(minishell->exit_code));
-	}
+		expansion = ft_itoa(minishell->exit_code);
 	else
 	{
 		var_name = ft_substr(value, start, end - start + 1);
@@ -42,9 +40,9 @@ static char	*get_variable(char *value, ssize_t start,
 			return (NULL);
 		expansion = get_env(var_name, minishell->envp);
 		free(var_name);
-		if (!expansion)
-			expansion = ft_strdup("");
 	}
+	if (!expansion)
+		expansion = ft_strdup("");
 	return (expansion);
 }
 
@@ -86,10 +84,12 @@ char	*expand_variable(char *value, ssize_t start,
 	head = ft_substr(value, 0, start - 1);
 	if (!head)
 		return (free_mallocs(NULL, expansion, NULL, NULL));
-	if (end + 1 >= (ssize_t)ft_strlen(value))
-		tail = ft_strdup("");
+	/* if (ft_strlen(expansion) == 0)
+		end--; */
+	if (value[end] == DOUBLE_MARK)
+		tail = ft_strdup("\"");
 	else
-		tail = ft_substr(value, end + 1, ft_strlen(value) - end - 1);
+		tail = ft_substr(value, end + 1, ft_strlen(value) - end);
 	if (!tail)
 		return (free_mallocs(head, expansion, NULL, NULL));
 	new_value = forge_value(head, expansion, tail);
