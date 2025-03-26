@@ -25,7 +25,7 @@ bash: Hello world
 
 echo "hola $USER" "hola $?" '$?'
 echo "$USER $? '$USER'"
-
+echo "$? hola que tal"$USER""
 
 🔹 Pruebas con comillas
 echo "Hello world"
