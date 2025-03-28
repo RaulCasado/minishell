@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+static void	swap_free(char **original, char *new)
+{
+	if (!*original || !new || *original == new)
+		return ;
+	free(*original);
+	*original = new;
+}
+
 static char	*remove_one_quote(char *value, size_t i)
 {
 	char	*head;
@@ -27,36 +35,37 @@ static char	*remove_one_quote(char *value, size_t i)
 		free(head);
 		return (NULL);
 	}
-	// printf("\t%s%s\n\n", head, tail);
 	new_value = ft_strjoin(head, tail);
 	free(head);
 	free(tail);
 	return (new_value);
 }
 
-static char	*loop_subtoken(char *value, char mark_type)
+static char	*loop_subtoken(t_token *token, char mark_type)
 {
-	if (ft_strlen(value) < 2)
-		return (value);
+	size_t	i;
+	size_t	j;
+
 	while (1)
 	{
-		if (ft_strlen(value) < 2)
+		if (ft_strlen(token->value) < 2)
 			break ;
-		size_t	i = 0;
-		size_t	j = ft_strlen(value) - 1;
-		while (value[i] && value[i] != mark_type)
+		i = 0;
+		j = ft_strlen(token->value) - 1;
+		while (token->value[i] && token->value[i] != mark_type)
 			i++;
-		while (j > 0 && value[j] && value[j] != mark_type)
+		while (j > 0 && token->value[j] && token->value[j] != mark_type)
 			j--;
-		if (i < j)
-		{
-			value = remove_one_quote(value, i);
-			value = remove_one_quote(value, j - 1);
-			continue ;
-		}
-		break ;
+		if (i >= j)
+			break ;
+		swap_free(&token->value, remove_one_quote(token->value, i));
+		if (!token->value)
+			return (NULL);
+		swap_free(&token->value, remove_one_quote(token->value, j - 1));
+		if (!token->value)
+			return (NULL);
 	}
-	return (value);
+	return (token->value);
 }
 
 static char	*unquote_token(t_token *token, size_t value_len)
@@ -98,10 +107,10 @@ void	unquoter(t_token **tokens)
 				perror("Minishell: malloc failed in unquoter");
 				exit(3);
 			}
-			current->value = new_value;
+			current->value = new_value; // NO NULL CHECKS EN LOS SWAPS??
 		}
-		current->value = loop_subtoken(current->value, DOUBLE_MARK); // FREE OLD VALUE
-		current->value = loop_subtoken(current->value, SIMPLE_MARK);
+		swap_free(&current->value, loop_subtoken(current, DOUBLE_MARK));
+		swap_free(&current->value, loop_subtoken(current, SIMPLE_MARK));
 		current = current->next;
 	}
 	// print_tokens(*tokens);
