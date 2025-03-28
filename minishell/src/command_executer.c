@@ -66,21 +66,6 @@ static int	create_process(t_minishell *minishell, t_command **cmd,
 	return (0);
 }
 
-/*static void	execute_single_builtin(t_minishell *minishell, t_command *cmd)
-{
-	int	saved_stdin;
-	int	saved_stdout;
-
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
-	handle_redirections(cmd);
-	execute_command(minishell, cmd);
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdin);
-	close(saved_stdout);
-}*/
-
 static int	execute_pipeline(t_minishell *minishell, t_command *cmd)
 {
 	int		pipe_fd[2];
@@ -107,7 +92,7 @@ static int	execute_pipeline(t_minishell *minishell, t_command *cmd)
 			return (1);
 	}
 	wait_for_children(minishell);
-	return (0);
+	return (minishell->exit_code);
 }
 
 char	command_executer(t_minishell *minishell)
@@ -130,7 +115,8 @@ char	command_executer(t_minishell *minishell)
 		dup2(saved_stdout, STDOUT_FILENO);
 		close(saved_stdin);
 		close(saved_stdout);
-		return (0);
+		return (minishell->exit_code);
 	}
-	return (execute_pipeline(minishell, cmd));
+	execute_pipeline(minishell, cmd);
+	return (minishell->exit_code);
 }

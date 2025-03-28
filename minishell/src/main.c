@@ -44,16 +44,18 @@ static int	check_input_empty(char *input)
 	return (0);
 }
 
-static void	minishell_loop(char **envp)
+static int	minishell_loop(char **envp)
 {
 	char		*input;
 	t_minishell	*minishell;
+	int		cmd_result;
+	int		exit_status;
 
 	initialize_main(&minishell, envp);
 	while (get_signal() && minishell)
 	{
-		if (isatty(STDIN_FILENO) == 0)
-			dup2(open("/dev/tty", O_RDONLY), STDIN_FILENO);
+/* 		if (isatty(STDIN_FILENO) == 0)
+			dup2(open("/dev/tty", O_RDONLY), STDIN_FILENO); */
 		input = readline("Minishell> ");
 		if (check_input_exit(input))
 			break ;
@@ -64,23 +66,32 @@ static void	minishell_loop(char **envp)
 		if (minishell->tokens)
 		{
 			minishell->commands = parse_tokens(minishell->tokens);
-			if (command_executer(minishell))
-				printf("ERROR IN COMMANDS\n");
+			if (minishell->commands)
+			{
+				cmd_result = command_executer(minishell);
+				minishell->exit_code = cmd_result;
+			}
 		}
 		minishell_reset_loop(input, minishell);
 		// echo hola | env | export | echo hola > outfile
 	}
+	exit_status = minishell->exit_code;
 	free_minishell(minishell);
+	return (exit_status);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
+	int	exit_status;
+
+	printf("argc: %d\n", argc);
 	(void)argv;
 	if (argc > 1)
 	{
 		ft_putendl_fd("Error: Minishell no acepta argumentos", 2);
 		return (1);
 	}
-	minishell_loop(envp);
-	return (0);
+	exit_status = minishell_loop(envp);
+	printf("exit_status: %d\n", exit_status);
+	return (exit_status);
 }
