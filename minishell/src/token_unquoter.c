@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_unquoter.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:52 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/26 14:18:53 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/03/28 11:25:54 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,22 @@ static char	*remove_one_quote(char *value, size_t i)
 
 static char	*loop_subtoken(char *value, char mark_type)
 {
-	size_t	i;
-	size_t	j;
-
-	// printf("\tloop_subtoken: %s\n", value);
+	if (ft_strlen(value) < 2)
+		return (value);
 	while (1)
 	{
-		i = 0;
-		j = ft_strlen(value) - 1;
-		// printf("\t%s\n", value);
+		if (ft_strlen(value) < 2)
+			break ;
+		size_t	i = 0;
+		size_t	j = ft_strlen(value) - 1;
 		while (value[i] && value[i] != mark_type)
 			i++;
 		while (j > 0 && value[j] && value[j] != mark_type)
 			j--;
-		// printf("\t%zd:%c %zd:%c\n", i, value[i], j, value[j]);
 		if (i < j)
 		{
 			value = remove_one_quote(value, i);
-			// printf("\t\t%s\n", value);
 			value = remove_one_quote(value, j - 1);
-			// printf("\t\t%s\n", value);
 			continue ;
 		}
 		break ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_builder_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 18:54:11 by droura-s          #+#    #+#             */
-/*   Updated: 2025/03/19 12:58:54 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/03/28 11:24:21 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
