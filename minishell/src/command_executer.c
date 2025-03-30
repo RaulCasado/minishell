@@ -95,7 +95,7 @@ static int	execute_pipeline(t_minishell *minishell, t_command *cmd)
 	return (minishell->exit_code);
 }
 
-char	command_executer(t_minishell *minishell)
+int	command_executer(t_minishell *minishell)
 {
 	t_command	*cmd;
 	int			num_commands;

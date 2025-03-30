@@ -63,7 +63,7 @@ char	*find_command_path(char *cmd, char **envp)
 	return (result);
 }
 
-char	command_process(t_minishell *minishell, t_command *command)
+int	command_process(t_minishell *minishell, t_command *command)
 {
 	char	*path;
 

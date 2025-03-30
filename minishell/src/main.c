@@ -84,7 +84,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	int	exit_status;
 
-	printf("argc: %d\n", argc);
 	(void)argv;
 	if (argc > 1)
 	{
@@ -92,6 +91,5 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	exit_status = minishell_loop(envp);
-	printf("exit_status: %d\n", exit_status);
 	return (exit_status);
 }

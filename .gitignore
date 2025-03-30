@@ -2,6 +2,7 @@
 a.out
 minishell/minishell
 ## to ignore Testing folder
+minishell/minishell_tester
 
 /Failed Code (Like your life)
 

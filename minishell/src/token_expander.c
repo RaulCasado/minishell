@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_expander.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:35 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/26 13:10:08 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/03/30 21:55:39 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,31 @@ void	expand_tokens(t_token **tokens, t_minishell *minishell)
 	{
 		if (current->type == TOKEN_WORD)
 		{
+			// Skip expansion if token is entirely enclosed in simple quotes.
+			if (current->value[0] == SIMPLE_MARK
+				&& current->value[ft_strlen(current->value) - 1] == SIMPLE_MARK)
+			{
+				current = current->next;
+				continue;
+			}
 			i = -1;
 			while (current->value[++i])
 			{
 				handle_marks(current->value[i], &marks, NULL, 0);
-				if ((marks || get_global_marks(current->value))
+				// Special case: expand $? regardless of quotes
+				if (current->value[i] == DOLLAR && current->value[i + 1] == QUESTION_MARK)
+				{
+					if (!expand_loop(current, minishell, &i))
+						break;
+				}
+				// Normal expansion: check if inside double quotes
+				else if ((marks || get_global_marks(current->value))
 					&& current->value[i] == DOLLAR
 					&& closed_quotes(current->value + i))
+				{
 					if (!expand_loop(current, minishell, &i))
-						break ;
+						break;
+				}
 			}
 		}
 		current = current->next;

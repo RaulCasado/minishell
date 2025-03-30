@@ -147,8 +147,8 @@ void		print_tokens(t_token *tokens);
 
 /*	Commands	*/
 t_command	*parse_tokens(t_token *tokens);
-char		command_executer(t_minishell *minishell);
-char		command_process(t_minishell *minishell, t_command *command);
+int			command_executer(t_minishell *minishell);
+int			command_process(t_minishell *minishell, t_command *command);
 
 /*	Built-ins	*/
 int			builtin_echo(t_minishell *minishell, t_command *command);
@@ -157,7 +157,7 @@ int			builtin_pwd(t_minishell *minishell, t_command *command);
 int			builtin_export(t_minishell *minishell, t_command *command);
 int			builtin_unset(t_minishell *minishell, t_command *command);
 int			builtin_env(t_minishell *minishell, t_command *command);
-char		builtin_exit(t_minishell *minishell, t_command *command);
+int			builtin_exit(t_minishell *minishell, t_command *command);
 
 /*	Utils	*/
 char		*get_env(char *name, char **envp);

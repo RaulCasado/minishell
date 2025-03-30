@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:23:15 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/19 11:58:55 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/30 20:26:56 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	count_args(char **args)
 	return (i);
 }
 
-char	builtin_exit(t_minishell *minishell, t_command *cmd)
+int	builtin_exit(t_minishell *minishell, t_command *cmd)
 {
 	int	exit_code;
 
