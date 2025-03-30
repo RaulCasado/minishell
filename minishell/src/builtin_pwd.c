@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:29:47 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/14 17:39:35 by racasado         ###   ########.fr       */
+/*   Updated: 2025/03/30 22:01:00 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@ int	builtin_pwd(t_minishell *minishell, t_command *command)
 	char	cwd[CWD_SIZE];
 	int		fd;
 
-	if (command->args[1])
-	{
-		ft_putendl_fd("Minishell: pwd: too many arguments", STDERR_FILENO);
-		return (2);
-	}
 	pwd = get_env("PWD", minishell->envp);
 	if (!pwd)
 	{
