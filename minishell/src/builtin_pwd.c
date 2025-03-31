@@ -18,6 +18,7 @@ int	builtin_pwd(t_minishell *minishell, t_command *command)
 	char	cwd[CWD_SIZE];
 	int		fd;
 
+	(void) command;
 	pwd = get_env("PWD", minishell->envp);
 	if (!pwd)
 	{
