@@ -85,7 +85,7 @@ static void	process_export_arg(t_minishell *minishell, char *arg,
 {
 	if (!is_valid_identifier(arg))
 	{
-		ft_putstr_fd("Minishell: export: `", STDERR_FILENO);
+		ft_putstr_fd("Minishell: export: not a valid identifier", STDERR_FILENO); // It was different
 		*exit_code = 1;
 		return ;
 	}

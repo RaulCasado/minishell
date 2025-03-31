@@ -23,65 +23,47 @@ static int	expand_loop(t_token *token, t_minishell *minishell,
 	j = *i;
 	while (token->value[j + 1] && token->value[j + 1] != ' '
 		&& token->value[j + 1] != DOUBLE_MARK
-		&& token->value[j + 1] != SIMPLE_MARK)
+		&& token->value[j + 1] != SIMPLE_MARK
+		&& token->value[j] != QUESTION_MARK)
 		j++;
-	token->value = expand_variable(token->value, *i, j, minishell);
-	(*i) = 0;
+	if (token->value[*i] != DOUBLE_MARK)
+	{
+		token->value = expand_variable(token->value, *i, j, minishell);
+		(*i) = 0;
+	}
 	if (!token->value)
 		return (0);
 	return (1);
 }
 
-char	closed_quotes(char *ptr)
+char	get_global_marks(char *ptr, char mark_type)
 {
-	while (*ptr)
-		if (*ptr++ == DOUBLE_MARK)
-			return (1);
-	return (0);
-}
-
-char	get_global_marks(char *ptr)
-{
-	return (ptr[0] == DOUBLE_MARK
-		&& ptr[ft_strlen(ptr) - 1] == DOUBLE_MARK);
+	return (ptr[0] == mark_type
+		&& ptr[ft_strlen(ptr) - 1] == mark_type);
 }
 
 void	expand_tokens(t_token **tokens, t_minishell *minishell)
 {
 	t_token	*current;
 	ssize_t	i;
-	char	marks;
 
-	marks = 0;
 	current = *tokens;
 	while (current)
 	{
 		if (current->type == TOKEN_WORD)
 		{
-			// Skip expansion if token is entirely enclosed in simple quotes.
-			if (current->value[0] == SIMPLE_MARK
-				&& current->value[ft_strlen(current->value) - 1] == SIMPLE_MARK)
+			if (get_global_marks(current->value, SIMPLE_MARK))
 			{
 				current = current->next;
-				continue;
+				continue ;
 			}
 			i = -1;
 			while (current->value[++i])
 			{
-				handle_marks(current->value[i], &marks, NULL, 0);
-				// Special case: expand $? regardless of quotes
-				if (current->value[i] == DOLLAR && current->value[i + 1] == QUESTION_MARK)
+				if (current->value[i] == DOLLAR)
 				{
 					if (!expand_loop(current, minishell, &i))
-						break;
-				}
-				// Normal expansion: check if inside double quotes
-				else if ((marks || get_global_marks(current->value))
-					&& current->value[i] == DOLLAR
-					&& closed_quotes(current->value + i))
-				{
-					if (!expand_loop(current, minishell, &i))
-						break;
+						break ;
 				}
 			}
 		}

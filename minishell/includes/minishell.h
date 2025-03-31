@@ -127,6 +127,9 @@ void		free_tokens(t_token *tokens);
 void		add_token(t_token **tokens, char *value);
 void		unquoter(t_token **tokens);
 
+/*	Quotes Utils */
+char	get_global_marks(char *ptr, char mark_type);
+
 /*	Signals	*/
 int			get_signal(void);
 void		set_signal(int signal);
@@ -159,7 +162,7 @@ int			builtin_unset(t_minishell *minishell, t_command *command);
 int			builtin_env(t_minishell *minishell, t_command *command);
 int			builtin_exit(t_minishell *minishell, t_command *command);
 
-/*	Utils	*/
+/*	Env	*/
 char		*get_env(char *name, char **envp);
 char		**copy_envp(char **envp);
 int			add_or_replace_env_var(t_minishell *minishell, char *var);

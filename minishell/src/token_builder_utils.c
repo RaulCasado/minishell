@@ -17,7 +17,7 @@ static int	build_and_add(char *ptr, size_t start, size_t len, t_token **tokens)
 	char	*new_word;
 
 	new_word = ft_substr(ptr, start, len);
-	if (!new_word)
+	if (!new_word) // ????
 	{
 		printf("FREEEEEEEING\n\n");
 		free_tokens(*tokens);
@@ -31,7 +31,8 @@ static int	build_and_add(char *ptr, size_t start, size_t len, t_token **tokens)
 	return (1);
 }
 
-static int	handle_word(char *ptr, ssize_t *i, t_token **tokens, char *mark_d, char *mark_s) // Too many args
+static int	handle_word(char *ptr, ssize_t *i, t_token **tokens,
+	char *mark_d, char *mark_s) // Too many args
 {
 	ssize_t	j;
 
@@ -43,7 +44,9 @@ static int	handle_word(char *ptr, ssize_t *i, t_token **tokens, char *mark_d, ch
 			break ;
 		(*i)++;
 	}
-	if (*mark_d || *mark_s)
+	if (!(get_global_marks(ptr, SIMPLE_MARK)
+			|| !get_global_marks(ptr, DOUBLE_MARK))
+		&& (*mark_d || *mark_s))
 	{
 		free_tokens(*tokens);
 		*tokens = NULL;

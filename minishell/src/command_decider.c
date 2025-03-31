@@ -27,7 +27,7 @@ void	execute_command(t_minishell *minishell, t_command *cmd)
 	else if (ft_strcmp(cmd->args[0], ENV_LOWER) == 0)
 		minishell->exit_code = builtin_env(minishell, cmd);
 	else if (ft_strcmp(cmd->args[0], EXIT_LOWER) == 0)
-		builtin_exit(minishell, cmd);
+	minishell->exit_code = builtin_exit(minishell, cmd);
 	else
 		command_process(minishell, cmd);
 }

@@ -23,7 +23,7 @@ echo "Hello world"
 bash: Hello world
 
 
-echo "hola $USER" "hola $?" '$?'
+echo "hola $USER" "hola $?" '$?' $?
 echo "$USER $? '$USER'"
 echo "$? hola que tal"$USER""
 
@@ -49,23 +49,10 @@ echo -n Hello
 echo -nnnnnn Hello
 
 
-* Fallo extraño que pasa cuando cambias el número de "n" en echo -n a 4 (solo a veces)
-
-static int	build_and_add(char *ptr, size_t start, size_t len, t_token **tokens)
-{
-	char	*new_word;
-
-	new_word = ft_substr(ptr, start, len);
-	if (!new_word)
-	{
-		printf("FREEEEEEEING\n\n");
-		free_tokens(*tokens);
-		*tokens = NULL;
-		return (0);
-	}
-	if (!ft_strlen(new_word)) // Fixing the heisenbug of ghost tokens in echo -n
-		free(new_word);
-	else
-		add_token(tokens, new_word);
-	return (1);
-}
+El otro minishell no pone los saltos de línea como el shell normal que los mantiene,
+creo que deberíamos borrarlos
+Minishell> echo "$? hola que tal"$USER""		<- Normal
+0 hola que taldanielr
+Minishell> echo "$? hola que tal"$USER""		<- Salto de línea después de "
+0 hola que tal$USER"
+Minishell> 

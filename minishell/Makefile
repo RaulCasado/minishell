@@ -14,7 +14,7 @@ LIBFT_DIR = includes/libft
 # Archivos fuente
 SRCS =	$(SRC_DIR)/main.c $(SRC_DIR)/memory.c $(SRC_DIR)/memory_extras.c \
 		$(SRC_DIR)/minishell_builder.c \
-		$(SRC_DIR)/env.c $(SRC_DIR)/env_extras.c $(SRC_DIR)/signals.c $(SRC_DIR)/signals_global.c \
+		$(SRC_DIR)/env.c $(SRC_DIR)/signals.c $(SRC_DIR)/signals_global.c \
 		$(SRC_DIR)/str_utils.c \
 		$(SRC_DIR)/token_builder.c $(SRC_DIR)/token_builder_utils.c $(SRC_DIR)/token_expander.c \
 		$(SRC_DIR)/token_expander_utils.c $(SRC_DIR)/token_assignator.c $(SRC_DIR)/token_parser.c \
@@ -39,11 +39,11 @@ $(LIBFT):
 
 # Compilar Minishell
 $(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS2) -I$(INCLUDE_DIR) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -lncurses -o $(NAME)
+	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -lncurses -o $(NAME)
 
 # Regla para compilar archivos .o
 %.o: %.c
-	$(CC) $(CFLAGS2) -I$(INCLUDE_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 
 # Limpiar archivos objeto
 clean:

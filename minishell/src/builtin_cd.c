@@ -94,11 +94,17 @@ int	builtin_cd(t_minishell *minishell, t_command *command)
 	char	*path;
 	char	*full_path;
 
-	if (!command->args[1] || command->args[2])
+	if (!command->args[1])
 	{
 		ft_putendl_fd("Minishell: cd: usage: cd <absolute|relative path>",
 			STDERR_FILENO);
 		return (2);
+	}
+	if ( command->args[2])
+	{
+		ft_putendl_fd("Minishell: cd: too many arguments",
+			STDERR_FILENO);
+		return (1);
 	}
 	path = command->args[1];
 	full_path = build_full_path(path);

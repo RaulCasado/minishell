@@ -17,6 +17,8 @@ static int	is_fully_number(char *str)
 	int	i;
 
 	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
@@ -26,21 +28,11 @@ static int	is_fully_number(char *str)
 	return (1);
 }
 
-static int	count_args(char **args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i])
-		i++;
-	return (i);
-}
-
 int	builtin_exit(t_minishell *minishell, t_command *cmd)
 {
 	int	exit_code;
 
-	if (count_args(cmd->args) > 2)
+	if (cmd->args[1] && cmd->args[2])
 	{
 		ft_putendl_fd("Minishell: exit: too many arguments", 2);
 		return (1);
