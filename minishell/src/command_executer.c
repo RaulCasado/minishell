@@ -30,7 +30,8 @@ static int	setup_child_process(t_minishell *minishell, t_command *cmd,
 		close(pipe_fd[0]);
 	if (pipe_fd[1] >= 0)
 		close(pipe_fd[1]);
-	handle_redirections(cmd);
+	if (handle_redirections(cmd))
+		exit(EXIT_FAILURE);
 	execute_command(minishell, cmd);
 	exit(EXIT_SUCCESS);
 }
@@ -95,6 +96,37 @@ static int	execute_pipeline(t_minishell *minishell, t_command *cmd)
 	return (minishell->exit_code);
 }
 
+/*
+ * Recorre la lista de tokens y, para cada operador de redirección de entrada,
+ * intenta abrir el archivo asociado. Si falla, imprime el error y retorna -1.
+ */
+static int	check_input_redirections(t_token *tokens)
+{
+	t_token	*current;
+
+	current = tokens;
+	while (current)
+	{
+		if (current->type == TOKEN_REDIR_IN)  // Asumiendo que TOKEN_REDIR_IN está definido
+		{
+			if (!current->next || !current->next->value)
+			{
+				ft_putendl_fd("minishell: syntax error near unexpected token", 2);
+				return (-1);
+			}
+			if (open(current->next->value, O_RDONLY) == -1)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(current->next->value, 2);
+				ft_putendl_fd(": No such file or directory", 2);
+				return (-1);
+			}
+		}
+		current = current->next;
+	}
+	return (0);
+}
+
 int	command_executer(t_minishell *minishell)
 {
 	t_command	*cmd;
@@ -103,13 +135,16 @@ int	command_executer(t_minishell *minishell)
 	int			saved_stdout;
 
 	cmd = minishell->commands;
+	/*if (check_input_redirections(minishell->tokens) == -1)
+		exit(1);*/
 	num_commands = count_commands(cmd);
 	// Single builtin: execute in parent with proper fd backup/restoration
 	if (num_commands == 1 && is_builtin(cmd->args[0]))
 	{
 		saved_stdin = dup(STDIN_FILENO);
 		saved_stdout = dup(STDOUT_FILENO);
-		handle_redirections(cmd);
+		if (handle_redirections(cmd))
+			exit(EXIT_FAILURE);
 		execute_command(minishell, cmd);
 		dup2(saved_stdin, STDIN_FILENO);
 		dup2(saved_stdout, STDOUT_FILENO);

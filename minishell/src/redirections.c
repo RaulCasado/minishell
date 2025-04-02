@@ -120,12 +120,10 @@ static char	handle_infile(t_command *cmd)
 	fd = open(cmd->infile, O_RDONLY); // infile < echo <--- blow up
 	if (fd == -1)
 	{
-		perror("Minishell: open");
 		return (1);
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
-		perror("Minishell: dup2");
 		close(fd);
 		return (1);
 	}
@@ -143,7 +141,10 @@ int	handle_redirections(t_command *cmd)
 	if (cmd->infile)
 	{
 		if (handle_infile(cmd))
+		{
+			perror("Minishell: ");
 			return (-1);
+		}
 	}
 	// Minishell> echo hola > outfile
 	// Minishell> cat outfile

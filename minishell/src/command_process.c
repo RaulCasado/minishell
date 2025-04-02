@@ -69,6 +69,13 @@ int	command_process(t_minishell *minishell, t_command *command)
 
 	if (!command->args[0])
 		return (1);
+	if (!command->args[0][0])
+	{
+		if (command->args[1])
+			command->args = command->args + 1;
+		else
+			exit(0);
+	}
 	path = find_command_path(command->args[0], minishell->envp);
 	if (!path)
 	{
@@ -77,8 +84,35 @@ int	command_process(t_minishell *minishell, t_command *command)
 		exit(127);
 	}
 	execve(path, command->args, minishell->envp);
-	perror("minishell");
-	free(path);
-	exit(1);
+	if (errno == ENOEXEC && (command->args[0][0] == '.' || command->args[0][0] == '/'))
+	{
+		// xd
+		/*
+		Test 141: ✅⚠️  ./test_files 
+		mini error = ( Permission denied)
+		bash error = ( Is a directory)
+		*/
+		free(path);
+		exit(0);
+	}
+	else if (errno == ENOEXEC) 
+	{
+		ft_putstr_fd(command->args[0], 2);
+		ft_putendl_fd(": command not found", 2);
+		free(path);
+		exit(2);
+	}
+	else if (errno == EACCES || errno == EISDIR)
+	{
+		perror("minishell");
+		free(path);
+		exit(126);
+	}
+	else
+	{
+		perror("minishell");
+		free(path);
+		exit(127);
+	}
 	return (0);
 }

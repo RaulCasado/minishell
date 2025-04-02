@@ -19,7 +19,7 @@ void execute_command(char **args, char **envp)
     {
         execve(args[0], args, envp); 
         perror("execve"); // Solo se ejecuta si execve falla
-        exit(127);
+        exit(127); 
     }
     else // Proceso padre
     {

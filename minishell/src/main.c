@@ -73,7 +73,6 @@ static int	minishell_loop(char **envp)
 			}
 		}
 		minishell_reset_loop(input, minishell);
-		// echo hola | env | export | echo hola > outfile
 	}
 	exit_status = minishell->exit_code;
 	free_minishell(minishell);
