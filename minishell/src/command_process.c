@@ -11,11 +11,12 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/stat.h>
 
-static char	*try_path(char *dir, char *cmd)
+static char *try_path(char *dir, char *cmd)
 {
-	char	*path;
-	char	*full_path;
+	char *path;
+	char *full_path;
 
 	path = ft_strjoin(dir, "/");
 	if (!path)
@@ -30,10 +31,10 @@ static char	*try_path(char *dir, char *cmd)
 	return (NULL);
 }
 
-static char	*search_in_path(char *cmd, char **paths)
+static char *search_in_path(char *cmd, char **paths)
 {
-	int		i;
-	char	*result;
+	int i;
+	char *result;
 
 	i = 0;
 	while (paths[i])
@@ -46,11 +47,11 @@ static char	*search_in_path(char *cmd, char **paths)
 	return (NULL);
 }
 
-char	*find_command_path(char *cmd, char **envp)
+char *find_command_path(char *cmd, char **envp)
 {
-	char	*direct_path;
-	char	**paths;
-	char	*result;
+	char *direct_path;
+	char **paths;
+	char *result;
 
 	direct_path = handle_direct_path(cmd);
 	if (direct_path)
@@ -63,9 +64,9 @@ char	*find_command_path(char *cmd, char **envp)
 	return (result);
 }
 
-int	command_process(t_minishell *minishell, t_command *command)
+int command_process(t_minishell *minishell, t_command *command)
 {
-	char	*path;
+	char *path;
 
 	if (!command->args[0])
 		return (1);
@@ -86,16 +87,10 @@ int	command_process(t_minishell *minishell, t_command *command)
 	execve(path, command->args, minishell->envp);
 	if (errno == ENOEXEC && (command->args[0][0] == '.' || command->args[0][0] == '/'))
 	{
-		// xd
-		/*
-		Test 141: ✅⚠️  ./test_files 
-		mini error = ( Permission denied)
-		bash error = ( Is a directory)
-		*/
 		free(path);
 		exit(0);
 	}
-	else if (errno == ENOEXEC) 
+	else if (errno == ENOEXEC)
 	{
 		ft_putstr_fd(command->args[0], 2);
 		ft_putendl_fd(": command not found", 2);
@@ -104,7 +99,17 @@ int	command_process(t_minishell *minishell, t_command *command)
 	}
 	else if (errno == EACCES || errno == EISDIR)
 	{
-		perror("minishell");
+		struct stat st;
+		if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+		{
+			ft_putstr_fd(command->args[0], 2);
+			ft_putendl_fd(": Is a directory", 2);
+		}
+		else
+		{
+			ft_putstr_fd(command->args[0], 2);
+			ft_putendl_fd(": Permission denied", 2);
+		}
 		free(path);
 		exit(126);
 	}
