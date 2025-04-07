@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:30:13 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/26 12:09:03 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/07 12:31:00 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,16 @@ static int immediate_open_output_file(char *file, int append)
 		return (1);
 	if (fd == -1)
 	{
-		perror("Minishell: open");
+		// Report error but don't halt processing
+		ft_putstr_fd("Minishell: ", 2);
+		ft_putstr_fd(file, 2);
+		if (errno == EISDIR)
+			ft_putendl_fd(": Is a directory", 2);
+		else if (errno == EACCES)
+			ft_putendl_fd(": Permission denied", 2);
+		else
+			perror("");
+		// Return -1 to indicate error, but we'll still continue processing
 		return (-1);
 	}
 	return (fd);
@@ -57,6 +66,7 @@ static int immediate_open_output_file(char *file, int append)
 void	handle_redirection(t_token **t, t_command_info *ci)
 {
 	t_token	*next;
+	int     fd;
 
 	next = (*t)->next;
 	if (!next)
@@ -69,12 +79,11 @@ void	handle_redirection(t_token **t, t_command_info *ci)
 	}
 	else if ((*t)->type == TOKEN_REDIR_OUT)
 	{
-		{
-			int fd = immediate_open_output_file(next->value, 1);
-			if (fd == -1)
-				return ;
+		fd = immediate_open_output_file(next->value, 1);
+		if (fd >= 0)
 			close(fd);
-		}
+		// Continue even if there was an error with opening the file
+		
 		// If an outfile already exists, push it to extra_outfiles.
 		if (ci->outfile)
 		{
@@ -82,24 +91,23 @@ void	handle_redirection(t_token **t, t_command_info *ci)
 			ci->extra_count++;
 			free(ci->outfile);
 		}
-		ci->outfile = ft_strdup(next->value); // what if ft_strdup fails
+		ci->outfile = ft_strdup(next->value);
 		ci->append = 1;
 	}
 	else if ((*t)->type == TOKEN_REDIR_APPEND)
 	{
-		{
-			int fd = immediate_open_output_file(next->value, 2);
-			if (fd == -1)
-				return ;
+		fd = immediate_open_output_file(next->value, 2);
+		if (fd >= 0)
 			close(fd);
-		}
+		// Continue even if there was an error
+		
 		if (ci->outfile)
 		{
 			ci->extra_outfiles = add_arg(ci->extra_outfiles, ci->outfile);
 			ci->extra_count++;
 			free(ci->outfile);
 		}
-		ci->outfile = ft_strdup(next->value); // what if ft_strdup fails
+		ci->outfile = ft_strdup(next->value);
 		ci->append = 2;
 	}
 }

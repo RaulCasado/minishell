@@ -37,25 +37,27 @@ static int open_output_file(char *file, int append)
     return (fd);
 }
 
-
 static char handle_outfile(t_command *cmd)
 {
     if (cmd->outfile[0] == '\0' || (unsigned char)cmd->outfile[0] > 127)
         return (1);
+    
     int fd = open_output_file(cmd->outfile, cmd->append);
     if (fd == -1)
-        return (1);
-    // Si ya existe una redirección previa, se guarda en extra_outfiles.
+        return (1); // Error already reported, return 1 to indicate failure
+    
+    // Try opening extra outfiles just to report errors
     for (int i = 0; i < cmd->extra_count; i++)
     {
         int extra_fd = open_output_file(cmd->extra_outfiles[i], cmd->append);
         if (extra_fd == -1)
         {
             close(fd);
-            return (1);
+            return (1); // Error already reported
         }
         close(extra_fd);
     }
+    
     if (dup2(fd, STDOUT_FILENO) == -1)
     {
         perror("Minishell: dup2");
@@ -66,16 +68,23 @@ static char handle_outfile(t_command *cmd)
     return (0);
 }
 
-
 static char	handle_infile(t_command *cmd)
 {
 	int	fd;
 
-	fd = open(cmd->infile, O_RDONLY); // infile < echo <--- blow up
+	fd = open(cmd->infile, O_RDONLY);
 	if (fd == -1)
 	{
+		// Report specific errors properly
+		ft_putstr_fd("Minishell: ", 2);
+		ft_putstr_fd(cmd->infile, 2);
+		if (errno == EACCES)
+			ft_putendl_fd(": Permission denied", 2);
+		else
+			ft_putendl_fd(": No such file or directory", 2);
 		return (1);
 	}
+	
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
 		close(fd);
@@ -87,20 +96,19 @@ static char	handle_infile(t_command *cmd)
 
 int	handle_redirections(t_command *cmd)
 {
+	int result = 0;
+	
 	if (cmd->outfile)
 	{
 		if (handle_outfile(cmd))
-			return (-1);
+			result = -1;
 	}
+	
 	if (cmd->infile)
 	{
 		if (handle_infile(cmd))
-		{
-			perror("Minishell: ");
-			return (-1);
-		}
+			result = -1;
 	}
-	// Minishell> echo hola > outfile
-	// Minishell> cat outfile
-	return (0);
+	
+	return (result);
 }

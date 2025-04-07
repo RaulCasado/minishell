@@ -214,8 +214,9 @@ int command_executer(t_minishell *minishell)
 	int saved_stdout;
 
 	cmd = minishell->commands;
-	if (check_input_redirections(minishell->tokens) == -1 || check_output_redirections(minishell->tokens) == -1)
-		exit(1);
+	// Remove global redirection check that causes immediate exit
+	// if (check_input_redirections(minishell->tokens) == -1 || check_output_redirections(minishell->tokens) == -1)
+	//	exit(1);
 	num_commands = count_commands(cmd);
 	// Single builtin: execute in parent with proper fd backup/restoration
 	if (num_commands == 1 && is_builtin(cmd->args[0]))
@@ -223,7 +224,14 @@ int command_executer(t_minishell *minishell)
 		saved_stdin = dup(STDIN_FILENO);
 		saved_stdout = dup(STDOUT_FILENO);
 		if (handle_redirections(cmd))
-			exit(EXIT_FAILURE);
+		{
+			dup2(saved_stdin, STDIN_FILENO);
+			dup2(saved_stdout, STDOUT_FILENO);
+			close(saved_stdin);
+			close(saved_stdout);
+			minishell->exit_code = 1;
+			return (minishell->exit_code);
+		}
 		execute_command(minishell, cmd);
 		dup2(saved_stdin, STDIN_FILENO);
 		dup2(saved_stdout, STDOUT_FILENO);
