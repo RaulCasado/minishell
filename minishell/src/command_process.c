@@ -49,9 +49,9 @@ static char *search_in_path(char *cmd, char **paths)
 
 char *find_command_path(char *cmd, char **envp)
 {
-	char *direct_path;
-	char **paths;
-	char *result;
+	char	*direct_path;
+	char	**paths;
+	char	*result;
 
 	direct_path = handle_direct_path(cmd);
 	if (direct_path)
@@ -85,7 +85,8 @@ int command_process(t_minishell *minishell, t_command *command)
 		exit(127);
 	}
 	execve(path, command->args, minishell->envp);
-	if (errno == ENOEXEC && (command->args[0][0] == '.' || command->args[0][0] == '/'))
+	if (errno == ENOEXEC && (command->args[0][0] == '.'
+		|| command->args[0][0] == '/'))
 	{
 		free(path);
 		exit(0);
