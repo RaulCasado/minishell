@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:30:13 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/07 12:31:00 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:04:57 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@ char	**add_arg(char **args, char *new_arg)
 	return (new_args);
 }
 
-// Add helper function to immediately open output file for side-effect.
-static int immediate_open_output_file(char *file, int append)
+static int	immediate_open_output_file(char *file, int append)
 {
-	// Similar to open_output_file in redirections.c
 	int	fd;
 
 	if (append == 2)
@@ -48,7 +46,6 @@ static int immediate_open_output_file(char *file, int append)
 		return (1);
 	if (fd == -1)
 	{
-		// Report error but don't halt processing
 		ft_putstr_fd("Minishell: ", 2);
 		ft_putstr_fd(file, 2);
 		if (errno == EISDIR)
@@ -57,59 +54,57 @@ static int immediate_open_output_file(char *file, int append)
 			ft_putendl_fd(": Permission denied", 2);
 		else
 			perror("");
-		// Return -1 to indicate error, but we'll still continue processing
 		return (-1);
 	}
 	return (fd);
 }
 
+/*
+** Helper para TOKEN_REDIR_IN
+*/
+static void	handle_redir_in(t_command_info *ci, t_token *next)
+{
+	free(ci->infile);
+	ci->infile = ft_strdup(next->value);
+}
+
+/*
+** Helper para TOKEN_REDIR_OUT y TOKEN_REDIR_APPEND.
+** 'append' vale 1 para '>' y 2 para '>>'.
+*/
+static void	handle_redir_out(t_command_info *ci, t_token *next, int append)
+{
+	int	fd;
+
+	fd = immediate_open_output_file(next->value, append);
+	if (fd >= 0)
+		close(fd);
+	if (ci->outfile)
+	{
+		ci->extra_outfiles = add_arg(ci->extra_outfiles, ci->outfile);
+		ci->extra_count++;
+		free(ci->outfile);
+	}
+	ci->outfile = ft_strdup(next->value);
+	if (append == 2)
+		ci->append = 2;
+	else
+		ci->append = 1;
+}
+
 void	handle_redirection(t_token **t, t_command_info *ci)
 {
 	t_token	*next;
-	int     fd;
 
 	next = (*t)->next;
 	if (!next)
 		return ;
-	// Process redirection based on operator type.
 	if ((*t)->type == TOKEN_REDIR_IN)
-	{
-		free(ci->infile);
-		ci->infile = ft_strdup(next->value); // what if ft_strdup fails
-	}
+		handle_redir_in(ci, next);
 	else if ((*t)->type == TOKEN_REDIR_OUT)
-	{
-		fd = immediate_open_output_file(next->value, 1);
-		if (fd >= 0)
-			close(fd);
-		// Continue even if there was an error with opening the file
-		
-		// If an outfile already exists, push it to extra_outfiles.
-		if (ci->outfile)
-		{
-			ci->extra_outfiles = add_arg(ci->extra_outfiles, ci->outfile);
-			ci->extra_count++;
-			free(ci->outfile);
-		}
-		ci->outfile = ft_strdup(next->value);
-		ci->append = 1;
-	}
+		handle_redir_out(ci, next, 1);
 	else if ((*t)->type == TOKEN_REDIR_APPEND)
-	{
-		fd = immediate_open_output_file(next->value, 2);
-		if (fd >= 0)
-			close(fd);
-		// Continue even if there was an error
-		
-		if (ci->outfile)
-		{
-			ci->extra_outfiles = add_arg(ci->extra_outfiles, ci->outfile);
-			ci->extra_count++;
-			free(ci->outfile);
-		}
-		ci->outfile = ft_strdup(next->value);
-		ci->append = 2;
-	}
+		handle_redir_out(ci, next, 2);
 }
 
 void	handle_pipe(t_command **cl, t_command_info *ci, t_command **curr)
@@ -135,7 +130,7 @@ void	handle_word(t_command_info *ci, char *value)
 }
 
 t_token	*process_token(t_token *t, t_command_info *ci,
-	t_command **cl, t_command **curr)
+		t_command **cl, t_command **curr)
 {
 	if (t->type == TOKEN_WORD)
 	{
@@ -145,7 +140,6 @@ t_token	*process_token(t_token *t, t_command_info *ci,
 	else if (t->type >= TOKEN_REDIR_IN && t->type <= TOKEN_REDIR_APPEND)
 	{
 		handle_redirection(&t, ci);
-		// Skip both the redirection operator and its operand
 		if (t && t->next)
 			t = t->next->next;
 		else
@@ -154,7 +148,7 @@ t_token	*process_token(t_token *t, t_command_info *ci,
 	else if (t->type == TOKEN_PIPE)
 	{
 		handle_pipe(cl, ci, curr);
-		t = t->next; // skip the pipe token
+		t = t->next;
 	}
 	return (t);
 }

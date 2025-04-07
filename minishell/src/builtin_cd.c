@@ -5,18 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/14 17:22:54 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/14 17:22:55 by racasado         ###   ########.fr       */
+/*   Created: 2025/04/07 20:12:28 by racasado          #+#    #+#             */
+/*   Updated: 2025/04/07 20:12:30 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
-	- Check Access() to new directory
-	- Move to Directory somehow
-	- We probably need to change the envp variable for PWD
-*/
 
 static int	find_env_var(char **envp, const char *var)
 {
@@ -67,21 +61,32 @@ static void	update_pwd(t_minishell *minishell)
 
 static char	*build_full_path(char *path)
 {
-	char	cwd[CWD_SIZE];
+	char	*cwd;
 	char	*temp;
 	char	*full_path;
 
-	if (!path)
+	cwd = malloc(sizeof(char) * CWD_SIZE);
+	if (!cwd)
 		return (NULL);
-	if (path[0] == '/'
-		|| (path[0] == '.' && (path[1] == '/' || path[1] == '.')))
+	if (!path)
+	{
+		free(cwd);
+		return (NULL);
+	}
+	if (path[0] == '/' ||
+		(path[0] == '.' && (path[1] == '/' || path[1] == '.')))
+	{
+		free(cwd);
 		return (ft_strdup(path));
-	if (!getcwd(cwd, sizeof(cwd)))
+	}
+	if (!getcwd(cwd, CWD_SIZE))
 	{
 		perror("Minishell: getcwd");
+		free(cwd);
 		return (NULL);
 	}
 	temp = ft_strjoin(cwd, "/");
+	free(cwd);
 	if (!temp)
 		return (NULL);
 	full_path = ft_strjoin(temp, path);
@@ -89,23 +94,31 @@ static char	*build_full_path(char *path)
 	return (full_path);
 }
 
-int	builtin_cd(t_minishell *minishell, t_command *command)
+static int	check_cd_args(t_command *command)
 {
-	char	*path;
-	char	*full_path;
-
 	if (!command->args[1])
 	{
 		ft_putendl_fd("Minishell: cd: usage: cd <absolute|relative path>",
 			STDERR_FILENO);
 		return (2);
 	}
-	if ( command->args[2])
+	if (command->args[2])
 	{
-		ft_putendl_fd("Minishell: cd: too many arguments",
-			STDERR_FILENO);
+		ft_putendl_fd("Minishell: cd: too many arguments", STDERR_FILENO);
 		return (1);
 	}
+	return (0);
+}
+
+int	builtin_cd(t_minishell *minishell, t_command *command)
+{
+	char	*path;
+	char	*full_path;
+	int		ret;
+
+	ret = check_cd_args(command);
+	if (ret != 0)
+		return (ret);
 	path = command->args[1];
 	full_path = build_full_path(path);
 	if (!full_path)

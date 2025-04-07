@@ -17,9 +17,9 @@ static void	initialize_main(t_minishell **minishell, char **envp)
 	setup_signals();
 	rl_catch_signals = 0;
 	*minishell = minishell_builder(envp);
-	if (!minishell)
+	if (!(*minishell))
 	{
-		// Throw error message
+		ft_putendl_fd("Error: Failed to initialize minishell", 2);
 		exit(1);
 	}
 }
@@ -44,36 +44,37 @@ static int	check_input_empty(char *input)
 	return (0);
 }
 
+static int	process_iteration(t_minishell *minishell)
+{
+	char	*input;
+
+	input = readline("Minishell> ");
+	if (check_input_exit(input))
+		return (1);
+	if (check_input_empty(input))
+		return (0);
+	add_history(input);
+	minishell->tokens = tokenize_input(input, minishell);
+	if (minishell->tokens)
+	{
+		minishell->commands = parse_tokens(minishell->tokens);
+		if (minishell->commands)
+			minishell->exit_code = command_executer(minishell);
+	}
+	minishell_reset_loop(input, minishell);
+	return (0);
+}
+
 static int	minishell_loop(char **envp)
 {
-	char		*input;
 	t_minishell	*minishell;
-	int		cmd_result;
-	int		exit_status;
+	int			exit_status;
 
 	initialize_main(&minishell, envp);
 	while (get_signal() && minishell)
 	{
-/* 		if (isatty(STDIN_FILENO) == 0)
-			dup2(open("/dev/tty", O_RDONLY), STDIN_FILENO); */
-		input = readline("Minishell> ");
-		if (check_input_exit(input))
+		if (process_iteration(minishell) == 1)
 			break ;
-		if (check_input_empty(input))
-			continue ;
-		add_history(input);
-		minishell->tokens = tokenize_input(input, minishell);
-		//print_tokens(minishell->tokens);
-		if (minishell->tokens)
-		{
-			minishell->commands = parse_tokens(minishell->tokens);
-			if (minishell->commands)
-			{
-				cmd_result = command_executer(minishell);
-				minishell->exit_code = cmd_result;
-			}
-		}
-		minishell_reset_loop(input, minishell);
 	}
 	exit_status = minishell->exit_code;
 	free_minishell(minishell);

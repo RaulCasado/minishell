@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 17:30:04 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/26 12:09:17 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:55:11 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static void	free_command(t_command *command)
 		free(command->infile);
 	if (command->outfile)
 		free(command->outfile);
-	// Free extra_outfiles if they exist.
 	if (command->extra_outfiles)
 		ft_free_split(command->extra_outfiles);
 	free(command);
@@ -47,7 +46,6 @@ void	free_minishell(t_minishell *minishell)
 	rl_clear_history();
 	free_commands(minishell->commands);
 	free_tokens(minishell->tokens);
-	//free(minishell->tokens);
 	free_envp(minishell->envp);
 	free(minishell);
 }

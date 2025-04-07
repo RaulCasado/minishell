@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 18:52:54 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/28 12:13:03 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:14:58 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	execute_command(t_minishell *minishell, t_command *cmd)
 	else if (ft_strcmp(cmd->args[0], ENV_LOWER) == 0)
 		minishell->exit_code = builtin_env(minishell, cmd);
 	else if (ft_strcmp(cmd->args[0], EXIT_LOWER) == 0)
-	minishell->exit_code = builtin_exit(minishell, cmd);
+		minishell->exit_code = builtin_exit(minishell, cmd);
 	else
 		command_process(minishell, cmd);
 }
