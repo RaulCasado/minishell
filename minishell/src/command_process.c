@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <sys/stat.h>
 
 static char	*try_path(char *dir, char *cmd)
 {
