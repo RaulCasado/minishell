@@ -6,20 +6,18 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:10 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/07 11:29:20 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:52:37 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void handle_marks(char chr, char *mark_d, char *mark_s)
+void	handle_marks(char chr, char *mark_d, char *mark_s)
 {
-    // Si se encuentra una comilla doble y no estamos dentro de comillas simples, cambiar estado.
-    if (chr == DOUBLE_MARK && !(*mark_s))
-        *mark_d = !(*mark_d);
-    // Si se encuentra una comilla simple y no estamos dentro de comillas dobles, cambiar estado.
-    else if (chr == SIMPLE_MARK && !(*mark_d))
-        *mark_s = !(*mark_s);
+	if (chr == DOUBLE_MARK && !(*mark_s))
+		*mark_d = !(*mark_d);
+	else if (chr == SIMPLE_MARK && !(*mark_d))
+		*mark_s = !(*mark_s);
 }
 
 ssize_t	ft_symbol_len(char *ptr)

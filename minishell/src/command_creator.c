@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:30:13 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/07 20:04:57 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:45:49 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 char	**add_arg(char **args, char *new_arg)
 {
-	int		count = 0;
-	int		i = 0;
+	int		count;
+	int		i;
 	char	**new_args;
 
+	count = 0;
+	i = 0;
 	while (args && args[count])
 		count++;
 	new_args = malloc(sizeof(char *) * (count + 2));

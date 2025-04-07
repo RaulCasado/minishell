@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:52 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/28 11:25:54 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:38:47 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,10 @@ void	unquoter(t_token **tokens)
 				perror("Minishell: malloc failed in unquoter");
 				exit(3);
 			}
-			current->value = new_value; // NO NULL CHECKS EN LOS SWAPS??
+			current->value = new_value;
 		}
 		swap_free(&current->value, loop_subtoken(current, DOUBLE_MARK));
 		swap_free(&current->value, loop_subtoken(current, SIMPLE_MARK));
 		current = current->next;
 	}
-	// print_tokens(*tokens);
 }

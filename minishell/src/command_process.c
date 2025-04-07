@@ -7,16 +7,15 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:30:47 by racasado          #+#    #+#             */
 /*   Updated: 2025/03/14 17:30:47 by racasado         ###   ########.fr       */
-/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/stat.h>
 
-static char *try_path(char *dir, char *cmd)
+static char	*try_path(char *dir, char *cmd)
 {
-	char *path;
-	char *full_path;
+	char	*path;
+	char	*full_path;
 
 	path = ft_strjoin(dir, "/");
 	if (!path)
@@ -31,10 +30,10 @@ static char *try_path(char *dir, char *cmd)
 	return (NULL);
 }
 
-static char *search_in_path(char *cmd, char **paths)
+static char	*search_in_path(char *cmd, char **paths)
 {
-	int i;
-	char *result;
+	int		i;
+	char	*result;
 
 	i = 0;
 	while (paths[i])
@@ -47,11 +46,11 @@ static char *search_in_path(char *cmd, char **paths)
 	return (NULL);
 }
 
-char *find_command_path(char *cmd, char **envp)
+char	*find_command_path(char *cmd, char **envp)
 {
-	char *direct_path;
-	char **paths;
-	char *result;
+	char	*direct_path;
+	char	**paths;
+	char	*result;
 
 	direct_path = handle_direct_path(cmd);
 	if (direct_path)
@@ -64,60 +63,51 @@ char *find_command_path(char *cmd, char **envp)
 	return (result);
 }
 
-int command_process(t_minishell *minishell, t_command *command)
+static void	handle_exec_errors(char *path, char *cmd_name)
 {
-	char *path;
+	struct stat	st;
 
-	if (!command->args[0])
-		return (1);
-	if (!command->args[0][0])
+	if (errno == ENOEXEC && (cmd_name[0] == '.' || cmd_name[0] == '/'))
+		exit(0);
+	else if (errno == ENOEXEC)
 	{
-		if (command->args[1])
-			command->args = command->args + 1;
+		ft_putstr_fd(cmd_name, 2);
+		ft_putendl_fd(": command not found", 2);
+		exit(2);
+	}
+	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		ft_putstr_fd(cmd_name, 2);
+		ft_putendl_fd(": Is a directory", 2);
+		exit(126);
+	}
+	ft_putstr_fd(cmd_name, 2);
+	ft_putendl_fd(": Permission denied", 2);
+	exit(126);
+}
+
+int	command_process(t_minishell *ms, t_command *cmd)
+{
+	char	*path;
+
+	if (!cmd->args[0] || !cmd->args[0][0])
+	{
+		if (cmd->args[1])
+			cmd->args++;
 		else
 			exit(0);
 	}
-	path = find_command_path(command->args[0], minishell->envp);
+	path = find_command_path(cmd->args[0], ms->envp);
 	if (!path)
 	{
-		ft_putstr_fd(command->args[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
-		exit(127);
-	}
-	execve(path, command->args, minishell->envp);
-	if (errno == ENOEXEC && (command->args[0][0] == '.' || command->args[0][0] == '/'))
-	{
-		free(path);
-		exit(0);
-	}
-	else if (errno == ENOEXEC)
-	{
-		ft_putstr_fd(command->args[0], 2);
+		ft_putstr_fd(cmd->args[0], 2);
 		ft_putendl_fd(": command not found", 2);
-		free(path);
-		exit(2);
-	}
-	else if (errno == EACCES || errno == EISDIR)
-	{
-		struct stat st;
-		if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
-		{
-			ft_putstr_fd(command->args[0], 2);
-			ft_putendl_fd(": Is a directory", 2);
-		}
-		else
-		{
-			ft_putstr_fd(command->args[0], 2);
-			ft_putendl_fd(": Permission denied", 2);
-		}
-		free(path);
-		exit(126);
-	}
-	else
-	{
-		perror("minishell");
-		free(path);
 		exit(127);
 	}
-	return (0);
+	execve(path, cmd->args, ms->envp);
+	if (errno == EACCES || errno == EISDIR)
+		handle_exec_errors(path, cmd->args[0]);
+	perror("minishell");
+	free(path);
+	exit(127);
 }

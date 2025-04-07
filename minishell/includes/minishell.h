@@ -98,6 +98,12 @@ typedef struct s_minishell
 	int			exit_code;
 }	t_minishell;
 
+typedef struct s_marks
+{
+	char	d;
+	char	s;
+}	t_marks;
+
 /*	Minishell	*/
 t_minishell	*minishell_builder(char **envp);
 void		minishell_reset_loop(char *input, t_minishell *minishell);
@@ -128,7 +134,7 @@ void		add_token(t_token **tokens, char *value);
 void		unquoter(t_token **tokens);
 
 /*	Quotes Utils */
-char	get_global_marks(char *ptr, char mark_type);
+char		get_global_marks(char *ptr, char mark_type);
 
 /*	Signals	*/
 int			get_signal(void);
