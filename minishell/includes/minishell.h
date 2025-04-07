@@ -203,4 +203,35 @@ char		**get_path_directories(char **envp);
 /*	Symbol */
 ssize_t		ft_symbol_len(char *ptr);
 
+int			immediate_open_output_file(char *file, int append);
+void		handle_redir_in(t_command_info *ci, t_token *next);
+void		handle_redir_out(t_command_info *ci, t_token *next, int append);
+char		**add_arg(char **args, char *new_arg);
+
+void		initialize_main(t_minishell **minishell, char **envp);
+
+/* ************************************************************************** */
+/*                        Command Executer Helpers                          */
+/* ************************************************************************** */
+void		ce_setup_child_process(t_minishell *minishell, t_command *cmd,
+				int prev_pipe_in, int pipe_fd[2]);
+int			ce_init_pipe(t_command *cmd,
+				int pipe_fd[2]);
+void		ce_process_parent(t_command **cmd,
+				int *prev_pipe_in, int pipe_fd[2]);
+void		ce_wait_for_all_children(t_minishell *minishell,
+				pid_t last_pid);
+
+// command_executer_redirect.c
+int			ce_process_command_in_pipeline(t_minishell *minishell,
+				t_command **cmd, int *prev_pipe_in, pid_t *last_pid);
+int			ce_handle_single_output_redirection(t_token *token);
+int			ce_check_output_redirections(t_token *tokens);
+int			ce_check_input_redirections(t_token *tokens);
+
+/* ************************************************************************** */
+/*                           Command Executer                               */
+/* ************************************************************************** */
+int			command_executer(t_minishell *minishell);
+
 #endif

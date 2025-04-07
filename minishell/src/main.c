@@ -12,18 +12,6 @@
 
 #include "minishell.h"
 
-static void	initialize_main(t_minishell **minishell, char **envp)
-{
-	setup_signals();
-	rl_catch_signals = 0;
-	*minishell = minishell_builder(envp);
-	if (!(*minishell))
-	{
-		ft_putendl_fd("Error: Failed to initialize minishell", 2);
-		exit(1);
-	}
-}
-
 static int	check_input_exit(char *input)
 {
 	if (!input)
