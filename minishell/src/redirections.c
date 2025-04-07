@@ -22,7 +22,6 @@ static int	open_output_file(char *file, int append)
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else
 		return (1);
-
 	if (fd == -1)
 	{
 		ft_putstr_fd("Minishell: ", 2);
@@ -78,7 +77,6 @@ static char	handle_outfile(t_command *cmd)
 	close(fd);
 	return (0);
 }
-
 
 static char	handle_infile(t_command *cmd)
 {

@@ -5,8 +5,9 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/14 17:30:47 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/14 17:30:47 by racasado         ###   ########.fr       */
+/*   Created: 2025/03/14 21:03:25 by racasado          #+#    #+#             */
+/*   Updated: 2025/04/07 21:03:25 by racasado         ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"

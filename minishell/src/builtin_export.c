@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:23:31 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/19 12:47:42 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:58:30 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,45 +80,43 @@ static char	*remove_quotes(char *str)
 	return (str);
 }
 
-static void	process_export_arg(t_minishell *minishell, char *arg,
-	int *exit_code)
+static void	process_export_arg(t_minishell *ms, char *arg, int *exit_code)
 {
 	if (!is_valid_identifier(arg))
 	{
-		ft_putstr_fd("Minishell: export: not a valid identifier", STDERR_FILENO); // It was different
+		ft_putstr_fd("minishell: export: invalid identifier", STDERR_FILENO);
 		*exit_code = 1;
 		return ;
 	}
-	if (add_or_replace_env_var(minishell, arg) != 0)
+	if (add_or_replace_env_var(ms, arg) != 0)
 	{
-		ft_putendl_fd("Minishell: export: memory allocation failed",
-			STDERR_FILENO);
+		ft_putendl_fd("minishell: export: allocation failed", STDERR_FILENO);
 		*exit_code = 1;
 	}
 }
 
-int	builtin_export(t_minishell *minishell, t_command *command)
+int	builtin_export(t_minishell *ms, t_command *cmd)
 {
 	int		exit_code;
 	int		i;
 	char	*arg;
 
 	exit_code = 0;
-	if (!command->args[1])
+	if (!cmd->args[1])
 	{
-		print_sorted_env(minishell->envp);
+		print_sorted_env(ms->envp);
 		return (0);
 	}
 	i = 1;
-	while (command->args[i])
+	while (cmd->args[i])
 	{
-		arg = remove_quotes(command->args[i]);
-		if (arg != command->args[i])
+		arg = remove_quotes(cmd->args[i]);
+		if (arg != cmd->args[i])
 		{
-			free(command->args[i]);
-			command->args[i] = arg;
+			free(cmd->args[i]);
+			cmd->args[i] = arg;
 		}
-		process_export_arg(minishell, arg, &exit_code);
+		process_export_arg(ms, arg, &exit_code);
 		i++;
 	}
 	return (exit_code);
