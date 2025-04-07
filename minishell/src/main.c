@@ -63,6 +63,7 @@ static int	minishell_loop(char **envp)
 			continue ;
 		add_history(input);
 		minishell->tokens = tokenize_input(input, minishell);
+		//print_tokens(minishell->tokens);
 		if (minishell->tokens)
 		{
 			minishell->commands = parse_tokens(minishell->tokens);

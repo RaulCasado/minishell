@@ -12,39 +12,45 @@
 
 #include "minishell.h"
 
-static int	open_output_file(char *file, int append)
+static int open_output_file(char *file, int append)
 {
-	int	fd;
+    int fd;
 
-	if (append == 2)
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else if (append == 1)
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else
-		return (1);
-	if (fd == -1)
-	{
-		perror("Minishell: open");
-		return (1);
-	}
-	return (fd);
+    if (append == 2)
+        fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+    else if (append == 1)
+        fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    else
+        return (1);
+    if (fd == -1)
+    {
+        ft_putstr_fd("Minishell: ", 2);
+        ft_putstr_fd(file, 2);
+        if (errno == EISDIR)
+            ft_putendl_fd(": Is a directory", 2);
+        else if (errno == EACCES)
+            ft_putendl_fd(": Permission denied", 2);
+        else
+            perror("");
+        return (-1);
+    }
+    return (fd);
 }
 
-static char	handle_outfile(t_command *cmd)
+
+static char handle_outfile(t_command *cmd)
 {
     if (cmd->outfile[0] == '\0' || (unsigned char)cmd->outfile[0] > 127)
         return (1);
-    // Open the main output file regardless of extra redirections.
-    int	fd = open_output_file(cmd->outfile, cmd->append);
+    int fd = open_output_file(cmd->outfile, cmd->append);
     if (fd == -1)
         return (1);
-    // For each extra outfile, try opening it to match bash semantics.
+    // Si ya existe una redirección previa, se guarda en extra_outfiles.
     for (int i = 0; i < cmd->extra_count; i++)
     {
         int extra_fd = open_output_file(cmd->extra_outfiles[i], cmd->append);
         if (extra_fd == -1)
         {
-            perror("Minishell: open");
             close(fd);
             return (1);
         }
@@ -59,6 +65,7 @@ static char	handle_outfile(t_command *cmd)
     close(fd);
     return (0);
 }
+
 
 static char	handle_infile(t_command *cmd)
 {
