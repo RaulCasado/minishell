@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 21:59:01 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/07 22:00:07 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/08 12:47:56 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,6 @@ int	immediate_open_output_file(char *file, int append)
 		return (1);
 	if (fd == -1)
 	{
-		ft_putstr_fd("Minishell: ", 2);
-		ft_putstr_fd(file, 2);
-		if (errno == EISDIR)
-			ft_putendl_fd(": Is a directory", 2);
-		else if (errno == EACCES)
-			ft_putendl_fd(": Permission denied", 2);
-		else
-			perror("");
 		return (-1);
 	}
 	return (fd);
