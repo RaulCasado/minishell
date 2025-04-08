@@ -32,6 +32,7 @@
 # define EXIT_LOWER "exit"
 
 # define CWD_SIZE 1024
+# define _POSIX_C_SOURCE 200809L
 
 # include "libft/libft.h"
 # include <errno.h>
