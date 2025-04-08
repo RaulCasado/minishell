@@ -1,0 +1,14 @@
+{
+   read_line_leak
+   Memcheck:Leak
+   ...
+   obj:*/libreadline.so*
+   fun:readline*
+}
+{
+   rl_on_new_line_leak
+   Memcheck:Leak
+   ...
+   obj:*/libreadline.so*
+   fun:rl_on_new_line*
+}

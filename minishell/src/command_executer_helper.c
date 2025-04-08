@@ -6,11 +6,19 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 22:23:56 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/07 22:24:01 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/08 13:45:14 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void better_close(int fd)
+{
+	if (fd >= 0)
+	{
+		close(fd);
+	}
+}
 
 void	ce_setup_child_process(t_minishell *minishell, t_command *cmd,
 	int prev_pipe_in, int pipe_fd[2])
@@ -18,17 +26,17 @@ void	ce_setup_child_process(t_minishell *minishell, t_command *cmd,
 	if (prev_pipe_in != -1)
 	{
 		dup2(prev_pipe_in, STDIN_FILENO);
-		close(prev_pipe_in);
+		better_close(prev_pipe_in);
 	}
 	if (cmd->next)
 	{
 		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[1]);
+		better_close(pipe_fd[1]);
 	}
 	if (pipe_fd[0] >= 0)
-		close(pipe_fd[0]);
+		better_close(pipe_fd[0]);
 	if (pipe_fd[1] >= 0)
-		close(pipe_fd[1]);
+		better_close(pipe_fd[1]);
 	if (handle_redirections(cmd))
 		exit(1);
 	execute_command(minishell, cmd);

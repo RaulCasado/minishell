@@ -48,10 +48,10 @@ static int	check_extra_outfiles(t_command *cmd, int fd, int append)
 		extra_fd = open_output_file(cmd->extra_outfiles[i], append);
 		if (extra_fd == -1)
 		{
-			close(fd);
+			better_close(fd);
 			return (1);
 		}
-		close(extra_fd);
+		better_close(extra_fd);
 		i++;
 	}
 	return (0);
@@ -71,10 +71,10 @@ static char	handle_outfile(t_command *cmd)
 	if (dup2(fd, STDOUT_FILENO) == -1)
 	{
 		perror("Minishell: dup2");
-		close(fd);
+		better_close(fd);
 		return (1);
 	}
-	close(fd);
+	better_close(fd);
 	return (0);
 }
 
@@ -95,10 +95,10 @@ static char	handle_infile(t_command *cmd)
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
-		close(fd);
+		better_close(fd);
 		return (1);
 	}
-	close(fd);
+	better_close(fd);
 	return (0);
 }
 

@@ -23,16 +23,16 @@ static int	execute_builtin(t_minishell *minishell, t_command *cmd)
 	{
 		dup2(saved_stdin, STDIN_FILENO);
 		dup2(saved_stdout, STDOUT_FILENO);
-		close(saved_stdin);
-		close(saved_stdout);
+		better_close(saved_stdin);
+		better_close(saved_stdout);
 		minishell->exit_code = 1;
 		return (minishell->exit_code);
 	}
 	execute_command(minishell, cmd);
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdin);
-	close(saved_stdout);
+	better_close(saved_stdin);
+	better_close(saved_stdout);
 	return (minishell->exit_code);
 }
 
