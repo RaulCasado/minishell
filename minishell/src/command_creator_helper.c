@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 21:59:01 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/08 14:00:53 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/09 10:49:33 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	handle_redir_in(t_command_info *ci, t_token *next)
 	ci->infile = dup_val;
 }
 
-void assign_redir_out(t_command_info *ci,int append)
+void	assign_redir_out(t_command_info *ci, int append)
 {
 	if (append == 2)
 	{
@@ -88,6 +88,7 @@ void assign_redir_out(t_command_info *ci,int append)
 ** Helper para TOKEN_REDIR_OUT y TOKEN_REDIR_APPEND.
 ** 'append' vale 1 para '>' y 2 para '>>'.
 */
+
 void	handle_redir_out(t_command_info *ci, t_token *next, int append)
 {
 	int		fd;
@@ -107,7 +108,7 @@ void	handle_redir_out(t_command_info *ci, t_token *next, int append)
 	{
 		ci->outfile = ft_strdup("");
 		assign_redir_out(ci, append);
-		return;
+		return ;
 	}
 	ci->outfile = dup_val;
 	assign_redir_out(ci, append);

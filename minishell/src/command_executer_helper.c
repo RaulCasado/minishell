@@ -6,13 +6,13 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 22:23:56 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/08 13:45:14 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/09 10:34:50 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void better_close(int fd)
+void	better_close(int fd)
 {
 	if (fd >= 0)
 	{
