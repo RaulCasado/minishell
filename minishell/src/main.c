@@ -66,6 +66,7 @@ static int	minishell_loop(char **envp)
 	}
 	exit_status = minishell->exit_code;
 	free_minishell(minishell);
+	clear_history();
 	return (exit_status);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_assignator.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:05 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/07 20:14:38 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/09 12:18:06 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,23 +72,4 @@ const char	*token_type_to_string(int type)
 	if (type == TOKEN_HEREDOC)
 		return ("TOKEN_HEREDOC");
 	return ("UNKNOWN_TOKEN");
-}
-
-void	print_tokens(t_token *tokens)
-{
-	t_token	*token_ptr;
-	size_t	i;
-
-	if (!tokens)
-		return ;
-	i = 0;
-	token_ptr = tokens;
-	printf("\nPrinting tokens:\n");
-	while (token_ptr)
-	{
-		printf("%zd: %s\n", i, token_ptr->value);
-		token_ptr = token_ptr->next;
-		i++;
-	}
-	printf("\n");
 }

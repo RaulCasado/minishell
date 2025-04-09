@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   command_creator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:30:13 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/07 22:02:28 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/09 11:51:31 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_redirection(t_token **t, t_command_info *ci)
+static void	handle_redirection(t_token **t, t_command_info *ci)
 {
 	t_token	*next;
 
@@ -49,7 +49,7 @@ void	handle_word(t_command_info *ci, char *value)
 	ci->args = add_arg(ci->args, value);
 }
 
-t_token	*process_token(t_token *t, t_command_info *ci,
+static t_token	*process_token(t_token *t, t_command_info *ci,
 		t_command **cl, t_command **curr)
 {
 	if (t->type == TOKEN_WORD)

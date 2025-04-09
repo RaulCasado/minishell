@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:23:31 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/07 20:58:30 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/09 12:23:45 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ static void	print_sorted_env(char **envp)
 			}
 			j++;
 		}
-		printf("declare -x %s\n", envp[i]);
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd(envp[i], 1);
+		ft_putchar_fd('\n', 1);
 		i++;
 	}
 }
@@ -84,7 +86,7 @@ static void	process_export_arg(t_minishell *ms, char *arg, int *exit_code)
 {
 	if (!is_valid_identifier(arg))
 	{
-		ft_putstr_fd("minishell: export: invalid identifier", STDERR_FILENO);
+		ft_putstr_fd("minishell: export: not a valid identifier", STDERR_FILENO);
 		*exit_code = 1;
 		return ;
 	}

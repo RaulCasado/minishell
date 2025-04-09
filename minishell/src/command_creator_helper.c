@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_creator_helper.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 21:59:01 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/09 10:49:33 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/09 11:38:52 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,11 @@ void	assign_redir_out(t_command_info *ci, int append)
 		ci->append = 1;
 	}
 }
+
 /*
 ** Helper para TOKEN_REDIR_OUT y TOKEN_REDIR_APPEND.
 ** 'append' vale 1 para '>' y 2 para '>>'.
 */
-
 void	handle_redir_out(t_command_info *ci, t_token *next, int append)
 {
 	int		fd;

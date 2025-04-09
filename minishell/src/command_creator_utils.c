@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   command_creator_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 18:40:43 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/09 10:48:55 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/09 11:54:04 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static char	*copy_or_null(char *file)
-{
-	char	*copy;
-
-	copy = NULL;
-	if (file)
-		copy = ft_strdup(file);
-	return (copy);
-}
 
 void	reset_command_info(t_command_info *ci)
 {
@@ -42,8 +32,8 @@ t_command	*create_command(t_command_info *ci, t_command *next)
 	if (!cmd)
 		return (NULL);
 	cmd->args = ci->args;
-	cmd->infile = copy_or_null(ci->infile);
-	cmd->outfile = copy_or_null(ci->outfile);
+	cmd->infile = ci->infile;
+	cmd->outfile = ci->outfile;
 	cmd->append = ci->append;
 	cmd->pipe_in = ci->pipe_in;
 	cmd->pipe_out = ci->pipe_out;

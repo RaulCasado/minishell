@@ -154,9 +154,6 @@ size_t		ft_token_len(t_token *token);
 char		ft_add_token(t_token **token, t_token *new_token, size_t i);
 char		ft_remove_token(t_token **token, size_t i);
 
-/*	Extras	*/
-void		print_tokens(t_token *tokens);
-
 /*	Commands	*/
 t_command	*parse_tokens(t_token *tokens);
 int			command_executer(t_minishell *minishell);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 20:34:45 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/07 20:37:05 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/09 12:42:55 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,17 @@ static int	find_env_var(char **envp, const char *var)
 
 static void	update_env_var(t_minishell *m, char *key, char *value)
 {
+	char	*tmp;
 	char	*new_var;
 	int		pos;
 
-	new_var = ft_strjoin(key, "=");
-	new_var = ft_strjoin(new_var, value);
+	tmp = ft_strjoin(key, "=");
+	if (!tmp)
+		return ;
+	new_var = ft_strjoin(tmp, value);
+	free(tmp);
+	if (!new_var)
+		return ;
 	pos = find_env_var(m->envp, key);
 	if (pos != -1)
 	{
