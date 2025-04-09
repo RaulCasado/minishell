@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_builder_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 18:54:11 by droura-s          #+#    #+#             */
-/*   Updated: 2025/04/07 20:29:30 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/09 13:48:19 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	split_input(ssize_t i, char *p, t_token **t)
 	i = 0;
 	while (p[i])
 	{
-		while (p[i] == ' ' && !m.d && !m.s)
+		while ((p[i] == ' ' || p[i] == '\n') && !m.d && !m.s)
 			i++;
 		if (!p[i])
 			break ;

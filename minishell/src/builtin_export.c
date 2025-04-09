@@ -6,7 +6,7 @@
 /*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:23:31 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/09 12:23:45 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/04/09 14:36:00 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,15 @@ static void	process_export_arg(t_minishell *ms, char *arg, int *exit_code)
 {
 	if (!is_valid_identifier(arg))
 	{
-		ft_putstr_fd("minishell: export: not a valid identifier", STDERR_FILENO);
+		ft_putstr_fd("minishell: export: not a valid identifier",
+			STDERR_FILENO);
 		*exit_code = 1;
 		return ;
 	}
 	if (add_or_replace_env_var(ms, arg) != 0)
 	{
-		ft_putendl_fd("minishell: export: allocation failed", STDERR_FILENO);
+		ft_putendl_fd("minishell: export: allocation failed",
+			STDERR_FILENO);
 		*exit_code = 1;
 	}
 }

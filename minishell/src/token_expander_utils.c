@@ -6,7 +6,7 @@
 /*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/03/26 14:07:45 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/04/09 14:34:43 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,16 @@ char	*expand_variable(char *value, ssize_t start,
 	expansion = get_variable(value, start, end, minishell);
 	if (!expansion)
 		return (NULL);
-	head = ft_substr(value, 0, start - 1);
+	if (start == 0)
+		head = ft_strdup("");
+	else
+		head = ft_substr(value, 0, start - 1);
 	if (!head)
 		return (free_mallocs(NULL, expansion, NULL, NULL));
-	if (value[end] == DOUBLE_MARK)
-		tail = ft_strdup("\"");
+	if (end == (ssize_t) ft_strlen(value) - 1)
+		tail = ft_strdup("");
 	else
-		tail = ft_substr(value, end + 1, ft_strlen(value) - end);
+		tail = ft_substr(value, end + 1, ft_strlen(value) - end - 1);
 	if (!tail)
 		return (free_mallocs(head, expansion, NULL, NULL));
 	new_value = forge_value(head, expansion, tail);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_unquoter.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:52 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/07 20:38:47 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/09 14:35:35 by droura-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,7 @@ static char	*unquote_token(t_token *token, size_t value_len)
 		free(token->value);
 		return (ft_strdup(""));
 	}
-	new_value = malloc(sizeof(char) * (value_len - 1));
-	if (!new_value)
-	{
-		free(token->value);
-		return (NULL);
-	}
-	ft_memcpy(new_value, token->value + 1, value_len - 2);
-	new_value[value_len - 2] = '\0';
+	new_value = ft_strtrim(token->value, " \n\t\r\f");
 	free(token->value);
 	return (new_value);
 }
@@ -98,8 +91,8 @@ void	unquoter(t_token **tokens)
 	while (current)
 	{
 		if (current->type == TOKEN_WORD
-			&& (current->value[0] == DOUBLE_MARK
-				|| current->value[0] == SIMPLE_MARK))
+			&& (get_global_marks(current->value, SIMPLE_MARK)
+				|| get_global_marks(current->value, DOUBLE_MARK)))
 		{
 			new_value = unquote_token(current, ft_strlen(current->value));
 			if (!new_value)

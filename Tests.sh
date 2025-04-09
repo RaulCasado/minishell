@@ -1,82 +1,120 @@
 !bin/bash
 
-# Cuando se ejecuta la primera vez y AZUL no existe ==> Invalid read de 1 byte en Forge_value
-echo $AZUL
+# valgrind --leak-check=full --suppressions=readline.supp -s ./minishell
 
-# Cuando hay salto de línea no se borran bien las comillas finales
-# propongo borrar los saltos de línea
+# Test fallido
+Test  65: ❌ echo <"./test_files/infile" <missing <"./test_files/infile" 
+mini exit code = 0
+bash exit code = 1
+mini error = ()
+bash error = ( No such file or directory)
+
+# Terminal normal
+c3r3s6% echo <"./test_files/infile" <missing <"./test_files/infile"
+zsh: no such file or directory: missing
+c3r3s6% echo $?
+1
+
+# Funciona no????
+Minishell> echo <"./test_files/infile" <missing <"./test_files/infile"
+Minishell: ./test_files/infile: No such file or directory
+Minishell> echo $?
+1
+
+#
 echo " $USER"
-
-
-#El otro minishell no pone los saltos de línea como el shell normal que los mantiene,
-#Minishell> echo "$? hola que tal"$USER""		<- Normal
-#0 hola que taldanielr
-#Minishell> echo "$? hola que tal"$USER""		<- Salto de línea después de "
-#0 hola que taldanielr"
+echo ' $USER'
 
 # 
 echo "$USER" "$-HOLA" "$1ERROR" "$ ERROR" $ERROR
 echo hola "$USER $?" adios
-
 echo hola ""    "" hola
-
 echo hola ""    ccalcio""hola
-bash: hola  ccalciohola
-mini: hola  ccalcio  hola
-
-echo "Hello world"
-bash: Hello world
-
-
 echo "hola $USER" "hola $?" '$?' $?
 echo "$USER $? '$USER'"
 echo "$? hola que tal"$USER""
-
-🔹 Pruebas con comillas
 echo "Hello world"
 echo 'Hello world'
 echo "Hello 'world'"
 echo 'Hello "world"'
 echo "Hello (comilla sin cerrar)
 echo 'Hello (comilla sin cerrar)
-
-
-🔹 Pruebas con espacios y caracteres especiales
-
 echo " Hello world "
 echo Hello   world
 echo "*"
 echo "$USER"
 echo '$USER'
+echo "hola $USER" "hola $?" '$?' $?
 
-🔹 Pruebas con -n
+#
 echo -n Hello
 echo -nnnnnn Hello
+echo -nnmnnn Hello
+echo -n "Texto sin salto de línea"
+echo "Texto con salto de línea"
+echo -n "$USER"  # Muestra el valor de USER sin salto de línea
+echo -n "$USER $PWD"  # Combinación de variables sin salto de línea
 
+# CD
+cd ..
+echo "Directorio después de cd ..: $PWD"
+cd /tmp
+echo "Directorio después de cd /tmp: $PWD"
+cd nonexistentdir 2>/dev/null || echo "Error al acceder a nonexistentdir"
+cd -  # Volver al directorio anterior
 
+# PWD
+pwd
 
+# EXPORT
+export AZUL="blue"
+export NAME="Minishell"
+echo "$AZUL"
+echo "$NAME"
 
-Minishell> echo "hola $USER" "hola $?" '$?' $?
-hola droura-s hola 0 $? 0
+# UNSET
+unset AZUL
+echo "$AZUL"  # No debería mostrar nada
 
-HEAP SUMMARY:
-    in use at exit: 208,189 bytes in 226 blocks
-  total heap usage: 691 allocs, 465 frees, 246,250 bytes allocated
+# ENV
+env  # Mostrar todas las variables de entorno
 
-8 bytes in 4 blocks are definitely lost in loss record 3 of 64
-   at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-   by 0x407717: ft_itoa (in /home/droura-s/Minichell/minishell/minishell)
-   by 0x402CC6: get_variable (in /home/droura-s/Minichell/minishell/minishell)
-   by 0x402B2C: expand_variable (in /home/droura-s/Minichell/minishell/minishell)
-   by 0x402ABB: expand_loop (in /home/droura-s/Minichell/minishell/minishell)
-   by 0x402921: expand_tokens (in /home/droura-s/Minichell/minishell/minishell)
-   by 0x402426: tokenize_input (in /home/droura-s/Minichell/minishell/minishell)
-   by 0x401450: process_iteration (in /home/droura-s/Minichell/minishell/minishell)
-   by 0x4013A1: minishell_loop (in /home/droura-s/Minichell/minishell/minishell)
-   by 0x40133C: main (in /home/droura-s/Minichell/minishell/minishell)
+# EXIT
+exit  # Esto cerrará la minishell
 
-LEAK SUMMARY:
-   definitely lost: 8 bytes in 4 blocks
-   indirectly lost: 0 bytes in 0 blocks
+# Redirección de salida (>)
+echo "Texto redirigido" > output.txt
+cat output.txt
 
-ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+# Redirección de salida en modo append (>>)
+echo "Texto adicional" >> output.txt
+cat output.txt
+
+# Redirección de entrada (<)
+echo "Hola desde input.txt" > input.txt
+cat < input.txt
+
+# Heredoc (<<)
+cat << EOF
+Texto pasado al comando cat con heredoc.
+EOF
+
+# Pipe (|)
+echo "Prueba pipe" | grep "Prueba"
+
+# Redirección de error (2>)
+ls nonexistentdir 2> error.log
+cat error.log  # Debería mostrar el error
+
+# LS con redirección
+ls /tmp > listado.txt
+cat listado.txt
+
+# LS con pipe
+ls /tmp | grep "log"
+
+# Comando externo
+ls /bin
+
+# Comando no encontrado
+nonexistentcommand 2>/dev/null  # Error silenciado
