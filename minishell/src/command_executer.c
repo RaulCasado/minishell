@@ -53,6 +53,36 @@ static int	execute_pipeline(t_minishell *minishell, t_command *cmd)
 	return (minishell->exit_code);
 }
 
+static int check_input_redirections(t_token *tokens)
+{
+	t_token *current;
+
+	current = tokens;
+	while (current)
+	{
+		if (current->type == TOKEN_REDIR_IN)
+		{
+			if (!current->next || !current->next->value) // Borrable
+			{
+				ft_putendl_fd("minishell: syntax error near unexpected token", 2);
+				return (-1);
+			}
+			if (open(current->next->value, O_RDONLY) == -1)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(current->next->value, 2);
+				if (errno == EACCES) // Borrable
+					ft_putendl_fd(": Permission denied", 2);
+				else
+					ft_putendl_fd(": No such file or directory", 2);
+				return (-1);
+			}
+		}
+		current = current->next;
+	}
+	return (0);
+}
+
 int	command_executer(t_minishell *minishell)
 {
 	t_command	*cmd;
@@ -60,6 +90,18 @@ int	command_executer(t_minishell *minishell)
 
 	cmd = minishell->commands;
 	num_commands = count_commands(cmd);
+	if (check_input_redirections(minishell->tokens) == -1)
+	{
+		if (cmd->next)
+		{
+			cmd = cmd->next;
+			if (!cmd->args[1] && !cmd->infile)
+				cmd->infile = ft_strdup("/dev/null");
+		}
+		else
+			exit(1);
+	}
+
 	if (num_commands == 1 && is_builtin(cmd->args[0]))
 		return (execute_builtin(minishell, cmd));
 	return (execute_pipeline(minishell, cmd));
