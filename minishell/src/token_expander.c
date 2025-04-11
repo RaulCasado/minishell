@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_expander.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:35 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/09 14:36:16 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/04/11 12:40:25 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@ static int	expand_loop(t_token *token, t_minishell *minishell,
 	ssize_t	j;
 
 	(*i)++;
-	if (!token->value[*i] || token->value[*i] == ' ')
+	if (!token->value[*i] || token->value[*i] == ' '
+		|| token->value[*i] == '\t'
+		|| token->value[*i] == '\n')
 		return (0);
 	j = *i;
 	while (token->value[j] && token->value[j + 1]
 		&& token->value[j + 1] != ' '
 		&& token->value[j + 1] != '\n'
+		&& token->value[j + 1] != '\t'
 		&& token->value[j + 1] != DOUBLE_MARK
 		&& token->value[j + 1] != SIMPLE_MARK
 		&& token->value[j] != QUESTION_MARK)

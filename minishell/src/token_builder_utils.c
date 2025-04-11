@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_builder_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 18:54:11 by droura-s          #+#    #+#             */
-/*   Updated: 2025/04/09 13:48:19 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/04/11 12:45:52 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static int	handle_word(char *p, ssize_t *i, t_token **t, t_marks *m)
 		if (!(m->d || m->s) && ft_symbol_len(&p[*i]) > 0)
 			break ;
 		handle_marks_struct(p[*i], m);
-		if (p[*i] == ' ' && !m->d && !m->s)
+		if ((p[*i] == ' ' || p[*i] == '\t'
+				|| p[*i] == '\n') && !m->d && !m->s)
 			break ;
 		(*i)++;
 	}
@@ -65,7 +66,8 @@ int	split_input(ssize_t i, char *p, t_token **t)
 	i = 0;
 	while (p[i])
 	{
-		while ((p[i] == ' ' || p[i] == '\n') && !m.d && !m.s)
+		while ((p[i] == ' ' || p[i] == '\n'
+				|| p[i] == '\t') && !m.d && !m.s)
 			i++;
 		if (!p[i])
 			break ;

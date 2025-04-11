@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_expander_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:26 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/09 14:34:43 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/04/11 12:45:39 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char	*free_mallocs(char *head, char *expansion, char *tail, char *value)
 {
-	if (expansion && !expansion[0])
+	if (expansion)
 		free(expansion);
 	if (head)
 		free(head);
@@ -40,6 +40,8 @@ static char	*get_variable(char *value, ssize_t start,
 			return (NULL);
 		expansion = get_env(var_name, minishell->envp);
 		free(var_name);
+		if (expansion)
+			expansion = ft_strdup(expansion);
 	}
 	if (!expansion)
 		expansion = ft_strdup("");
