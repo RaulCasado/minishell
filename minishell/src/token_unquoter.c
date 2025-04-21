@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_unquoter.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:52 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/09 14:35:35 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:47:03 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,21 @@ static char	*unquote_token(t_token *token, size_t value_len)
 void	unquoter(t_token **tokens)
 {
 	t_token	*current;
+	t_token	*prev;
 	char	*new_value;
 
 	current = *tokens;
+	prev = NULL;
 	while (current)
 	{
+		// Skip unquoting for heredoc delimiters
+		if (prev && prev->type == TOKEN_HEREDOC)
+		{
+			prev = current;
+			current = current->next;
+			continue;
+		}
+		
 		if (current->type == TOKEN_WORD
 			&& (get_global_marks(current->value, SIMPLE_MARK)
 				|| get_global_marks(current->value, DOUBLE_MARK)))
@@ -104,6 +114,7 @@ void	unquoter(t_token **tokens)
 		}
 		swap_free(&current->value, loop_subtoken(current, DOUBLE_MARK));
 		swap_free(&current->value, loop_subtoken(current, SIMPLE_MARK));
+		prev = current;
 		current = current->next;
 	}
 }

@@ -234,4 +234,8 @@ int			ce_check_input_redirections(t_token *tokens);
 /* ************************************************************************** */
 int			command_executer(t_minishell *minishell);
 
+/* Heredoc functionality */
+char		*handle_heredoc(char *delimiter);
+void		handle_heredoc_redirection(t_command_info *ci, t_token *next);
+
 #endif

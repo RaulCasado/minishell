@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_creator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:30:13 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/09 11:51:31 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:54:37 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static void	handle_redirection(t_token **t, t_command_info *ci)
 		handle_redir_out(ci, next, 1);
 	else if ((*t)->type == TOKEN_REDIR_APPEND)
 		handle_redir_out(ci, next, 2);
+	else if ((*t)->type == TOKEN_HEREDOC)
+		handle_heredoc_redirection(ci, next);
 }
 
 void	handle_pipe(t_command **cl, t_command_info *ci, t_command **curr)
@@ -57,7 +59,8 @@ static t_token	*process_token(t_token *t, t_command_info *ci,
 		handle_word(ci, t->value);
 		t = t->next;
 	}
-	else if (t->type >= TOKEN_REDIR_IN && t->type <= TOKEN_REDIR_APPEND)
+	else if ((t->type >= TOKEN_REDIR_IN && t->type <= TOKEN_REDIR_APPEND)
+		|| t->type == TOKEN_HEREDOC)
 	{
 		handle_redirection(&t, ci);
 		if (t && t->next)

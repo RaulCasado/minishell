@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_creator_helper.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: droura-s <droura-s@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 21:59:01 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/09 11:38:52 by droura-s         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:46:46 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,25 @@ void	handle_redir_out(t_command_info *ci, t_token *next, int append)
 	}
 	ci->outfile = dup_val;
 	assign_redir_out(ci, append);
+}
+
+/*
+** Helper para TOKEN_HEREDOC
+*/
+void	handle_heredoc_redirection(t_command_info *ci, t_token *next)
+{
+	char	*heredoc_file;
+
+	heredoc_file = handle_heredoc(next->value);
+	if (!heredoc_file)
+	{
+		if (ci->infile)
+			free(ci->infile);
+		ci->infile = ft_strdup("");
+		return ;
+	}
+	
+	if (ci->infile)
+		free(ci->infile);
+	ci->infile = heredoc_file;
 }
