@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 14:00:00 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/21 17:56:13 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/21 23:06:27 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ static int	read_heredoc_input(char *delimiter, int fd)
 			ft_putstr_fd("minishell: warning\n", 2);
 			break ;
 		}
-		if (ft_strlen(line) == delimiter_len &&
-			ft_strncmp(line, delimiter, delimiter_len) == 0)
+		if (ft_strlen(line) == delimiter_len
+			&& ft_strncmp(line, delimiter, delimiter_len) == 0)
 		{
 			free(line);
 			break ;
@@ -78,16 +78,13 @@ char	*handle_heredoc(char *delimiter)
 	filename = create_temp_file();
 	if (!filename)
 		return (NULL);
-	
 	fd = open(filename, O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		free(filename);
 		return (NULL);
 	}
-	
 	read_heredoc_input(delimiter, fd);
 	close(fd);
-	
 	return (filename);
 }
