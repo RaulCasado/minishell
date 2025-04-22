@@ -63,26 +63,36 @@ char	*find_command_path(char *cmd, char **envp)
 	return (result);
 }
 
-static void	handle_exec_errors(char *path, char *cmd_name)
+static void	handle_exec_errors(t_minishell *ms, char *path, char *cmd_name)
 {
 	struct stat	st;
 
 	if (errno == ENOEXEC && (cmd_name[0] == '.' || cmd_name[0] == '/'))
+	{
+		free(path);
+		free_minishell(ms);
 		exit(0);
+	}
 	else if (errno == ENOEXEC)
 	{
 		ft_putstr_fd(cmd_name, 2);
 		ft_putendl_fd(": command not found", 2);
+		free(path);
+		free_minishell(ms);
 		exit(2);
 	}
 	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
 	{
 		ft_putstr_fd(cmd_name, 2);
 		ft_putendl_fd(": Is a directory", 2);
+		free(path);
+		free_minishell(ms);
 		exit(126);
 	}
 	ft_putstr_fd(cmd_name, 2);
 	ft_putendl_fd(": Permission denied", 2);
+	free(path);
+	free_minishell(ms);
 	exit(126);
 }
 
@@ -95,19 +105,24 @@ int	command_process(t_minishell *ms, t_command *cmd)
 		if (cmd->args[1])
 			cmd->args++;
 		else
+		{
+			free_minishell(ms);
 			exit(0);
+		}
 	}
 	path = find_command_path(cmd->args[0], ms->envp);
 	if (!path)
 	{
 		ft_putstr_fd(cmd->args[0], 2);
 		ft_putendl_fd(": command not found", 2);
+		free_minishell(ms);
 		exit(127);
 	}
 	execve(path, cmd->args, ms->envp);
 	if (errno == EACCES || errno == EISDIR)
-		handle_exec_errors(path, cmd->args[0]);
+		handle_exec_errors(ms, path, cmd->args[0]);
 	perror("minishell");
 	free(path);
+	free_minishell(ms);
 	exit(127);
 }
