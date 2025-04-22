@@ -158,6 +158,7 @@ char		ft_remove_token(t_token **token, size_t i);
 t_command	*parse_tokens(t_token *tokens);
 int			command_executer(t_minishell *minishell);
 int			command_process(t_minishell *minishell, t_command *command);
+int			command_process_execve(t_minishell *ms, t_command *cmd, char *path);
 
 /*	Built-ins	*/
 int			builtin_echo(t_minishell *minishell, t_command *command);
