@@ -6,7 +6,7 @@
 /*   By: racasado <racasado@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:33:52 by racasado          #+#    #+#             */
-/*   Updated: 2025/04/21 17:47:03 by racasado         ###   ########.fr       */
+/*   Updated: 2025/04/22 11:14:23 by racasado         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,36 +82,40 @@ static char	*unquote_token(t_token *token, size_t value_len)
 	return (new_value);
 }
 
+static void	process_outer_quotes(t_token *curr)
+{
+	char	*new_value;
+
+	if (curr->type == TOKEN_WORD
+		&& (get_global_marks(curr->value, SIMPLE_MARK)
+			|| get_global_marks(curr->value, DOUBLE_MARK)))
+	{
+		new_value = unquote_token(curr, ft_strlen(curr->value));
+		if (!new_value)
+		{
+			perror("Minishell: malloc failed in unquoter");
+			exit(3);
+		}
+		curr->value = new_value;
+	}
+}
+
 void	unquoter(t_token **tokens)
 {
 	t_token	*current;
 	t_token	*prev;
-	char	*new_value;
 
 	current = *tokens;
 	prev = NULL;
 	while (current)
 	{
-		// Skip unquoting for heredoc delimiters
 		if (prev && prev->type == TOKEN_HEREDOC)
 		{
 			prev = current;
 			current = current->next;
-			continue;
+			continue ;
 		}
-		
-		if (current->type == TOKEN_WORD
-			&& (get_global_marks(current->value, SIMPLE_MARK)
-				|| get_global_marks(current->value, DOUBLE_MARK)))
-		{
-			new_value = unquote_token(current, ft_strlen(current->value));
-			if (!new_value)
-			{
-				perror("Minishell: malloc failed in unquoter");
-				exit(3);
-			}
-			current->value = new_value;
-		}
+		process_outer_quotes(current);
 		swap_free(&current->value, loop_subtoken(current, DOUBLE_MARK));
 		swap_free(&current->value, loop_subtoken(current, SIMPLE_MARK));
 		prev = current;
