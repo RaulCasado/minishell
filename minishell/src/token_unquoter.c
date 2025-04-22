@@ -12,14 +12,6 @@
 
 #include "minishell.h"
 
-static void	swap_free(char **original, char *new)
-{
-	if (!*original || !new || *original == new)
-		return ;
-	free(*original);
-	*original = new;
-}
-
 static char	*remove_one_quote(char *value, size_t i)
 {
 	char	*head;

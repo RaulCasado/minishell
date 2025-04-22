@@ -130,6 +130,7 @@ void		free_commands(t_command *commands);
 void		free_ptr_ptr(char **ptr, size_t len);
 void		ft_free_split(char **split);
 void		better_close(int fd);
+void		swap_free(char **original, char *new);
 
 /*	Tokens	*/
 void		free_tokens(t_token *tokens);

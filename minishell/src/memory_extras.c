@@ -44,3 +44,11 @@ void	ft_free_split(char **split)
 	}
 	free(split);
 }
+
+void	swap_free(char **original, char *new)
+{
+	if (!*original || !new || *original == new)
+		return ;
+	free(*original);
+	*original = new;
+}
