@@ -16,10 +16,13 @@ static void	free_command(t_command *command)
 {
 	size_t	i;
 
-	i = 0;
-	while (command->args[i])
-		free(command->args[i++]);
-	free(command->args);
+	if (command->args)
+	{
+		i = 0;
+		while (command->args[i])
+			free(command->args[i++]);
+		free(command->args);
+	}
 	if (command->infile)
 		free(command->infile);
 	if (command->outfile)

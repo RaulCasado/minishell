@@ -33,7 +33,7 @@ static int	has_open_quotes(char *str)
 	return (quote != 0);
 }
 
-int	is_invalid_character_outside_quotes(char *str)
+static int	is_invalid_character_outside_quotes(char *str)
 {
 	int		i;
 	char	quote;

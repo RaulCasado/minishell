@@ -93,6 +93,8 @@ int	command_executer(t_minishell *minishell)
 		else
 			return (1);
 	}
+	if (!cmd->args)
+		return (0);
 	if (num_commands == 1 && is_builtin(cmd->args[0]))
 		return (execute_builtin(minishell, cmd));
 	return (execute_pipeline(minishell, cmd));
