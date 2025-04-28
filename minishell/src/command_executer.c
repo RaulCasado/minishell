@@ -45,6 +45,11 @@ static int	execute_pipeline(t_minishell *minishell, t_command *cmd)
 	last_pid = -1;
 	while (cmd)
 	{
+		if (!cmd->args)
+		{
+			cmd = cmd->next;
+			continue ;
+		}
 		if (ce_process_command_in_pipeline(minishell,
 				&cmd, &prev_pipe_in, &last_pid))
 			return (1);
@@ -93,7 +98,7 @@ int	command_executer(t_minishell *minishell)
 		else
 			return (1);
 	}
-	if (!cmd->args)
+	if (num_commands == 1 && !cmd->args)
 		return (0);
 	if (num_commands == 1 && is_builtin(cmd->args[0]))
 		return (execute_builtin(minishell, cmd));
