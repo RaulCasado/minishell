@@ -1,18 +1,17 @@
-# Nombre del ejecutable
+# Executable name
 NAME = minishell
 
-# Compilador y flags
+# Compiler and flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS2 = 
 
-# Directorios
+# Directories
 SRC_DIR = src
 INCLUDE_DIR = includes
 LIBFT_DIR = includes/libft
 
-# Archivos fuente
-# Archivos fuente
+# Source files
 SRCS =	$(SRC_DIR)/main.c $(SRC_DIR)/memory.c $(SRC_DIR)/memory_extras.c \
 		$(SRC_DIR)/minishell_builder.c \
 		$(SRC_DIR)/env.c $(SRC_DIR)/signals.c $(SRC_DIR)/signals_global.c \
@@ -28,38 +27,37 @@ SRCS =	$(SRC_DIR)/main.c $(SRC_DIR)/memory.c $(SRC_DIR)/memory_extras.c \
 
 OBJS = $(SRCS:.c=.o)
 
-# Librería Libft
+# Libft library
 LIBFT = $(LIBFT_DIR)/libft.a
 LIBFT_MAKEFILE = $(LIBFT_DIR)/Makefile
 
-# Regla principal
+# Main rule
 all: $(LIBFT) $(NAME)
 
-# Compilar libft primero si no existe libft.a
+# Compile libft first if libft.a doesn't exist
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 
-# Compilar Minishell
+# Compile Minishell
 $(NAME): $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) $(OBJS) -L$(LIBFT_DIR) -lft -lreadline -lncurses -o $(NAME)
 
-# Regla para compilar archivos .o
+# Rule to compile .o files
 %.o: %.c
 	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 
-# Limpiar archivos objeto
+# Clean object files
 clean:
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	rm -f $(OBJS)
 
-# Limpiar todo (binarios y objetos)
+# Clean everything (binaries and objects)
 fclean: clean
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	rm -f $(NAME)
 
-# Recompilar desde cero
+# Recompile from scratch
 re: fclean all
 
-# No usar archivos intermedios como targets
+# Don't use intermediate files as targets
 .PHONY: all clean fclean re
-
