@@ -95,7 +95,7 @@ You should see the custom prompt appear, for example:
 Minishell> 
 ```
 
-At this point, you can start typing commands. Minishell will execute the command and then return to the prompt. You can run it within a normal terminal; it behaves similarly to Bash or other shells for supported features.
+At this point, you can start typing commands. Minishell will execute the command and then return to the prompt. You can run it within a normal terminal it behaves similarly to Bash or other shells for supported features.
 
 Note: Minishell does not accept command-line arguments when launched. If you try to provide arguments to the minishell executable, it will display an error and exit. (This design is intentional - Minishell is meant to be started with no arguments and then used interactively.)
 
@@ -128,7 +128,7 @@ Minishell> echo The school is $MYVAR
 The school is 42 Malaga
 ```
 
-Here we set a new environment variable and then echo it with other text; the variable $MYVAR is expanded to its value. If you run env, you will see MYVAR in the list of environment variables for the shell.
+Here we set a new environment variable and then echo it with other text the variable $MYVAR is expanded to its value. If you run env, you will see MYVAR in the list of environment variables for the shell.
 
 To terminate the shell, use the exit built-in:
 
@@ -319,7 +319,7 @@ Minishell´s core is an event loop that reads input, processes it, executes comm
 
             * If execve returns an error (like permission denied or not a valid executable format), we print a message ("...: Permission denied" for code EACCES, or "...: Is a directory" if trying to execute a directory, etc.) and exit with code 126 or appropriate value. We took care to match Bash´s conventions for these exit codes.
 
-          * If the command is a built-in even in a pipeline context, we don´t use execve; instead we directly call the built-in function in the child process. For example, if the pipeline is export VAR=42 | other_command, the first process (child) will run our builtin_export function. This won´t affect the parent´s environment, but that´s fine because in a pipeline, each segment runs in a subshell in real Bash as well. The built-in in a child will still produce output or effects for that child process (like export setting an env var that would only live for that subprocess lifetime). The child then exits with the status code returned by the built-in.
+          * If the command is a built-in even in a pipeline context, we don´t use execve instead we directly call the built-in function in the child process. For example, if the pipeline is export VAR=42 | other_command, the first process (child) will run our builtin_export function. This won´t affect the parent´s environment, but that´s fine because in a pipeline, each segment runs in a subshell in real Bash as well. The built-in in a child will still produce output or effects for that child process (like export setting an env var that would only live for that subprocess lifetime). The child then exits with the status code returned by the built-in.
 
         * After execve or the built-in function call, the child calls exit(exit_code) to terminate, if it hasn´t been replaced by execve. (In case of a successful execve, the child will terminate when the executed program finishes on its own). Watch out with exit this is a common mistake we made in the beginning. If you forget to exit the child after execve, it will continue executing the rest of the shell code and may cause undefined behavior or crashes. Another common mistake is to exit when you are not in a child process. This can happen if you forget to check if the process is a child before calling exit. In this case, the shell will terminate and you will not be able to use it anymore(well just relaunch it but you know what I mean).
 
@@ -410,7 +410,7 @@ Some additional details on built-ins:
 
 * **echo**: We implemented the -n flag to suppress the newline (like Bash). Other flags are not in scope, so echo -n hello will output hello without a newline, and echo -e or other flags are not recognized (they´ll just be treated as strings to echo). Echo handles quoted text and variable expansion via the parsing stage (so echo "$HOME" will print the home directory path).
 
-* **cd**: Supports relative and absolute paths. After a successful directory change using chdir(), it updates the PWD environment variable to the new path and also updates OLDPWD to the previous value of PWD. If cd is used with no arguments, our Minishell currently prints a usage message (in Bash, cd with no args goes to $HOME; implementing that could be a potential improvement, but was not mandatory). If too many arguments are given (cd arg1 arg2), it prints an error "too many arguments". If the path is invalid, it prints the system error ("No such file or directory"). We took care to use getcwd() to get the actual path for PWD (for reliability in case of symbolic links, etc.).
+* **cd**: Supports relative and absolute paths. After a successful directory change using chdir(), it updates the PWD environment variable to the new path and also updates OLDPWD to the previous value of PWD. If cd is used with no arguments, our Minishell currently prints a usage message (in Bash, cd with no args goes to $HOME implementing that could be a potential improvement, but was not mandatory). If too many arguments are given (cd arg1 arg2), it prints an error "too many arguments". If the path is invalid, it prints the system error ("No such file or directory"). We took care to use getcwd() to get the actual path for PWD (for reliability in case of symbolic links, etc.).
 
 * **pwd**: Uses getcwd() to retrieve the current directory and prints it. If getcwd fails (which would be rare, if in a directory that no longer exists), it prints an error using perror. Typically, it should always succeed after a valid cd.
 
@@ -434,7 +434,7 @@ Each built-in´s implementation carefully manages errors and the shell´s state.
 
 One of the challenging parts of shell development is dealing with signals, especially in an interactive context. Minishell sets up custom signal handlers to achieve the following:
 
-* **Ctrl+C (SIGINT)**: In the shell´s main prompt, this should interrupt the current input and show a new prompt on the next line. We accomplish this by installing a handler that writes a newline to stdout, then uses rl_replace_line("", 0) and rl_on_new_line() and rl_redisplay() from the Readline library to reset the prompt state. This way, the user sees a fresh prompt immediately. The shell´s main loop does not terminate; it simply continues as if the user had entered an empty line. If a child process is running (an external command), we do not override the default for SIGINT in that child, so pressing Ctrl+C will also send SIGINT to the child process, usually killing it. The parent shell notices that the child was killed by SIGINT and will set its own $? accordingly, but will not itself exit.
+* **Ctrl+C (SIGINT)**: In the shell´s main prompt, this should interrupt the current input and show a new prompt on the next line. We accomplish this by installing a handler that writes a newline to stdout, then uses rl_replace_line("", 0) and rl_on_new_line() and rl_redisplay() from the Readline library to reset the prompt state. This way, the user sees a fresh prompt immediately. The shell´s main loop does not terminate it simply continues as if the user had entered an empty line. If a child process is running (an external command), we do not override the default for SIGINT in that child, so pressing Ctrl+C will also send SIGINT to the child process, usually killing it. The parent shell notices that the child was killed by SIGINT and will set its own $? accordingly, but will not itself exit.
 
 * **Ctrl+\ (SIGQUIT)**: We set this signal´s handler to do nothing (yes just ignore it) in the shell. In an interactive Bash, Ctrl+\ usually does nothing visible (it would quit a running process by default, dumping core, but shells typically ignore it). Our shell´s parent process ignores SIGQUIT so that it won´t terminate. For child processes (like running cat or other commands), once again we revert to default behavior in the exec´d program, so if an external process doesn´t handle SIGQUIT, pressing Ctrl+\ will terminate that process (and typically produce a "Quit (core dumped)" message). However, our parent shell will not be affected and will just report the termination like any other signal-caused termination.
 
@@ -483,6 +483,8 @@ Overall, Minishell tries to handle error cases in the best way possible: print a
 We undertook extensive testing of Minishell to ensure it is stable and behaves as expected. The development involved:
 
 * **Manual Interactive Testing**: We frequently ran the shell and tried typical shell sessions, mixing built-ins, external commands, pipelines, and redirections. For instance, we tested sequences like:
+
+  * Remember you need to do the commands one by one ; doesn´t work
 
   * echo hello | cat -e > out.txt (pipeline with redirection at end)
 
