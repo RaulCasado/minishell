@@ -541,6 +541,8 @@ Feel free to reach out to either contributor via GitHub for any questions, sugge
 
 * Some inputs like ls | ls | ls | exit are not behaving like in 42 Málaga's Bash. But I am pretty sure this is normal behavior in other shells. We tried to make it behave like a standard shell, but if you find any discrepancies, please let us know.
 
+* Depending on the make version you are using, the make might throw some errors. I don´t know what version is in the 42 Málaga machines, but I am using GNU Make 4.3. If you find any errors, please let us know.
+
 And finally, we are not experts in C programming or shell development. We are still learning and improving our skills. If you have any suggestions or feedback on how to improve our code or the project in general, please let us know. We would love to hear from you!
 
 With <3 from 42 Málaga, we hope you enjoy using Minishell as much as we enjoyed creating it!
