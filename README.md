@@ -223,7 +223,7 @@ Minishell´s core is an event loop that reads input, processes it, executes comm
    * Redirection operators not followed by a filename token.
    * If this patterns are found, it prints a syntax error message and jumps to cleanup for the next cycle.
 
-7. **Environment Variable Expansion**: Once we have a list of tokens, Minishell processes expansions on them (this is typically considered part of the parsing phase, but conceptually it's a distinct step). For each token of type WORD, the shell scans the string for the $ character:
+7. **Environment Variable Expansion**: Once we have a list of tokens, Minishell processes expansions on them (this is typically considered part of the parsing phase, but conceptually it's a distinct step). For each token of type WORD, the shell scans the string for the \$ character:
 
    * If \$? is found, it is replaced with the string representation of the last command´s exit status (we have the exit status saved as an integer so we need to parse it to string everytime we need to print the value maybe we could have just stored the same value but with different type this could be a good idea). This allows constructs like echo $? to display the last return code.
 
