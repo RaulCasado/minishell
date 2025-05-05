@@ -333,7 +333,7 @@ Minishell´s core is an event loop that reads input, processes it, executes comm
 
       * The parent records the PID of the last command´s child process (this is important to get the right exit status).
 
-    * **Waiting for Children**: After forking all commands in the pipeline, the parent shell uses waitpid()/wait() to wait for all child processes to finish. We specifically note the exit status of the last command in the pipeline, because that becomes the shell´s own exit status ($?). For example, in cmd1 | cmd2, if cmd2 exits with status 0, and cmd1 perhaps exited with 1, the shell´s $? will be 0 (similar to Bash´s rule that $? is the last command´s status in a pipeline).
+    * **Waiting for Children**: After forking all commands in the pipeline, the parent shell uses waitpid()/wait() to wait for all child processes to finish. We specifically note the exit status of the last command in the pipeline, because that becomes the shell´s own exit status (\$?). For example, in cmd1 | cmd2, if cmd2 exits with status 0, and cmd1 perhaps exited with 1, the shell´s \$? will be 0 (similar to Bash´s rule that $? is the last command´s status in a pipeline).
 
       * We also handle signals here: if a child was terminated by a signal (like SIGINT), we translate that into an exit status as Bash does (128 + signal number). For instance, if you hit Ctrl+ C and it killed a child process, that child´s status might be "terminated by SIGINT" we would set the shell´s exit code to 130 in that case (128+2 for SIGINT). This way $? correctly reflects an interruption.
 
